@@ -10,6 +10,8 @@ import { SharedModule } from './shared/shared.module';
 
 import { CustomMaterialModule } from './core/custom-material/custom-material.module'
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -20,8 +22,8 @@ import { CustomMaterialModule } from './core/custom-material/custom-material.mod
     BrowserAnimationsModule,
     CustomMaterialModule,
     RouterModule,
-    SharedModule
-    
+    SharedModule,
+    HttpClientModule
   ],
   exports: [CustomMaterialModule],
   providers: [],

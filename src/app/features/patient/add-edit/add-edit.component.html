@@ -1,0 +1,473 @@
+<div *ngIf="!submitting && !loading">
+  <form
+    [formGroup]="patientForm"
+    novalidate
+    (ngSubmit)="openConfirmDialog()">
+    <mat-card class="add-people-card">
+      <mat-card-header>
+        <mat-card-title>
+          {{ title }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-card-actions class="add-form-button-group">
+          <mat-slide-toggle
+            [checked]="editing"
+            disabled>
+            Editar
+          </mat-slide-toggle>
+          <button
+            mat-stroked-button
+            color="warn"
+            type="button"
+            (click)="deletePatient()"
+            [disabled]="!editing">DELETAR</button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="patientForm.invalid">
+            SALVAR
+          </button>
+        </mat-card-actions>
+        <mat-card-title>Identificação</mat-card-title>
+        <div class="row">
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>Nome completo</mat-label>
+              <input
+                matInput
+                placeholder="Informe o nome completo do paciente"
+                formControlName="nome">
+              <mat-error
+                *ngIf="patientForm.controls['nome'].hasError('minlength')
+                && !patientForm.controls['nome'].hasError('required')">
+                O nome tem de ter pelo <strong>mínimo 8 caracteres</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['nome'].hasError('maxlength')
+                && !patientForm.controls['nome'].hasError('required')">
+                O nome tem de ter no <strong>máximo 64 caracteres</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['nome'].hasError('required')">
+                O nome é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-select
+                placeholder="Selecione o gênero"
+                formControlName="genero">
+                <mat-option *ngFor="let gender of GENEROS" [value]="gender.descricao">
+                  {{ gender.descricao }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="patientForm.controls['genero'].hasError('required')">
+                O gênero é <strong>obrigatário</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline"
+              hideRequiredMarker>
+              <mat-label>Data de nascimento</mat-label>
+              <input
+                matInput
+                [max]="today"
+                [matDatepicker]="dtaNascimento"
+                formControlName="dtaNascimento">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="dtaNascimento"></mat-datepicker-toggle>
+              <mat-datepicker #dtaNascimento></mat-datepicker>
+              <mat-error
+                *ngIf="patientForm.controls['dtaNascimento'].hasError('required')">
+                A data de nascimento é <strong>obrigatária</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>CPF</mat-label>
+              <input
+                matInput
+                placeholder="000.000.000-00"
+                formControlName="nroCpf" mask="000.000.000-00">
+              <mat-error
+                *ngIf="patientForm.controls['nroCpf'].hasError('required')">
+                O CPF é <strong>obrigatório</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['nroCpf'].invalid
+                && !patientForm.controls['nroCpf'].hasError('required')">
+                O CPF digitado é <strong>inválido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>Identificação/Órgão expedidor/UF</mat-label>
+              <input
+                matInput
+                placeholder="Informe o RG"
+                formControlName="nroRg">
+              <mat-error
+                *ngIf="patientForm.controls['nroRg'].hasError('maxlength')
+                && !patientForm.controls['nroRg'].hasError('required')">
+                O RG deve possuir no <strong>máximo 20 caracteres</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['nroRg'].hasError('required')">
+                O RG é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-select
+                placeholder="Selecione o estado civil"
+                formControlName="estadoCivil">
+                <mat-option
+                  *ngFor="let estcivil of ESTADOCIVIL" [value]="estcivil.estcivil">
+                  {{ estcivil.descricao }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="patientForm.controls['estadoCivil'].hasError('required')">
+                O estado civil é <strong>obrigatário</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline"
+              hideRequiredMarker>
+              <mat-label>Telefone</mat-label>
+              <input
+                matInput
+                placeholder="(00) 0000-0000"
+                formControlName="telefone"
+                mask="(00) 0 0000-0000 || (00) 0000-0000">
+              <mat-error
+                *ngIf="patientForm.controls['telefone'].hasError('required')">
+                O telefone é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>E-mail</mat-label>
+              <input
+                matInput
+                placeholder="Ex.: alex@email.com"
+                formControlName="email">
+              <mat-error
+                *ngIf="patientForm.controls['email'].hasError('email')">
+                Informe um e-mail válido
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline"
+              hideRequiredMarker>
+              <mat-label>Naturalidade</mat-label>
+              <input
+                matInput
+                placeholder="Cidade"
+                formControlName="naturalidade">
+              <mat-error
+                *ngIf="patientForm.controls['naturalidade'].hasError('required')">
+                A naturalidade é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline"
+              hideRequiredMarker>
+              <mat-label>Contato de emergência</mat-label>
+              <input
+                matInput
+                placeholder="(00) 00000-0000"
+                formControlName="telefoneEmergencia"
+                mask="(00) 0 0000-0000 || (00) 0000-0000">
+              <mat-error *ngIf="patientForm.controls['telefoneEmergencia'].hasError('required')">
+                Um conta de emergência é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col" formArrayName="alergias">
+            <mat-form-field
+              *ngFor="let alergia of alergias.controls; let i = index"
+              class="full-width"
+              appearance="outline"
+              [formGroupName]="i"
+            >
+              <mat-label>Alergia {{ i + 1 }}</mat-label>
+              <input
+                matInput
+                placeholder="Informe alguma alergia"
+                id="alergia-{{ i }}"
+                formControlName="descricao"
+              >
+              <button
+                mat-icon-button
+                matPrefix
+                (click)="onClick($event); addAlergia()"
+              >
+                <mat-icon>add_circle</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="onClick($event); removeAlergia(i)"
+              >
+                <mat-icon>do_not_disturb_on</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col" formArrayName="precaucoes">
+            <mat-form-field
+              *ngFor="let precaucao of precaucoes.controls; let i = index"
+              class="full-width"
+              appearance="outline"
+              [formGroupName]="i">
+              <mat-label>Precaução {{ i + 1 }}</mat-label>
+              <input
+                matInput
+                placeholder="Informe algum cuidados específicos"
+                id="precaucao-{{ i }}"
+                formControlName="descricao"
+              >
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="onClick($event); removePrecaucao(i)"
+              >
+                <mat-icon>do_not_disturb_on</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                matPrefix
+                (click)="onClick($event); addPrecaucao()"
+              >
+                <mat-icon>add_circle</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-card-title>Convênio</mat-card-title>
+        <div class="row">
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>Convênio</mat-label>
+              <input
+                matInput
+                placeholder="Informe o nome do convênio"
+                formControlName="convenio">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline">
+              <mat-label>Número da carteira</mat-label>
+              <input
+                matInput
+                placeholder="Informe o nª do convênio"
+                formControlName="nroCarteira">
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field
+              class="full-width"
+              appearance="outline"
+              hideRequiredMarker>
+              <mat-label>Validade</mat-label>
+              <input
+                matInput
+                [matDatepicker]="dtaValidade"
+                [min]="today"
+                formControlName="dtaValidade">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="dtaValidade"></mat-datepicker-toggle>
+              <mat-datepicker #dtaValidade></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-card-title>Endereço</mat-card-title>
+        <div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline">
+                <mat-label>CEP</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe o CEP"
+                  formControlName="cep"
+                  (focusout)="getAddressFromViaCep(cep.value)"
+                  #cep
+                  mask="00.000-000">
+                              <mat-error
+                                *ngIf="patientForm.controls['cep'].hasError('required')">
+                                O CEP é <strong>obrigatório</strong>
+                              </mat-error>
+                              <mat-error
+                                *ngIf="patientForm.controls['cep'].hasError('minlength')
+                                && !patientForm.controls['cep'].hasError('required')">
+                                O CEP deve conter pelo menos <strong>8 dígitos</strong>
+                              </mat-error>
+                              <mat-error
+                                *ngIf="patientForm.controls['cep'].hasError('maxlength')
+                                && !patientForm.controls['cep'].hasError('required')">
+                                O CEP deve conter no máximo <strong>8 dígitos</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline" hideRequiredMarker>
+                <mat-label>Cidade</mat-label>
+                <input
+                  matInput placeholder="Informe a Cidade"
+                  formControlName="cidade">
+                              <mat-error
+                                *ngIf="patientForm.controls['cidade'].hasError('required')">
+                                A cidade é <strong>obrigatório</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline"
+                hideRequiredMarker>
+                <mat-label>Estado</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe o Estado"
+                  formControlName="estado">
+                              <mat-error
+                                *ngIf="patientForm.controls['estado'].hasError('required')">
+                                O Estado é <strong>obrigatório</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline"
+                hideRequiredMarker>
+                <mat-label>Logradouro</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe o nome da rua"
+                  formControlName="logradouro">
+                              <mat-error
+                                *ngIf="patientForm.controls['logradouro'].hasError('required')">
+                                A rua é <strong>obrigatório</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline"
+                hideRequiredMarker>
+                <mat-label>Número</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe o número"
+                  formControlName="numero">
+                              <mat-error
+                                *ngIf="patientForm.controls['numero'].hasError('required')">
+                                O número é <strong>obrigatório</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline">
+                <mat-label>Complemento</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe um complemento"
+                  formControlName="complemento">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline"
+                hideRequiredMarker>
+                <mat-label>Bairro</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe o bairro"
+                  formControlName="bairro">
+                              <mat-error
+                                *ngIf="patientForm.controls['bairro'].hasError('required')">
+                                O bairro é <strong>obrigatório</strong>
+                              </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field
+                class="full-width"
+                appearance="outline">
+                <mat-label>Ponto de Rerefência</mat-label>
+                <input
+                  matInput
+                  placeholder="Informe um ponto de referência"
+                  formControlName="pontoReferencia">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</div>
+<div *ngIf="submitting || loading">
+  <mat-spinner></mat-spinner>
+</div>

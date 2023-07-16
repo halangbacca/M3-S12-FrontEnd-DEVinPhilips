@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>Por favor, confirme os dados abaixo antes de continuar</h1>
+<div mat-dialog-content>
+  <p><strong>Nome completo: </strong>{{ data.nome }}</p>
+  <p><strong>Gênero: </strong>{{ data.genero }}</p>
+  <p><strong>Data de nascimento: </strong>{{ data.dtaNascimento | date: 'dd/MM/yyyy' }}</p>
+  <p><strong>CPF: </strong>{{ data.nroCpf | cpf }}</p>
+  <p><strong>RG com órgão expedidor: </strong>{{ data.nroRg }}</p>
+  <p><strong>Estado civil: </strong>{{ data.estadoCivil }}</p>
+  <p><strong>Telefone: </strong>{{ data.telefone | phone }}</p>
+  <p *ngIf="data.email"><strong>E-mail: </strong>{{ data.email }}</p>
+  <p><strong>Naturalidade: </strong>{{ data.naturalidade }}</p>
+  <p><strong>Contato de emergência: </strong>{{ data.telefoneEmergencia | phone }}</p>
+  <div *ngIf="data.alergias[0].descricao">
+    <p><strong>Lista de alergias: </strong></p>
+    <ul>
+      <li *ngFor="let item of data.alergias">
+        {{ item.descricao }}
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="data.precaucoes[0].descricao">
+    <p> 0"><strong>Lista de cuidados Específicos: </strong></p>
+    <ul>
+      <li *ngFor="let item of data.precaucoes">
+        {{ item.descricao }}
+      </li>
+    </ul>
+  </div>
+  <p *ngIf="data.convenio"><strong>Convênio: </strong>{{ data.convenio }}</p>
+  <p *ngIf="data.nroCarteira"><strong>Número do convênio: </strong>{{ data.nroCarteira }}</p>
+  <p *ngIf="data.dtaValidade
+"><strong>Validade do convênio: </strong>{{ data.dtaValidade | date : 'dd/MM/yyyy' }}</p>
+  <p><strong>Endereço: </strong>
+    {{ data.logradouro }},
+    {{ data.numero}},
+    <span *ngIf="data.complemento">{{ data.complemento}},</span>
+    {{ data.bairro}},
+    {{ data.cidade }},
+    {{ data.estado }},
+    {{ data.cep | cep }},
+    <span *ngIf="data.pontoReferencia">{{ data.pontoReferencia }}</span></p>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="warn" (click)="onReject()">Corrigir</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Confirmar</button>
+</div>
