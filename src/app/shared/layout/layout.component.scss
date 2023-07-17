@@ -1,0 +1,64 @@
+.navbar-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .navbar {
+    z-index: 2;
+  }
+  
+  .navbar-brand {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .navbar-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .navbar-is-mobile .navbar {
+    position: fixed;
+    /* Barra de ferramentas permaneça no topo do conteúdo à medida que passa. */
+    z-index: 2;
+  }
+  
+  .navbar-sidenav-container {
+    /* Quando o sidenav não estiver fixo, estique o contêiner do sidenav para preencher o espaço disponível. Esse
+              faz com que `<mat-sidenav-content>` atue como nosso elemento de rolagem para layouts de desktop. */
+    flex: 1;
+  }
+  
+  .navbar-is-mobile .navbar-sidenav-container {
+    /* Quando o sidenav é corrigido, não restrinja a altura do contêiner do sidenav. Isso permite que o
+              `<body>` para ser nosso elemento de rolagem para layouts móveis. */
+    flex: 1 0 auto;
+  }
+  
+  /*Set sidenav width*/
+  
+  mat-sidenav {
+    min-width: 200px !important;
+    border-right: 1px solid #eee;
+    box-shadow: 6px 0 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Define a altura do wrapper para impedir que o conteúdo se mova para cima e para baixo */
+  
+  .progress-bar-container {
+    height: 5px;
+  }
+  
+  a.mat-list-item.active {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  #push-bottom {
+    position: absolute;
+    bottom: 0;
+  }
+  

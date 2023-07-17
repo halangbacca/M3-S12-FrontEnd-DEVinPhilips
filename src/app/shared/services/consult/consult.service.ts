@@ -1,0 +1,72 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { environment } from "../../../../environments/environment";
+import { Consult } from "../../models/Consult";
+import { catchError, Observable, retry, throwError } from "rxjs";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ConsultService {
+
+  url = `${environment.URL_API}${environment.API_CONSULT}`;
+
+  constructor(private httpClient: HttpClient) {}
+
+  httpOptions = {
+    headers: new HttpHeaders(environment.HEADER),
+  };
+
+  saveConsult(consult: Consult): Observable<Consult[]> {
+    return this.httpClient
+      .post<Consult[]>(this.url, JSON.stringify(consult), this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  getAllConsult(): Observable<Consult[]> {
+    return this.httpClient
+      .get<Consult[]>(this.url, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  getConsultById(id: Number): Observable<Consult[]> {
+    return this.httpClient
+      .get<Consult[]>(`${this.url}/${id}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  getExamByPatientId(id: Number): Observable<Consult[]> {
+    return this.httpClient
+      .get<Consult[]>(
+        `${this.url}/?idPatient=${id}&_sort=dtaConsulta&_order=desc`
+      )
+      .pipe(retry(2), catchError(this.handleError));
+  }
+  updateConsult(consult: Consult): Observable<Consult[]> {
+    return this.httpClient
+      .put<Consult[]>(
+        `${this.url}/${consult.id}`,
+        JSON.stringify(consult),
+        this.httpOptions
+      )
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  deleteConsult(id: Number): Observable<Consult[]> {
+    return this.httpClient.delete<Consult[]>(`${this.url}/${id}`);
+  }
+
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Erro ocorreu no lado do client
+      errorMessage = error.error.message;
+    } else {
+      // Erro ocorreu no lado do servidor
+      errorMessage =
+        `Código do erro: ${error.status}, ` + `menssagem: ${error.message}`;
+    }
+    //console.log(errorMessage);
+    return throwError(() => errorMessage);
+  }
+}
