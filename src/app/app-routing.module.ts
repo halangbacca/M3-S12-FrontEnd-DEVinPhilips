@@ -16,6 +16,12 @@ const routes: Routes = [
         (m) => m.CustomizationModule
       ),
   },
+  { path: 'patient',
+    loadChildren: () => import('./features/patient/patient.module').then(m => m.PatientModule) },{
+    path:'**',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  }
   {
     path: '**',
     redirectTo: 'dashboard',

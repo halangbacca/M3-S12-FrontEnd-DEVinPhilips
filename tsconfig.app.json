@@ -3,7 +3,33 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@services/cep": [
+        "src/app/shared/services/cep/cep.service.ts"
+      ],
+      "@services/patient": [
+        "src/app/shared/services/patient/patient.service.ts"
+      ],
+      "@shared/models/Patient": [
+        "src/app/shared/models/Patient.ts"
+      ],
+      "@shared/models/Cep": [
+        "src/app/shared/models/Cep.ts"
+      ],
+      "@shared/services/notification": [
+        "src/app/shared/services/notification/notification.service.ts"
+      ],
+      "@envoriments": [
+        "src/environments/environment.ts"
+      ],
+      "@shared/models/Consult": [
+        "src/app/shared/models/Consult.ts"
+      ],
+      "@shared/models/Exam": [
+        "src/app/shared/models/Exam.ts"
+      ],
+    }
   },
   "files": [
     "src/main.ts"
