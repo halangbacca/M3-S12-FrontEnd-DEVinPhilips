@@ -1,0 +1,26 @@
+{
+  "company": [
+    {
+      "id": 1,
+      "nome": "Umbrella Corporation",
+      "slogan": "Our Business Is Life Itself",
+      "palhetaDeCores": "indigo-pink",
+      "imagemDoLogotipo": "www.umbrella.com"
+    },
+    {
+      "id": 2,
+      "nome": "Tricell Inc.",
+      "slogan": "Uroboros",
+      "palhetaDeCores": "purple-green",
+      "imagemDoLogotipo": "www.tricell.com"
+    },
+    {
+      "id": 3,
+      "empresa": null,
+      "nome": "Halan",
+      "slogan": "Ansiedade e Depressão",
+      "palhetaDeCores": "deeppurple-amber",
+      "imagemDoLogotipo": "www.halan.com"
+    }
+  ]
+}
