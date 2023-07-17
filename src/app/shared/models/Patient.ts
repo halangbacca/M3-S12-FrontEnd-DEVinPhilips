@@ -6,16 +6,16 @@ export interface Patient {
   nome: string;
   genero: string;
   dtaNascimento: string;
-  nroCpf: string;
-  nroRg: string;
+  cpf: string;
+  rg: string;
   estadoCivil: string;
   telefone: string;
   email: string;
   naturalidade: string;
   convenio: string;
-  nroCarteira: string;
-  dtaValidade: string;
-  telefoneEmergencia: string;
+  nroConvenio: string;
+  validadeConvenio: string;
+  telEmergencia: string;
   alergias: Alergia[];
   precaucoes: Precaucao[];
   cep: string;
@@ -25,5 +25,5 @@ export interface Patient {
   numero: string;
   complemento: string;
   bairro: string;
-  pontoReferencia: string;
+  referencia: string;
 }

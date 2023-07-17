@@ -12,7 +12,7 @@
       <mat-card-content>
         <mat-card-actions class="add-form-button-group">
           <mat-slide-toggle
-            [checked]="editing"
+            [checked] ="editing"
             disabled>
             Editar
           </mat-slide-toggle>
@@ -64,8 +64,8 @@
               <mat-select
                 placeholder="Selecione o gênero"
                 formControlName="genero">
-                <mat-option *ngFor="let gender of GENEROS" [value]="gender.descricao">
-                  {{ gender.descricao }}
+                <mat-option *ngFor="let genero of GENEROS" [value]="genero.genero">
+                  {{ genero.descricao }}
                 </mat-option>
               </mat-select>
               <mat-error
@@ -106,14 +106,14 @@
               <input
                 matInput
                 placeholder="000.000.000-00"
-                formControlName="nroCpf" mask="000.000.000-00">
+                formControlName="cpf" mask="000.000.000-00">
               <mat-error
-                *ngIf="patientForm.controls['nroCpf'].hasError('required')">
+                *ngIf="patientForm.controls['cpf'].hasError('required')">
                 O CPF é <strong>obrigatório</strong>
               </mat-error>
               <mat-error
-                *ngIf="patientForm.controls['nroCpf'].invalid
-                && !patientForm.controls['nroCpf'].hasError('required')">
+                *ngIf="patientForm.controls['cpf'].invalid
+                && !patientForm.controls['cpf'].hasError('required')">
                 O CPF digitado é <strong>inválido</strong>
               </mat-error>
             </mat-form-field>
@@ -126,14 +126,14 @@
               <input
                 matInput
                 placeholder="Informe o RG"
-                formControlName="nroRg">
+                formControlName="rg">
               <mat-error
-                *ngIf="patientForm.controls['nroRg'].hasError('maxlength')
-                && !patientForm.controls['nroRg'].hasError('required')">
+                *ngIf="patientForm.controls['rg'].hasError('maxlength')
+                && !patientForm.controls['rg'].hasError('required')">
                 O RG deve possuir no <strong>máximo 20 caracteres</strong>
               </mat-error>
               <mat-error
-                *ngIf="patientForm.controls['nroRg'].hasError('required')">
+                *ngIf="patientForm.controls['rg'].hasError('required')">
                 O RG é <strong>obrigatório</strong>
               </mat-error>
             </mat-form-field>
@@ -204,6 +204,16 @@
                 *ngIf="patientForm.controls['naturalidade'].hasError('required')">
                 A naturalidade é <strong>obrigatório</strong>
               </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['naturalidade'].hasError('minlength')
+                && !patientForm.controls['naturalidade'].hasError('required')">
+                A naturalidade deve ter no <strong>mínimo 8 caracteres</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="patientForm.controls['naturalidade'].hasError('maxlength')
+                && !patientForm.controls['naturalidade'].hasError('required')">
+                A naturalidade deve ter no <strong>máximo 64 caracteres</strong>
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -217,9 +227,9 @@
               <input
                 matInput
                 placeholder="(00) 00000-0000"
-                formControlName="telefoneEmergencia"
+                formControlName="telEmergencia"
                 mask="(00) 0 0000-0000 || (00) 0000-0000">
-              <mat-error *ngIf="patientForm.controls['telefoneEmergencia'].hasError('required')">
+              <mat-error *ngIf="patientForm.controls['telEmergencia'].hasError('required')">
                 Um conta de emergência é <strong>obrigatório</strong>
               </mat-error>
             </mat-form-field>
@@ -305,7 +315,7 @@
               <input
                 matInput
                 placeholder="Informe o nª do convênio"
-                formControlName="nroCarteira">
+                formControlName="nroConvenio">
             </mat-form-field>
           </div>
           <div class="col">
@@ -316,14 +326,14 @@
               <mat-label>Validade</mat-label>
               <input
                 matInput
-                [matDatepicker]="dtaValidade"
+                [matDatepicker]="validadeConvenio"
                 [min]="today"
-                formControlName="dtaValidade">
+                formControlName="validadeConvenio">
               <mat-hint>DD/MM/YYYY</mat-hint>
               <mat-datepicker-toggle
                 matIconSuffix
-                [for]="dtaValidade"></mat-datepicker-toggle>
-              <mat-datepicker #dtaValidade></mat-datepicker>
+                [for]="validadeConvenio"></mat-datepicker-toggle>
+              <mat-datepicker #validadeConvenio></mat-datepicker>
             </mat-form-field>
           </div>
         </div>
@@ -459,7 +469,7 @@
                 <input
                   matInput
                   placeholder="Informe um ponto de referência"
-                  formControlName="pontoReferencia">
+                  formControlName="referencia">
               </mat-form-field>
             </div>
           </div>

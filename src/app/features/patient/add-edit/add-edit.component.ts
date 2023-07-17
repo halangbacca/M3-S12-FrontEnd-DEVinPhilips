@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Patient } from '@shared/models/Patient';
 import { Cep } from '@shared/models/Cep';
 import { PatientService } from '@services/patient';
 import { CepService } from '@services/cep';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Consult } from "../../../shared/models/Consult";
 import { Exam } from "../../../shared/models/Exam";
 import { ConsultService } from "../../../shared/services/consult/consult.service";
@@ -19,7 +19,7 @@ import { DeleteDialogComponent } from "./components/delete-dialog/delete-dialog.
   templateUrl: './add-edit.component.html',
   styleUrls: ['./add-edit.component.scss']
 })
-export class AddEditComponent {
+export class AddEditComponent implements OnInit {
   patientForm!: FormGroup;
   id!: number;
   patient: Patient = {} as Patient;
@@ -48,7 +48,7 @@ export class AddEditComponent {
     this.id = this.rout.snapshot.params['id'];
 
     this.patientForm = this.fb.group({
-      cep: [null, Validators.compose([
+      cep: ['', Validators.compose([
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(8)])
@@ -59,20 +59,24 @@ export class AddEditComponent {
       cidade: ['', Validators.required],
       complemento: [''],
       bairro: ['', Validators.required],
-      pontoReferencia: [''],
+      referencia: [''],
       alergias: this.fb.array([
         this.fb.group({descricao: ['']})
       ]),
-      naturalidade: ['', Validators.required],
+      naturalidade: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(64)])
+      ],
       dtaNascimento: ['', Validators.required],
-      nroCpf: ['', Validators.compose([
+      cpf: ['', Validators.compose([
         Validators.required,
         ValidateCPF
       ])],
       email: ['', Validators.email],
-      telefoneEmergencia: ['', Validators.required],
+      telEmergencia: ['', Validators.required],
       genero: ['', Validators.required],
-      nroCarteira: [''],
+      nroConvenio: [''],
       convenio: [''],
       estadoCivil: ['', Validators.required],
       nome: ['', Validators.compose([
@@ -81,21 +85,60 @@ export class AddEditComponent {
         Validators.maxLength(64)
       ])],
       telefone: ['', Validators.required],
-      nroRg: ['', Validators.compose([
+      rg: ['', Validators.compose([
         Validators.required,
         Validators.maxLength(20)
       ])],
       precaucoes: this.fb.array([
         this.fb.group({descricao: ['']})
       ]),
-      dtaValidade: ['']
+      validadeConvenio: ['']
     });
 
     if (this.id) {
       this.loading = true;
       this.patientService.getPatientById(this.id)
         .subscribe(patient => {
-          this.patientForm.patchValue(patient);
+
+          const dataNascimentoResponse = patient.dtaNascimento;
+          const dataNascimentoPartes = dataNascimentoResponse.split("/");
+          const diaNascimento = Number(dataNascimentoPartes[0]);
+          const mesNascimento = Number(dataNascimentoResponse[1]);
+          const anoNascimento = Number(dataNascimentoPartes[2]);
+
+          const dataNascimentoObject = new Date(anoNascimento, mesNascimento, diaNascimento);
+
+          const dataValidadeResponse = patient.validadeConvenio;
+
+          let dataValidadePartes: string[];
+          let dataValidadeObject: Date | null;
+
+          if (dataValidadeResponse) {
+            dataValidadePartes = dataValidadeResponse.split("/");
+            const diaValidade = Number(dataValidadePartes[0]);
+            const mesValidade = Number(dataValidadeResponse[1]);
+            const anoValidade = Number(dataValidadePartes[2]);
+
+            dataValidadeObject = new Date(anoValidade, mesValidade, diaValidade);
+          } else {
+            dataValidadeObject = null;
+          }
+
+          for (let i = patient.alergias.length - 1; i > 0; i-- ) {
+            this.addAlergia();
+          }
+
+          for (let i = patient.precaucoes.length -1; i > 0; i--) {
+            this.addPrecaucao();
+          }
+
+          this.patientForm.patchValue(
+            {...patient,
+              dtaNascimento: dataNascimentoObject,
+              validadeConvenio: dataValidadeObject
+            }
+          );
+
           this.title = `Editando o cadastro de ${patient.nome}`;
           this.loading = false;
         })
@@ -127,25 +170,44 @@ export class AddEditComponent {
 
   onSubmit(): void {
     this.submitting = true;
-    const dtaNascimentoSelecionada: string = this.patientForm.get('dtaNascimento')?.value;
-    const dtaNascimentoDateObject: Date = new Date(dtaNascimentoSelecionada);
-    const datNascimentoFormatada: string = this.formatDate(dtaNascimentoDateObject);
 
-    const dtaValidadeSelecionada: string = this.patientForm.get('dtaValidade')?.value;
-    const dtaValidadeDateObject: Date = new Date(dtaValidadeSelecionada);
-    const datValidadeFormatada: string = this.formatDate(dtaNascimentoDateObject);
-
-    const updatedPatientForm = {
-      ...this.patientForm.value,
-      dtaNascimento: datNascimentoFormatada,
-      dtaValidade: datValidadeFormatada
+    if (this.patientForm.get('dtaNascimento')?.value) {
+      const dataNascimentoSeleciona = this.patientForm.get('dtaNascimento')?.value;
+      console.log(dataNascimentoSeleciona)
+      const dataNascimentoObject: Date = new Date(dataNascimentoSeleciona);
+      const dataNascimentoFormatada = this.formatDate(dataNascimentoObject)
+      this.patientForm.patchValue({'dtaNascimento' : dataNascimentoFormatada})
     }
+
+    if (this.patientForm.get('validadeConvenio')?.value) {
+      const validadeConvenioSelecionada = this.patientForm.get('validadeConvenio')?.value;
+      const validadeConvenioObject: Date = new Date(validadeConvenioSelecionada);
+      const validadeConvenioFormatada = this.formatDate(validadeConvenioObject);
+      this.patientForm.patchValue({'validadeConvenio' : validadeConvenioFormatada});
+    }
+
+    for (let i = this.alergias.length - 1; i >= 0; i--) {
+      if (this.alergias.at(i).get('descricao')?.value == null ||
+        this.alergias.at(i).get('descricao')?.value == '') {
+        this.alergias.removeAt(i);
+      }
+    }
+
+    for (let i = this.precaucoes.length - 1; i >= 0; i--) {
+      if (this.precaucoes.at(i).get('descricao')?.value == null ||
+        this.precaucoes.at(i).get('descricao')?.value == ''
+      ) {
+        this.precaucoes.removeAt(i);
+      }
+    }
+
+    const updatedPatientForm = {...this.patientForm.value}
 
     if (!this.editing) {
       this.patientService.savePatient(updatedPatientForm)
         .subscribe(newPatient => {
           this._snackBar.open(
-            `${newPatient.nome} adiconado com sucesso.`,
+            `${newPatient.nome} adicionado com sucesso.`,
             'OK',
             { duration: 3000 }
           );
@@ -153,6 +215,7 @@ export class AddEditComponent {
           this.router.navigateByUrl('/home');
         })
     } else {
+      updatedPatientForm.id = this.id;
       this.patientService.updatePatient(updatedPatientForm)
         .subscribe(editedPerson => {
           this._snackBar.open(
@@ -170,7 +233,7 @@ export class AddEditComponent {
     this.examService.getExamByPatientId(this.id)
       .subscribe(exams => {
         if (exams.length > 0) {
-          alert('pessos possui exame ou consulta');
+          alert('pessoa possui exame ou consulta');
         } else {
           const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
             data: {...this.patientForm.value}
@@ -258,8 +321,8 @@ export class AddEditComponent {
 
   //Constantes
   GENEROS = [
-    { genero: 'M', descricao: 'Masculino' },
-    { genero: 'F', descricao: 'Feminino' },
+    { genero: 'MASCULINO', descricao: 'Masculino' },
+    { genero: 'FEMININO', descricao: 'Feminino' },
   ];
 
   ESTADOCIVIL = [

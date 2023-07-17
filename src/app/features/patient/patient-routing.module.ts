@@ -4,9 +4,23 @@ import { AddEditComponent } from "./add-edit/add-edit.component";
 import { LayoutComponent } from "../../shared/layout/layout.component";
 
 const routes: Routes = [
-  { path: '',
+  {
+    path: '',
     component: LayoutComponent,
-    children: [ { path: 'add', component: AddEditComponent } ]}];
+    children: [
+      {
+        path: 'add',
+        title: 'LABMedical - Cadastrar Paciente',
+        component: AddEditComponent
+      },
+      {
+        path: 'edit/:id',
+        title: 'LABMedical - Alterar Paciente',
+        component: AddEditComponent
+      }
+    ]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
