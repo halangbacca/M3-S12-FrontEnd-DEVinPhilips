@@ -8,23 +8,24 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 
-import { CustomMaterialModule } from './core/custom-material/custom-material.module'
+import { CustomMaterialModule } from './core/custom-material/custom-material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     CustomMaterialModule,
     RouterModule,
-    SharedModule
-    
+    SharedModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   exports: [CustomMaterialModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
