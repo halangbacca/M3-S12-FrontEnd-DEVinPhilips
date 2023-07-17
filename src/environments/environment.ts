@@ -7,7 +7,8 @@ export const environment = {
 
   URL_API: 'http://localhost:8081/api',
   API_PATIENT: '/pacientes',
-  API_CONSULT: 'consult/',
+  API_CONSULT: '/consultas',
+  API_COMPANY: '/empresas',
   API_EXAM: 'exam/',
   API_USER: 'user/',
 
