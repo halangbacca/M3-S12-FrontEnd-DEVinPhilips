@@ -1,0 +1,77 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title> Cadastro/Edição de Empresa </mat-card-title>
+      <div fxLayout="row">
+        <form [formGroup]="formCompany" (ngSubmit)="onSubmit()">
+
+          <mat-form-field appearance="fill"  class="full-width">
+            <mat-label>Selecione uma Empresa</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="empresa">
+              <mat-option *ngFor="let company of companies" [value]="company.nome">
+                {{company.nome}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Nome da Empresa</mat-label>
+            <input (focus)="onFocus()" matInput placeholder="Nome" formControlName="nome" />
+
+            <mat-error id="requiredNomeError">
+              O nome da sua empresa é
+              <strong>obrigatória</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Slogan da Empresa</mat-label>
+            <input matInput placeholder="Slogan" formControlName="slogan" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Palheta de Cores</mat-label>
+            <mat-select formControlName="palhetaDeCores">
+              <mat-option value="deeppurple-amber"
+                >Deep Purple & Amber</mat-option
+              >
+              <mat-option value="indigo-pink">Indigo & Pink</mat-option>
+              <mat-option value="pink-bluegrey">Pink & Blue-grey</mat-option>
+              <mat-option value="purple-green">Purple & Green</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidCoresError">
+              Você deve selecionar a palheta de cores padrão da sua empresa
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>URL do Logotipo</mat-label>
+            <input matInput placeholder="Logotipo" formControlName="imagemDoLogotipo" />
+
+            <mat-error id="invalidLogoError">
+              Você deve inserir a URL do logotipo da sua empresa
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button
+              mat-raised-button
+              color="primary"
+              id="cadastrar"
+              type="submit"
+            >
+              Cadastrar
+            </button>
+            <button mat-raised-button color="warn" id="editar" [disabled]="isDisabled" (click)="editCompany()">
+              Editar
+            </button>
+            <button mat-raised-button color="accent" mat-dialog-close>
+              Sair
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
