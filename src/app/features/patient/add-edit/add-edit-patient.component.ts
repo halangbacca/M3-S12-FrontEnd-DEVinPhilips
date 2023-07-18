@@ -4,9 +4,9 @@ import { Cep } from '@shared/models/Cep';
 import { PatientService } from '@services/patient';
 import { CepService } from '@services/cep';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Consult } from "../../../shared/models/Consult";
+import { AppointmentRequest } from "../../../shared/models/AppointmentRequest";
 import { Exam } from "../../../shared/models/Exam";
-import { ConsultService } from "../../../shared/services/consult/consult.service";
+import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
 import { ExamService } from "../../../shared/services/exam/exam.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
@@ -16,10 +16,10 @@ import { DeleteDialogComponent } from "./components/delete-dialog/delete-dialog.
 
 @Component({
   selector: 'app-add-edit',
-  templateUrl: './add-edit.component.html',
-  styleUrls: ['./add-edit.component.scss']
+  templateUrl: './add-edit-patient.component.html',
+  styleUrls: ['./add-edit-patient.component.scss']
 })
-export class AddEditComponent implements OnInit {
+export class AddEditPatient implements OnInit {
   patientForm!: FormGroup;
   id!: number;
   patient: Patient = {} as Patient;

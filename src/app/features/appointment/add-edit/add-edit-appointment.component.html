@@ -1,0 +1,85 @@
+
+  <form [formGroup]="addEditAppointmentForm" novalidate>
+    <div class="col">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Digite o nome do paciente</mat-label>
+        <input matInput
+               [matAutocomplete]="auto"
+               [formControl]="patientControl"
+        >
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let patient of filteredPatient | async" [value]="patient.nome" (click)="setPatient(patient.id, patient.nome)">
+            <span>id: {{ patient.id }} | {{ patient.nome }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <mat-card class="add-appointment-card">
+      <mat-card-content>
+        <mat-card-actions class="add-form-button-group">
+          <mat-slide-toggle [checked]="editing" disabled>Editar</mat-slide-toggle>
+          <button
+            mat-stroked-button
+            color="warn"
+            [disabled]="!selectedPatient">DELETAR</button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="saveAppointment()"
+            [disabled]="addEditAppointmentForm.invalid">SALVAR</button>
+        </mat-card-actions>
+        <mat-card-title *ngIf="selectedPatient">Consulta de {{ selectedPatient.nome }}</mat-card-title>
+        <div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Motivo da Consulta</mat-label>
+                <input matInput
+                       placeholder="Informe o motivo da consulta"
+                       formControlName="motivo">
+                <mat-error *ngIf="addEditAppointmentForm.controls['motivo'].hasError('required')">
+                  O motivo da consulta é <strong>obrigatório</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Data da consulta</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dtaConsulta">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="addEditAppointmentForm.controls['dtaConsulta'].hasError('required')">
+                  A data da consulta<strong>obrigatória</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Hora da consulta</mat-label>
+                <input type="time" matInput formControlName="horaConsulta">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Descrição do Problema</mat-label>
+              <textarea matInput placeholder="Informe a descrição do problema..." formControlName="problema"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Medicação Receita</mat-label>
+              <textarea cols="30" rows="5" matInput placeholder="Informe a medicação..." formControlName="medicacao"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Dosagem e precauções</mat-label>
+              <textarea cols="30" rows="5" matInput placeholder="Informe a detalhes da dosagem e precauções..." formControlName="precausao"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>

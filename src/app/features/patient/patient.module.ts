@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PatientRoutingModule } from './patient-routing.module';
-import { AddEditComponent } from './add-edit/add-edit.component';
+import { AddEditPatient } from './add-edit/add-edit-patient.component';
 import { ConfirmDialogComponent } from './add-edit/components/confirm-dialog/confirm-dialog.component';
 import { DeleteDialogComponent } from './add-edit/components/delete-dialog/delete-dialog.component';
 import { MatCardModule } from "@angular/material/card";
@@ -24,7 +24,7 @@ import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
-    AddEditComponent,
+    AddEditPatient,
     ConfirmDialogComponent,
     DeleteDialogComponent
   ],

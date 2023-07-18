@@ -5,28 +5,28 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./features/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
+      import('./features/dashboard/dashboard.module')
+        .then((m) => m.DashboardModule),
   },
   {
     path: 'customization',
     loadChildren: () =>
-      import('./features/customization/customization.module').then(
-        (m) => m.CustomizationModule
-      ),
+      import('./features/customization/customization.module')
+        .then((m) => m.CustomizationModule),
   },
   { path: 'patient',
-    loadChildren: () => import('./features/patient/patient.module').then(m => m.PatientModule) },{
+    loadChildren: () =>
+      import('./features/patient/patient.module')
+        .then(m => m.PatientModule)
+  },
+  { path: 'appointment', loadChildren: () =>
+      import('./features/appointment/appointment.module')
+        .then(m => m.AppointmentModule)
+  },{
     path:'**',
     redirectTo: 'dashboard',
     pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
-  },
+  }
 ];
 
 @NgModule({
