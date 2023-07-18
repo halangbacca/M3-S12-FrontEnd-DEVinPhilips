@@ -1,0 +1,159 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title> Cadastro de Medicamento </mat-card-title>
+      <div fxLayout="row">
+        <form [formGroup]="formDrug" (ngSubmit)="onSubmit()">
+          <mat-form-field
+            *ngIf="pacientes.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Paciente</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="nomePaciente">
+              <mat-option
+                *ngFor="let paciente of pacientes"
+                [value]="paciente.nome"
+              >
+                {{ paciente.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="drugs.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Medicamento</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="medicamento">
+              <mat-option *ngFor="let drug of drugs" [value]="drug.nome">
+                {{ drug.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nome do Medicamento</mat-label>
+            <input
+              (focus)="onFocus()"
+              matInput
+              placeholder="Nome"
+              formControlName="nome"
+            />
+
+            <mat-error id="requiredNomeError">
+              O nome do medicamento é
+              <strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Data</mat-label>
+            <input matInput placeholder="Data" formControlName="data" />
+
+            <mat-error id="invalidDataError">
+              Você deve inserir a data da medicação
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Horário</mat-label>
+            <input matInput placeholder="Horário" formControlName="horario" />
+
+            <mat-error id="invalidHorarioError">
+              Você deve inserir o horário da medicação
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo">
+              <mat-option value="capsula">Cápsula</mat-option>
+              <mat-option value="comprimido">Comprimido</mat-option>
+              <mat-option value="liquido">Líquido</mat-option>
+              <mat-option value="creme">Creme</mat-option>
+              <mat-option value="gel">Gel</mat-option>
+              <mat-option value="inalacao">Inalação</mat-option>
+              <mat-option value="injecao">Injeção</mat-option>
+              <mat-option value="spray">Spray</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidTipoError">
+              Você deve selecionar o tipo da medicação
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Quantidade</mat-label>
+            <input
+              matInput
+              placeholder="Quantidade"
+              formControlName="quantidade"
+            />
+
+            <mat-error id="invalidQuantidadeError">
+              Você inserir a quantidade de medicação
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Unidade</mat-label>
+            <mat-select formControlName="unidade">
+              <mat-option value="mg">mg</mat-option>
+              <mat-option value="mcg">mcg</mat-option>
+              <mat-option value="g">g</mat-option>
+              <mat-option value="mL">mL</mat-option>
+              <mat-option value="%">%</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidUnidadeError">
+              Você deve selecionar a unidade da medicação
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Observações</mat-label>
+            <input
+              matInput
+              placeholder="Observações"
+              formControlName="observacoes"
+            />
+
+            <mat-error id="invalidDescriptionError">
+              Você deve inserir a descrição da medicação
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button
+              mat-raised-button
+              color="primary"
+              id="cadastrar"
+              type="submit"
+            >
+              CADASTRAR
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              id="editar"
+              [disabled]="isDisabled"
+              (click)="editDrug()"
+            >
+              EDITAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="deleteDrug()"
+              color="accent"
+            >
+              DELETAR
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

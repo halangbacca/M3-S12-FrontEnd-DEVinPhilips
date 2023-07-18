@@ -22,5 +22,141 @@
       "palhetaDeCores": "deeppurple-amber",
       "imagemDoLogotipo": "www.halan.com"
     }
+  ],
+  "patient": [
+    {
+      "id": 1,
+      "nome": "Halan Germano Bacca",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    },
+    {
+      "id": 2,
+      "nome": "Teste",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    }
+  ],
+  "drug": [
+    {
+      "id": 2,
+      "idPaciente": 2,
+      "nomePaciente": "Teste",
+      "nome": "Losartana Potássica",
+      "data": "18/07/2023",
+      "horario": "2x ao dia",
+      "tipo": "creme",
+      "quantidade": "60",
+      "unidade": "mg",
+      "observacoes": "Renovar mensalmente",
+      "statusDoSistema": true
+    },
+    {
+      "id": 3,
+      "medicamento": null,
+      "idPaciente": null,
+      "nomePaciente": null,
+      "nome": "AASssssss",
+      "data": "18/07/2023, 16:58:11",
+      "horario": "18/07/2023, 16:58:11",
+      "tipo": "gel",
+      "quantidade": "1",
+      "unidade": "mL",
+      "observacoes": "sssssssssssss"
+    },
+    {
+      "id": 4,
+      "medicamento": null,
+      "idPaciente": null,
+      "nomePaciente": "Teste",
+      "nome": "AHSHSHSHSH",
+      "data": "18/07/2023, 17:15:25",
+      "horario": "18/07/2023, 17:15:25",
+      "tipo": "capsula",
+      "quantidade": "1",
+      "unidade": "%",
+      "observacoes": "DDDDDDDDDDDDDDDDDDDDD"
+    },
+    {
+      "id": 5,
+      "medicamento": null,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "AKSJSJSJS",
+      "data": "18/07/2023, 17:19:47",
+      "horario": "18/07/2023, 17:19:47",
+      "tipo": "capsula",
+      "quantidade": "1",
+      "unidade": "mL",
+      "observacoes": "DDDDDDDDDDDDDDDDDDDDDDDDD"
+    }
   ]
 }

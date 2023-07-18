@@ -9,7 +9,7 @@
 
     <a class="navbar-brand" [routerLink]="['/']" matTooltip="Home">
       <h1>
-        Squad 3
+        [SQUAD 3]
       </h1>
     </a>
 
@@ -45,6 +45,22 @@
       <mat-nav-list>
         <h3 mat-subheader>Home</h3>
 
+        <a mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active">
+          <p mat-line>
+          <mat-icon mat-list-icon>
+            dashboard
+          </mat-icon>
+         Dashboard </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/customization']" routerLinkActive="active">
+          <p mat-line>
+          <mat-icon mat-list-icon>
+            account_balance
+          </mat-icon>
+         Empresa </p>
+        </a>
+
         <a mat-list-item [routerLink]="['/patient/add']" routerLinkActive="active">
           <p mat-line>
             <mat-icon mat-list-icon>
@@ -54,20 +70,60 @@
           </p>
         </a>
 
-        <a mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active">
+        <a mat-list-item [routerLink]="['/consult/add']" routerLinkActive="active">
           <p mat-line>
-          <mat-icon mat-list-icon>
-            dashboard
-          </mat-icon>
-         Dashboard </p>
+            <mat-icon mat-list-icon>
+              event_note
+            </mat-icon>
+            Consulta
+          </p>
         </a>
-        <a mat-list-item [routerLink]="['/customization']" routerLinkActive="active">
+
+        <a mat-list-item [routerLink]="['/exam/add']" routerLinkActive="active">
           <p mat-line>
-          <mat-icon mat-list-icon>
-            account_balance
-          </mat-icon>
-         Empresa </p>
+            <mat-icon mat-list-icon>
+              local_hospital
+            </mat-icon>
+            Exame
+          </p>
         </a>
+
+        <a mat-list-item [routerLink]="['/drug']" routerLinkActive="active">
+          <p mat-line>
+            <mat-icon mat-list-icon>
+              healing
+            </mat-icon>
+            Medicamento
+          </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/exercise']" routerLinkActive="active">
+          <p mat-line>
+            <mat-icon mat-list-icon>
+              directions_bike
+            </mat-icon>
+            Exercício
+          </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/diet']" routerLinkActive="active">
+          <p mat-line>
+            <mat-icon mat-list-icon>
+              fastfood
+            </mat-icon>
+            Dieta
+          </p>
+        </a>
+
+        <a mat-list-item [routerLink]="['/record']" routerLinkActive="active">
+          <p mat-line>
+            <mat-icon mat-list-icon>
+              assignment
+            </mat-icon>
+            Prontuário
+          </p>
+        </a>
+
        <mat-divider></mat-divider>
 
        <a id="push-bottom" mat-list-item [routerLink]="['/about']" routerLinkActive="active">
