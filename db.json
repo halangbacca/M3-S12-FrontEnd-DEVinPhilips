@@ -1,26 +1,122 @@
 {
-  "company": [
+  "patient": [
     {
       "id": 1,
-      "nome": "Umbrella Corporation",
-      "slogan": "Our Business Is Life Itself",
-      "palhetaDeCores": "indigo-pink",
-      "imagemDoLogotipo": "www.umbrella.com"
+      "nome": "Halan Germano Bacca",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
     },
     {
       "id": 2,
-      "nome": "Tricell Inc.",
-      "slogan": "Uroboros",
-      "palhetaDeCores": "purple-green",
-      "imagemDoLogotipo": "www.tricell.com"
+      "nome": "Teste",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    }
+  ],
+  "exercise": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "Exercício Teste I",
+      "data": "18/07/2023",
+      "horario": "TESTE",
+      "tipo": "forca",
+      "qtdSemana": 77,
+      "descricao": "dddddddddddddddddddddddddd",
+      "statusDoSistema": true
+    },
+    {
+      "id": 2,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "Exercício Teste II",
+      "data": "18/07/2023",
+      "horario": "TESTE",
+      "tipo": "forca",
+      "qtdSemana": 7,
+      "descricao": "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+      "statusDoSistema": true
     },
     {
       "id": 3,
-      "empresa": null,
-      "nome": "Halan",
-      "slogan": "Ansiedade e Depressão",
-      "palhetaDeCores": "deeppurple-amber",
-      "imagemDoLogotipo": "www.halan.com"
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "dddddddddddddddddd",
+      "data": "19-07-2023",
+      "horario": "17:11:23",
+      "tipo": "agilidade",
+      "qtdSemana": 1,
+      "descricao": "dddddddddddddddddddddddd",
+      "statusDoSistema": true
     }
   ]
 }
