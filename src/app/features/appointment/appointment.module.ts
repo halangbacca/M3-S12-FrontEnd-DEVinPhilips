@@ -11,11 +11,18 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { ConfirmDialogComponent } from './add-edit/components/confirm-dialog/confirm-dialog.component';
+import { DeleteDialogComponent } from './add-edit/components/delete-dialog/delete-dialog.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { SharedModule } from "../../shared/shared.module";
 
 
 @NgModule({
   declarations: [
-    AddEditAppointment
+    AddEditAppointment,
+    ConfirmDialogComponent,
+    DeleteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +34,10 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     MatDatepickerModule,
     MatCardModule,
     MatButtonModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    SharedModule
   ],
   providers: [
     DatePipe

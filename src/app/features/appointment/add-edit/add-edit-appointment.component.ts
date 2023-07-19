@@ -8,6 +8,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
 import { AppointmentRequest } from "../../../shared/models/AppointmentRequest";
 import { DatePipe } from "@angular/common";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component";
+import { DeleteDialogComponent } from "./components/delete-dialog/delete-dialog.component";
 
 export interface SelectedPatient {
   id: number,
@@ -29,6 +32,7 @@ export class AddEditAppointment implements OnInit {
   submitting = false;
   loading = false;
   editing = false;
+  today!: Date;
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +41,8 @@ export class AddEditAppointment implements OnInit {
     private _snackBar: MatSnackBar,
     private router: Router,
     private datePipe: DatePipe,
-    private rout: ActivatedRoute
+    private rout: ActivatedRoute,
+    public dialog: MatDialog
   ) {
     this.patientService.getAllPatient()
       .subscribe((patients: Patient[]) =>
@@ -82,6 +87,7 @@ export class AddEditAppointment implements OnInit {
     )
 
     if (this.id) {
+      this.loading = true;
       this.editing = true;
       this.appointmentService.getAppointmentById(this.id)
         .subscribe(appointment => {
@@ -112,6 +118,16 @@ export class AddEditAppointment implements OnInit {
             nome: appointment.paciente.nome
           }
         })
+      this.loading = false;
+    } else {
+      this.today = new Date();
+
+      const horaConsulta = `${this.today.getHours()}:${this.today.getMinutes()}`
+
+      this.addEditAppointmentForm.patchValue({
+        dtaConsulta: this.today,
+        horaConsulta: horaConsulta
+      });
     }
   }
 
@@ -121,7 +137,7 @@ export class AddEditAppointment implements OnInit {
         nome : nome
       }
   }
-  saveAppointment() {
+  onSubmit() {
     const dateValue = this.addEditAppointmentForm.get('dtaConsulta')?.value;
     const timeValue = this.addEditAppointmentForm.get('horaConsulta')?.value;
 
@@ -172,4 +188,47 @@ export class AddEditAppointment implements OnInit {
         })
     }
   }
+
+  openConfirmDialog(): void {
+    const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { ...this.addEditAppointmentForm.value }
+    });
+
+    confirmDialogRef.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.onSubmit();
+        } else {
+          this._snackBar.open(
+            `Operação cancelada.`,
+            'OK',
+            { duration: 3000 }
+          );
+        }
+      });
+  }
+
+  deleteAppointment() {
+    const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: this.selectedPatient.nome
+    });
+
+    console.log(this.selectedPatient)
+
+    confirmDeleteDialogRef.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.patientService.deletePatient(this.id)
+            .subscribe(() => {
+              this._snackBar.open(
+                `Cadastro excluído com sucesso.`,
+                'OK',
+                {duration: 3000}
+              )
+              this.router.navigateByUrl('/home');
+            })
+        }
+      });
+  }
+
 }
