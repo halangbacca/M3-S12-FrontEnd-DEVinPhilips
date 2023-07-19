@@ -73,7 +73,7 @@ export class AddEditAppointment implements OnInit {
           Validators.maxLength(1024)
       ])],
       medicacao: '',
-      precausao: ['',
+      precaucao: ['',
         Validators.compose([
         Validators.required,
         Validators.minLength(16),

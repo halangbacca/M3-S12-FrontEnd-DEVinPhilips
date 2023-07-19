@@ -5,5 +5,5 @@ export interface AppointmentRequest {
   dtaConsulta: string;
   problema: string;
   medicacao: string;
-  precausao: string;
+  precaucao: string;
 }

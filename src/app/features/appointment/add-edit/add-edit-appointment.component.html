@@ -111,19 +111,19 @@
           <div class="row">
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Dosagem e precauções</mat-label>
-              <textarea cols="30" rows="5" matInput placeholder="Informe a detalhes da dosagem e precauções..." formControlName="precausao"></textarea>
-              <mat-error *ngIf="addEditAppointmentForm.controls['precausao'].hasError('minlength')
-                          && !addEditAppointmentForm.controls['precausao'].hasError('required')"
+              <textarea cols="30" rows="5" matInput placeholder="Informe a detalhes da dosagem e precauções..." formControlName="precaucao"></textarea>
+              <mat-error *ngIf="addEditAppointmentForm.controls['precaucao'].hasError('minlength')
+                          && !addEditAppointmentForm.controls['precaucao'].hasError('required')"
               >
                 Este campo deve deve ter no mínimo <strong>16 caracteres.</strong>
               </mat-error>
-              <mat-error *ngIf="addEditAppointmentForm.controls['precausao'].hasError('maxlength')
-                          && !addEditAppointmentForm.controls['precausao'].hasError('required')"
+              <mat-error *ngIf="addEditAppointmentForm.controls['precaucao'].hasError('maxlength')
+                          && !addEditAppointmentForm.controls['precaucao'].hasError('required')"
               >
                 Este campo deve ter no máximo <strong>256 caracteres.</strong>
               </mat-error>
               <mat-error
-                *ngIf="addEditAppointmentForm.controls['precausao'].hasError('required')">
+                *ngIf="addEditAppointmentForm.controls['precaucao'].hasError('required')">
                 Este campo é <strong>obrigatório</strong>
               </mat-error>
             </mat-form-field>
