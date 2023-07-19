@@ -20,7 +20,7 @@
       "email": "halan@outlook.com",
       "senha": "123456789",
       "tipo": "administrador",
-      "statusDoSistema": true
+      "statusDoSistema": false
     },
     {
       "id": 3,
@@ -56,8 +56,8 @@
       "telefone": "jjjdjsjddddddddddddd",
       "email": "jdddddddddddddddd@outlook.com",
       "senha": "dddddddddddddddddddddddd",
-      "tipo": "medico",
-      "statusDoSistema": false
+      "tipo": "enfermeiro",
+      "statusDoSistema": true
     },
     {
       "id": 6,
@@ -79,6 +79,39 @@
       "telefone": "ssssssssssssssss",
       "email": "sssssssssss@outlook.com",
       "senha": "ssssssssssssssssssssssssss",
+      "tipo": "enfermeiro",
+      "statusDoSistema": true
+    },
+    {
+      "id": 8,
+      "nome": "ssssssssss",
+      "genero": "feminino",
+      "cpf": "ssssssssssssss",
+      "telefone": "ssssssssssssss",
+      "email": "ssssssssssssss@outlook.com",
+      "senha": "ssssssssssssssss",
+      "tipo": "administrador",
+      "statusDoSistema": null
+    },
+    {
+      "id": 9,
+      "nome": "sssssssssssssssss",
+      "genero": "masculino",
+      "cpf": "111111111111111",
+      "telefone": "11111111111111",
+      "email": "s!@outlook.com",
+      "senha": "ssssssssssssssss",
+      "tipo": "enfermeiro",
+      "statusDoSistema": "true"
+    },
+    {
+      "id": 10,
+      "nome": "sssssssssssssss",
+      "genero": "masculino",
+      "cpf": "sssssssssssssssssss",
+      "telefone": "ssssssssssssssssssss",
+      "email": "sssssssssssssssssssssss@putlook.com",
+      "senha": "sssssssssssssssssss",
       "tipo": "enfermeiro",
       "statusDoSistema": true
     }

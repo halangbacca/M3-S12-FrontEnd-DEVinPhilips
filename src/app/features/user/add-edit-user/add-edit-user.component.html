@@ -3,19 +3,24 @@
     <mat-card-content>
       <mat-card-title> Cadastro de Usuário </mat-card-title>
       <div fxLayout="column">
-        
+        <form [formGroup]="formExistingUser">
           <mat-form-field
             *ngIf="users.length > 0"
             class="full-width"
             appearance="outline"
           >
             <mat-label>Selecione um Usuário</mat-label>
-            <mat-select (focus)="onFocus()" name="nomeUsuario" >
-              <mat-option class="nomeUsuario" *ngFor="let user of users" [value]="user.nome">
+            <mat-select (focus)="onFocus()" formControlName="nomeUsuario">
+              <mat-option
+                class="nomeUsuario"
+                *ngFor="let user of users"
+                [value]="user.nome"
+              >
                 {{ user.nome }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </form>
 
         <form (ngSubmit)="onSubmit()" [formGroup]="formUser">
           <mat-form-field class="full-width" appearance="outline">

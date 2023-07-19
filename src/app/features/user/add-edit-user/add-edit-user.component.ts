@@ -13,9 +13,8 @@ export class AddEditUserComponent {
   user = {} as User;
   users = [] as User[];
 
-  nomeUsuario: any = null;
-
   formUser!: FormGroup;
+  formExistingUser!: FormGroup;
 
   isDisabled = true;
   isEditing = false;
@@ -49,9 +48,16 @@ export class AddEditUserComponent {
 
   ngOnInit(): void {
     this.createform(this.user);
+    this.createExistingUserForm();
 
     this.userService.getUser().subscribe((ret) => {
       this.users = ret;
+    });
+  }
+
+  createExistingUserForm() {
+    this.formExistingUser = this.formBuilder.group({
+      nomeUsuario: ['', [Validators.required]],
     });
   }
 
@@ -61,36 +67,26 @@ export class AddEditUserComponent {
     });
 
     this.users.forEach((user) => {
-      if (
-        user.nome ===
-        document.querySelector('.nomeUsuario')?.getAttribute('ng-reflect-value')
-      ) {
+      if (user.nome === this.formExistingUser.get('nomeUsuario')?.value) {
         this.formUser.get('id')?.setValue(user.id);
       }
     });
 
-    if (
-      document
-        .querySelector('.nomeUsuario')
-        ?.getAttribute('ng-reflect-value') != null
-    ) {
+    if (this.formExistingUser.get('nomeUsuario')?.value != null) {
       this.users.forEach((item) => {
-        if (
-          item.nome ===
-          document
-            .querySelector('.nomeUsuario')
-            ?.getAttribute('ng-reflect-value')
-        ) {
+        if (item.nome === this.formExistingUser.get('nomeUsuario')?.value) {
           this.formUser.patchValue(item);
+          this.isDisabled = false;
+          this.isEditing = true;
         }
-        this.isDisabled = false;
-        this.isEditing = true;
       });
     }
   }
 
   clearForm() {
     this.formUser.reset();
+    this.formExistingUser.reset();
+
     this.users = {} as User[];
 
     this.userService.getUser().subscribe((ret) => {
