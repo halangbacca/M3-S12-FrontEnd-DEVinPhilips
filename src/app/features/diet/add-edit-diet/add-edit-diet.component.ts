@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Diet } from 'src/app/shared/models/Dieta';
@@ -13,13 +14,12 @@ import { PatientService } from 'src/app/shared/services/patient/patient.service'
 })
 export class AddEditDietComponent {
   diet = {} as Diet;
-
   patient = {} as Patient;
 
   formDiet!: FormGroup;
+  formPatient!: FormGroup;
 
   diets = [] as Diet[];
-
   pacientes = [] as Patient[];
 
   isDisabled = true;
@@ -35,7 +35,6 @@ export class AddEditDietComponent {
   createform(diet: Diet) {
     this.formDiet = this.formBuilder.group({
       id: [diet.id],
-      dieta: [diet.nome],
       idPaciente: [diet.idPaciente],
       nomePaciente: [diet.nomePaciente, [Validators.required]],
       nome: [
@@ -57,71 +56,83 @@ export class AddEditDietComponent {
           Validators.maxLength(1000),
         ],
       ],
+      statusDoSistema: [true],
+    });
+  }
+
+  createPatientForm() {
+    this.formPatient = this.formBuilder.group({
+      nomePaciente: ['', [Validators.required]],
+      dieta: [''],
     });
   }
 
   ngOnInit(): void {
     this.createform(this.diet);
+    this.createPatientForm();
 
     this.patientService.getAllPatient().subscribe((ret) => {
       this.pacientes = ret;
     });
 
-    this.formDiet.get('data')?.setValue(new Date(Date.now()).toLocaleString());
+    this.formDiet
+      .get('data')
+      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDiet
       .get('horario')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
   onFocus() {
-    this.patientService.getAllPatient().subscribe((ret) => {
-      this.pacientes = ret;
-    });
+    if (this.formPatient.get('nomePaciente')?.value != null) {
+      this.patientService.getAllPatient().subscribe((ret) => {
+        this.pacientes = ret;
 
-    this.dietService
-      .getDietByPatientName(this.formDiet.get('nomePaciente')?.value)
-      .subscribe((ret) => {
-        this.diets = ret;
+        this.dietService
+          .getDietByPatientName(this.formPatient.get('nomePaciente')?.value)
+          .subscribe((ret) => {
+            this.diets = ret;
+          });
       });
+    }
 
     this.pacientes.forEach((patient) => {
-      if (patient.nome === this.formDiet.get('nomePaciente')?.value) {
+      if (patient.nome === this.formPatient.get('nomePaciente')?.value) {
         this.formDiet.get('idPaciente')?.setValue(patient.id);
+        this.formDiet.get('nomePaciente')?.setValue(patient.nome);
       }
     });
 
-    if (this.formDiet.get('dieta')?.value != null) {
+    if (this.formPatient.get('dieta')?.value != null) {
       this.diets.forEach((item) => {
-        if (item.nome === this.formDiet.get('dieta')?.value) {
+        if (item.nome === this.formPatient.get('dieta')?.value) {
           this.formDiet.patchValue(item);
+          this.isDisabled = false;
+          this.isEditing = true;
         }
-        this.isDisabled = false;
-        this.isEditing = true;
       });
     }
   }
 
   clearForm() {
     this.formDiet.reset();
+    this.formPatient.reset();
     this.diet = {} as Diet;
 
     this.isDisabled = true;
     this.isEditing = false;
 
-    this.formDiet.get('data')?.setValue(new Date(Date.now()).toLocaleString());
+    this.formDiet
+      .get('data')
+      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDiet
       .get('horario')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
   saveDiet(diet: Diet) {
-    this.diets.forEach((item) => {
-      if (item.id === diet.id) {
-        this.notificationService.openSnackBar('Dieta já cadastrada!');
-      }
-    });
     this.dietService.saveDiet(diet).subscribe(() => {
       this.notificationService.openSnackBar('Dieta cadastrada com sucesso!');
       this.clearForm();
