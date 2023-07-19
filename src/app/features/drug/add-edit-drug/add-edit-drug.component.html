@@ -2,8 +2,8 @@
   <mat-card>
     <mat-card-content>
       <mat-card-title> Cadastro de Medicamento </mat-card-title>
-      <div fxLayout="row">
-        <form [formGroup]="formDrug" (ngSubmit)="onSubmit()">
+      <div fxLayout="column">
+        <form [formGroup]="formPatient">
           <mat-form-field
             *ngIf="pacientes.length > 0"
             class="full-width"
@@ -32,7 +32,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </form>
 
+        <form [formGroup]="formDrug" (ngSubmit)="onSubmit()">
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Nome do Medicamento</mat-label>
             <input
@@ -130,6 +132,7 @@
               mat-raised-button
               color="primary"
               id="cadastrar"
+              [disabled]="isEditing"
               type="submit"
             >
               CADASTRAR
