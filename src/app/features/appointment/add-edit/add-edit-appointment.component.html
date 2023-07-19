@@ -1,0 +1,138 @@
+<div *ngIf="!loading">
+  <form
+    [formGroup]="addEditAppointmentForm"
+    novalidate
+    (ngSubmit)="openConfirmDialog()">
+    <div class="col">
+      <mat-form-field class="full-width" appearance="outline" *ngIf="!id">
+        <mat-label>Digite o nome do paciente</mat-label>
+        <input matInput
+               [matAutocomplete]="auto"
+               [formControl]="patientControl"
+        >
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let patient of filteredPatient | async" [value]="patient.nome" (click)="setPatient(patient.id, patient.nome)">
+            <span>id: {{ patient.id }} | {{ patient.nome }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <mat-card class="add-appointment-card">
+      <mat-card-content>
+        <mat-card-actions class="add-form-button-group">
+          <mat-slide-toggle
+            [checked]="editing"
+            disabled
+          >Editar
+          </mat-slide-toggle>
+          <button
+            mat-stroked-button
+            color="warn"
+            type="button"
+            (click)="deleteAppointment()"
+            [disabled]="!editing">DELETAR</button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="addEditAppointmentForm.invalid">SALVAR</button>
+        </mat-card-actions>
+        <mat-card-title *ngIf="selectedPatient">Consulta de {{ selectedPatient.nome }}</mat-card-title>
+        <div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Motivo da Consulta</mat-label>
+                <input matInput
+                       placeholder="Informe o motivo da consulta"
+                       formControlName="motivo">
+                <mat-error *ngIf="addEditAppointmentForm.controls['motivo'].hasError('minlength')
+                          && !addEditAppointmentForm.controls['motivo'].hasError('required')"
+                >
+                  O motivo da consulta deve no mínimo <strong>8 caracteres.</strong>
+                </mat-error>
+                <mat-error *ngIf="addEditAppointmentForm.controls['motivo'].hasError('maxlength')
+                          && !addEditAppointmentForm.controls['motivo'].hasError('required')"
+                >
+                  O motivo da consulta deve no máximo <strong>64 caracteres.</strong>
+                </mat-error>
+                <mat-error
+                  *ngIf="addEditAppointmentForm.controls['motivo'].hasError('required')">
+                  O motivo da consulta é <strong>obrigatório</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Data da consulta</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dtaConsulta">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="addEditAppointmentForm.controls['dtaConsulta'].hasError('required')">
+                  A data da consulta<strong>obrigatória</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label>Hora da consulta</mat-label>
+                <input type="time" matInput formControlName="horaConsulta">
+                <mat-hint>HH:MM</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Descrição do Problema</mat-label>
+              <textarea matInput placeholder="Informe a descrição do problema..." formControlName="problema"></textarea>
+              <mat-error *ngIf="addEditAppointmentForm.controls['problema'].hasError('minlength')
+                          && !addEditAppointmentForm.controls['problema'].hasError('required')"
+              >
+                A descrição do problema deve no mínimo <strong>16 caracteres.</strong>
+              </mat-error>
+              <mat-error *ngIf="addEditAppointmentForm.controls['problema'].hasError('maxlength')
+                          && !addEditAppointmentForm.controls['problema'].hasError('required')"
+              >
+                A descrição do problema deve no máximo <strong>1024 caracteres.</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="addEditAppointmentForm.controls['problema'].hasError('required')">
+                A descrição do problema é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Medicação Receita</mat-label>
+              <textarea cols="30" rows="5" matInput placeholder="Informe a medicação..." formControlName="medicacao"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Dosagem e precauções</mat-label>
+              <textarea cols="30" rows="5" matInput placeholder="Informe a detalhes da dosagem e precauções..." formControlName="precausao"></textarea>
+              <mat-error *ngIf="addEditAppointmentForm.controls['precausao'].hasError('minlength')
+                          && !addEditAppointmentForm.controls['precausao'].hasError('required')"
+              >
+                Este campo deve deve ter no mínimo <strong>16 caracteres.</strong>
+              </mat-error>
+              <mat-error *ngIf="addEditAppointmentForm.controls['precausao'].hasError('maxlength')
+                          && !addEditAppointmentForm.controls['precausao'].hasError('required')"
+              >
+                Este campo deve ter no máximo <strong>256 caracteres.</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="addEditAppointmentForm.controls['precausao'].hasError('required')">
+                Este campo é <strong>obrigatório</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+</div>
+<div *ngIf="submitting || loading">
+  <mat-spinner></mat-spinner>
+</div>
