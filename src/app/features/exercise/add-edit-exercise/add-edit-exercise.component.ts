@@ -57,6 +57,7 @@ export class AddEditExerciseComponent {
           Validators.maxLength(1000),
         ],
       ],
+      statusDoSistema: [true],
     });
   }
 
