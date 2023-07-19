@@ -9,7 +9,7 @@ export const environment = {
   API_PATIENT: '/pacientes',
   API_APPOINTMENT: '/consultas',
   API_COMPANY: '/empresas',
-  API_EXAM: 'exam/',
+  API_EXAM: '/exames',
   API_USER: 'user/',
 
 

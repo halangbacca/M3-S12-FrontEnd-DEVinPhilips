@@ -5,12 +5,12 @@ import { map, Observable, startWith } from "rxjs";
 import { PatientService } from "@services/patient";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
-import { AppointmentRequest } from "../../../shared/models/AppointmentRequest";
 import { DatePipe } from "@angular/common";
 import { MatDialog } from "@angular/material/dialog";
-import { AppointmentConfirmDialogComponent } from "./components/confirm-dialog/appointment-confirm-dialog.component";
-import { AppointmentDeleteDialogComponent } from "./components/delete-dialog/appointment-delete-dialog.component";
+import { ExamService } from "../../../shared/services/exam/exam.service";
+import { ExamRequest } from "../../../shared/models/ExamRequest";
+import { ExamDeleteDialogComponent } from "./components/delete-dialog/exam-delete-dialog.component";
+import { ExamConfirmDialogComponent } from "./components/confirm-dialog/exam-confirm-dialog.component";
 
 export interface SelectedPatient {
   id: number,
@@ -18,15 +18,15 @@ export interface SelectedPatient {
 }
 
 @Component({
-  selector: 'app-appointment',
-  templateUrl: './add-edit-appointment.component.html',
-  styleUrls: ['./add-edit-appointment.component.scss']
+  selector: 'app-exam',
+  templateUrl: './add-edit-exam.component.html',
+  styleUrls: ['./add-edit-exam.component.scss']
 })
-export class AddEditAppointment implements OnInit {
-  addEditAppointmentForm!: FormGroup;
+export class AddEditExamComponent implements OnInit {
+  addEditExamForm!: FormGroup;
   id!: number;
   patients = [] as Patient[];
-  patientControl = new FormControl('');
+  patientControl = new FormControl('', Validators.required);
   filteredPatient!: Observable<Patient[]>;
   selectedPatient = {} as SelectedPatient;
   submitting = false;
@@ -37,7 +37,7 @@ export class AddEditAppointment implements OnInit {
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
-    private appointmentService: AppointmentService,
+    private exameService: ExamService,
     private _snackBar: MatSnackBar,
     private router: Router,
     private datePipe: DatePipe,
@@ -57,28 +57,33 @@ export class AddEditAppointment implements OnInit {
   ngOnInit() {
     this.id = this.rout.snapshot.params['id'];
 
-    this.addEditAppointmentForm = this.fb.group({
-      motivo: ['',
+    this.addEditExamForm = this.fb.group({
+      descricao: ['',
         Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(64)
-      ])],
-      dtaConsulta: ['', Validators.required],
-      horaConsulta: ['', Validators.required],
-      problema: ['',
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(64)
+        ])],
+      dtaExame: ['', Validators.required],
+      horaExame: ['', Validators.required],
+      tipo: ['',
         Validators.compose([
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(32)
+        ])],
+      laboratorio: ['', Validators.compose([
         Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(32)
+        ])],
+      documento: [''],
+      resultado: ['',
+        Validators.compose([
+          Validators.required,
           Validators.minLength(16),
           Validators.maxLength(1024)
-      ])],
-      medicacao: '',
-      precaucao: ['',
-        Validators.compose([
-        Validators.required,
-        Validators.minLength(16),
-        Validators.maxLength(256)
-      ])]
+        ])]
     })
 
     this.filteredPatient = this.patientControl.valueChanges.pipe(
@@ -89,36 +94,36 @@ export class AddEditAppointment implements OnInit {
     if (this.id) {
       this.loading = true;
       this.editing = true;
-      this.appointmentService.getAppointmentById(this.id)
-        .subscribe(appointment => {
+      this.exameService.getExamById(this.id)
+        .subscribe(exam => {
 
-          const dataHoraConsulta = appointment.dtaConsulta.split(" ");
+          const dataHoraExame = exam.dtaExame.split(" ");
 
-          const dataHoraConsultaPartes = dataHoraConsulta[0].split("/");
-          const diaConsulta = Number(dataHoraConsultaPartes[0]);
-          const mesConsulta = Number(dataHoraConsultaPartes[1]);
-          const anoConsulta = Number(dataHoraConsultaPartes[2]);
+          const dataHoraExamePartes = dataHoraExame[0].split("/");
+          const diaExame = Number(dataHoraExamePartes[0]);
+          const mesExame = Number(dataHoraExamePartes[1]);
+          const anoExame = Number(dataHoraExamePartes[2]);
 
-          const dataConsultaObject = new Date(anoConsulta, mesConsulta, diaConsulta);
+          const dataExameObject = new Date(anoExame, mesExame, diaExame);
 
-          const horaConsultaString = dataHoraConsulta[1];
-          const horaConsultaPartes = horaConsultaString.split(":");
-          const horaConsulta = Number(horaConsultaPartes[0]);
-          const minutoConsulta = Number(horaConsultaPartes[1]);
-          const horaStringConsulta = horaConsulta < 10 ? `0${horaConsulta}` : `${horaConsulta}`;
-          const minutoStringConsulta = minutoConsulta < 10 ? `0${minutoConsulta}` : `${minutoConsulta}`;
+          const horaExameString = dataHoraExame[1];
+          const horaExamePartes = horaExameString.split(":");
+          const horaExame = Number(horaExamePartes[0]);
+          const minutoExame = Number(horaExamePartes[1]);
+          const stringHoraExame = horaExame < 10 ? `0${horaExame}` : `${horaExame}`;
+          const stringMinutoExame = minutoExame < 10 ? `0${minutoExame}` : `${minutoExame}`;
+          const tempoExame = `${stringHoraExame}:${stringMinutoExame}`;
 
-          const tempoConsulta = `${horaStringConsulta}:${minutoStringConsulta}`;
 
-            this.addEditAppointmentForm.patchValue({
-              ...appointment,
-              dtaConsulta: dataConsultaObject,
-              horaConsulta: tempoConsulta
-            })
+          this.addEditExamForm.patchValue({
+            ...exam,
+            dtaExame: dataExameObject,
+            horaExame: tempoExame
+          })
 
           this.selectedPatient = {
-            id: appointment.paciente.id,
-            nome: appointment.paciente.nome
+            id: exam.paciente.id,
+            nome: exam.paciente.nome
           }
         })
       this.loading = false;
@@ -128,24 +133,25 @@ export class AddEditAppointment implements OnInit {
       const hora = this.today.getHours() < 10 ? `0${this.today.getHours()}` : `${this.today.getHours()}`;
       const minuto = this.today.getMinutes() < 10 ? `0${this.today.getMinutes()}` : `${this.today.getMinutes()}`;
 
-      const horaConsulta = `${hora}:${minuto}`
+      const horaExame = `${hora}:${minuto}`
 
-      this.addEditAppointmentForm.patchValue({
-        dtaConsulta: this.today,
-        horaConsulta: horaConsulta
+      this.addEditExamForm.patchValue({
+        dtaExame: this.today,
+        horaExame: horaExame
       });
+
     }
   }
 
   setPatient(id: number, nome: string) {
-      this.selectedPatient = {
-        id : id,
-        nome : nome
-      }
+    this.selectedPatient = {
+      id : id,
+      nome : nome
+    }
   }
   onSubmit() {
-    const dateValue = this.addEditAppointmentForm.get('dtaConsulta')?.value;
-    const timeValue = this.addEditAppointmentForm.get('horaConsulta')?.value;
+    const dateValue = this.addEditExamForm.get('dtaExame')?.value;
+    const timeValue = this.addEditExamForm.get('horaExame')?.value;
 
     const date = new Date(dateValue);
     const time = new Date(`2000-01-01T${timeValue}`)
@@ -161,18 +167,18 @@ export class AddEditAppointment implements OnInit {
 
     const formattedValue = this.datePipe.transform(combinedDate, 'dd/MM/yyyy HH:mm:ss');
 
-    const appointment: AppointmentRequest = {
-      ...this.addEditAppointmentForm.value,
-      dtaConsulta : formattedValue,
+    const exam: ExamRequest = {
+      ...this.addEditExamForm.value,
+      dtaExame : formattedValue,
       idPaciente : this.selectedPatient.id
     }
 
     if (this.editing) {
-      appointment.id = this.id;
-      this.appointmentService.updateAppointment(appointment)
+      exam.id = this.id;
+      this.exameService.updateExam(exam)
         .subscribe(() => {
           this._snackBar.open(
-            `Consulta de ${this.selectedPatient.nome} editada com sucesso.`,
+            `Exame de ${this.selectedPatient.nome} editada com sucesso.`,
             'OK',
             { duration: 3000 }
           );
@@ -180,10 +186,10 @@ export class AddEditAppointment implements OnInit {
           this.router.navigateByUrl('/home');
         })
     } else {
-      this.appointmentService.saveAppointment(appointment)
+      this.exameService.saveExam(exam)
         .subscribe(() => {
           this._snackBar.open(
-            `Consulta de ${this.selectedPatient.nome} cadastrada com sucesso.`,
+            `Exame de ${this.selectedPatient.nome} cadastrada com sucesso.`,
             'OK',
             { duration: 3000 }
           );
@@ -194,8 +200,13 @@ export class AddEditAppointment implements OnInit {
   }
 
   openConfirmDialog(): void {
-    const confirmDialogRef = this.dialog.open(AppointmentConfirmDialogComponent, {
-      data: { ...this.addEditAppointmentForm.value }
+    const formValue = this.addEditExamForm.value;
+
+    const confirmDialogRef = this.dialog.open(ExamConfirmDialogComponent, {
+      data: {
+        ...formValue,
+        nomeDoPaciente: this.selectedPatient.nome
+      }
     });
 
     confirmDialogRef.afterClosed()
@@ -212,12 +223,10 @@ export class AddEditAppointment implements OnInit {
       });
   }
 
-  deleteAppointment() {
-    const confirmDeleteDialogRef = this.dialog.open(AppointmentDeleteDialogComponent, {
+  deleteExam() {
+    const confirmDeleteDialogRef = this.dialog.open(ExamDeleteDialogComponent, {
       data: this.selectedPatient.nome
     });
-
-    console.log(this.selectedPatient)
 
     confirmDeleteDialogRef.afterClosed()
       .subscribe(result => {
@@ -234,5 +243,4 @@ export class AddEditAppointment implements OnInit {
         }
       });
   }
-
 }

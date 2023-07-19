@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '@envoriments';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { catchError, Observable, retry, throwError } from "rxjs";
-import { Exam } from "@shared/models/Exam";
+import { ExamResponse } from "../../models/ExamResponse";
+import { ExamRequest } from "../../models/ExamRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -17,42 +18,42 @@ export class ExamService {
     headers: new HttpHeaders(environment.HEADER),
   };
 
-  saveExam(exam: Exam): Observable<Exam[]> {
+  saveExam(exam: ExamRequest): Observable<ExamRequest> {
     return this.httpClient
-      .post<Exam[]>(this.url, JSON.stringify(exam), this.httpOptions)
+      .post<ExamRequest>(`${this.url}/cadastrar`, JSON.stringify(exam), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getAllExam(): Observable<Exam[]> {
+  getAllExam(): Observable<ExamResponse[]> {
     return this.httpClient
-      .get<Exam[]>(this.url, this.httpOptions)
+      .get<ExamResponse[]>(this.url, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getExamById(id: Number): Observable<Exam> {
+  getExamById(id: Number): Observable<ExamResponse> {
     return this.httpClient
-      .get<Exam>(`${this.url}/${id}`)
+      .get<ExamResponse>(`${this.url}/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getExamByPatientId(id: Number): Observable<Exam[]> {
+  getExamByPatientId(id: Number): Observable<ExamResponse[]> {
     return this.httpClient
-      .get<Exam[]>(`${this.url}/?idPatient=${id}&_sort=dtaExame&_order=desc`)
+      .get<ExamResponse[]>(`${this.url}/?idPatient=${id}&_sort=dtaExame&_order=desc`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  updateExam(exam: Exam): Observable<Exam[]> {
+  updateExam(exam: ExamRequest): Observable<ExamResponse> {
     return this.httpClient
-      .put<Exam[]>(
-        `${this.url}/${exam.id}`,
+      .put<ExamResponse>(
+        `${this.url}/atualizar/${exam.id}`,
         JSON.stringify(exam),
         this.httpOptions
       )
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  deleteExam(id: Number): Observable<Exam[]> {
-    return this.httpClient.delete<Exam[]>(`${this.url}/${id}`);
+  deleteExam(id: Number): Observable<ExamResponse[]> {
+    return this.httpClient.delete<ExamResponse[]>(`${this.url}/${id}`);
   }
 
   handleError(error: HttpErrorResponse) {
