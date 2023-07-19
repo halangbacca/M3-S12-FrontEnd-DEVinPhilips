@@ -12,8 +12,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { ConfirmDialogComponent } from './add-edit/components/confirm-dialog/confirm-dialog.component';
-import { DeleteDialogComponent } from './add-edit/components/delete-dialog/delete-dialog.component';
+import { AppointmentConfirmDialogComponent } from './add-edit/components/confirm-dialog/appointment-confirm-dialog.component';
+import { AppointmentDeleteDialogComponent } from './add-edit/components/delete-dialog/appointment-delete-dialog.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { SharedModule } from "../../shared/shared.module";
 
@@ -21,8 +21,8 @@ import { SharedModule } from "../../shared/shared.module";
 @NgModule({
   declarations: [
     AddEditAppointment,
-    ConfirmDialogComponent,
-    DeleteDialogComponent
+    AppointmentConfirmDialogComponent,
+    AppointmentDeleteDialogComponent
   ],
   imports: [
     CommonModule,
