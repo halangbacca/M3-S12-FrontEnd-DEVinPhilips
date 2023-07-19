@@ -19,13 +19,13 @@ export class PatientService {
 
   savePatient(patient: Patient): Observable<any> {
     return this.httpClient
-      .post<Patient>(`${this.url}/cadastrar`, JSON.stringify(patient), this.httpOptions)
+      .post<Patient>(`${this.url}`, JSON.stringify(patient), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
   getAllPatient(): Observable<Patient[]> {
     return this.httpClient
-      .get<Patient[]>(`${this.url}/listar`, this.httpOptions)
+      .get<Patient[]>(`${this.url}`, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -38,7 +38,7 @@ export class PatientService {
   updatePatient(patient: Patient): Observable<Patient> {
     return this.httpClient
       .put<Patient>(
-        `${this.url}/atualizar/${patient.id}`,
+        `${this.url}/${patient.id}`,
         JSON.stringify(patient),
         this.httpOptions
       )
@@ -46,7 +46,7 @@ export class PatientService {
   }
 
   deletePatient(id: Number): Observable<Patient> {
-    return this.httpClient.delete<Patient>(`${this.url}/deletar/${id}`);
+    return this.httpClient.delete<Patient>(`${this.url}/${id}`);
   }
 
   handleError(error: HttpErrorResponse) {
