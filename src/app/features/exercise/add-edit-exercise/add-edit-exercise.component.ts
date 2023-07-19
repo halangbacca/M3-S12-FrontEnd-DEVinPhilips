@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Exercise } from 'src/app/shared/models/Exercicio';
@@ -13,13 +14,12 @@ import { PatientService } from 'src/app/shared/services/patient/patient.service'
 })
 export class AddEditExerciseComponent {
   exercise = {} as Exercise;
-
   patient = {} as Patient;
 
   formExercise!: FormGroup;
+  formPatient!: FormGroup;
 
   exercises = [] as Exercise[];
-
   pacientes = [] as Patient[];
 
   isDisabled = true;
@@ -35,7 +35,6 @@ export class AddEditExerciseComponent {
   createform(exercise: Exercise) {
     this.formExercise = this.formBuilder.group({
       id: [exercise.id],
-      exercicio: [exercise.nome],
       idPaciente: [exercise.idPaciente],
       nomePaciente: [exercise.nomePaciente, [Validators.required]],
       nome: [
@@ -61,8 +60,16 @@ export class AddEditExerciseComponent {
     });
   }
 
+  createPatientForm() {
+    this.formPatient = this.formBuilder.group({
+      nomePaciente: ['', [Validators.required]],
+      exercicio: [''],
+    });
+  }
+
   ngOnInit(): void {
     this.createform(this.exercise);
+    this.createPatientForm();
 
     this.patientService.getAllPatient().subscribe((ret) => {
       this.pacientes = ret;
@@ -70,43 +77,47 @@ export class AddEditExerciseComponent {
 
     this.formExercise
       .get('data')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formExercise
       .get('horario')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
   onFocus() {
-    this.patientService.getAllPatient().subscribe((ret) => {
-      this.pacientes = ret;
-    });
+    if (this.formPatient.get('nomePaciente')?.value != null) {
+      this.patientService.getAllPatient().subscribe((ret) => {
+        this.pacientes = ret;
 
-    this.exerciseService
-      .getExerciseByPatientName(this.formExercise.get('nomePaciente')?.value)
-      .subscribe((ret) => {
-        this.exercises = ret;
+        this.exerciseService
+          .getExerciseByPatientName(this.formPatient.get('nomePaciente')?.value)
+          .subscribe((ret) => {
+            this.exercises = ret;
+          });
       });
+    }
 
     this.pacientes.forEach((patient) => {
-      if (patient.nome === this.formExercise.get('nomePaciente')?.value) {
+      if (patient.nome === this.formPatient.get('nomePaciente')?.value) {
         this.formExercise.get('idPaciente')?.setValue(patient.id);
+        this.formExercise.get('nomePaciente')?.setValue(patient.nome);
       }
     });
 
-    if (this.formExercise.get('exercicio')?.value != null) {
+    if (this.formPatient.get('exercicio')?.value != null) {
       this.exercises.forEach((item) => {
-        if (item.nome === this.formExercise.get('exercicio')?.value) {
+        if (item.nome === this.formPatient.get('exercicio')?.value) {
           this.formExercise.patchValue(item);
+          this.isDisabled = false;
+          this.isEditing = true;
         }
-        this.isDisabled = false;
-        this.isEditing = true;
       });
     }
   }
 
   clearForm() {
     this.formExercise.reset();
+    this.formPatient.reset();
     this.exercise = {} as Exercise;
 
     this.isDisabled = true;
@@ -114,19 +125,14 @@ export class AddEditExerciseComponent {
 
     this.formExercise
       .get('data')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formExercise
       .get('horario')
-      ?.setValue(new Date(Date.now()).toLocaleString());
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
   saveExercise(exercise: Exercise) {
-    this.exercises.forEach((item) => {
-      if (item.id === exercise.id) {
-        this.notificationService.openSnackBar('Exercício já cadastrado!');
-      }
-    });
     this.exerciseService.saveExercise(exercise).subscribe(() => {
       this.notificationService.openSnackBar(
         'Exercício cadastrado com sucesso!'
