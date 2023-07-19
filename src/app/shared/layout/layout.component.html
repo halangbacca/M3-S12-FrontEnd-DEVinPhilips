@@ -53,7 +53,14 @@
             Paciente
           </p>
         </a>
-
+        <a mat-list-item [routerLink]="['/appointment/add']" routerLinkActive="active">
+          <p mat-line>
+            <mat-icon mat-list-icon>
+              person
+            </mat-icon>
+            Consulta
+          </p>
+        </a>
         <a mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active">
           <p mat-line>
           <mat-icon mat-list-icon>
