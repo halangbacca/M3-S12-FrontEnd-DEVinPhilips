@@ -5,12 +5,12 @@ export const environment = {
 
   //API
 
-  URL_API: 'http://localhost:8081/api',
+  URL_API: 'http://localhost:8081',
   API_PATIENT: '/pacientes',
   API_APPOINTMENT: '/consultas',
   API_COMPANY: '/empresas',
   API_EXAM: 'exam/',
-  API_USER: 'user/',
+  API_USER: '/user',
 
 
   //VIA CEP
