@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: [{ path: '', component: AddEditExerciseComponent }],
+    children: [
+      {
+        path: 'add',
+        title: 'LABMedical - Cadastrar Exercicio',
+        component: AddEditExerciseComponent
+      }],
   },
 ];
 @NgModule({
