@@ -1,0 +1,18 @@
+#barchart_material {
+  height: 480px;
+}
+
+.pesquisa-paciente,
+.pesquisa-usuario,
+.pacientes,
+.usuarios,
+.card {
+  margin-top: 10px;
+  margin-left: 50px;
+  width: 90%;
+}
+
+.pacientes,
+.usuarios {
+  cursor: pointer;
+}
