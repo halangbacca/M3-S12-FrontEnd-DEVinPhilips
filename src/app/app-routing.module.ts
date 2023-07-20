@@ -25,10 +25,17 @@ const routes: Routes = [
       import('./features/patient/patient.module')
         .then(m => m.PatientModule)
   },
-  { path: 'appointment', loadChildren: () =>
+  {
+    path: 'appointment', loadChildren: () =>
       import('./features/appointment/appointment.module')
         .then(m => m.AppointmentModule)
-  },{
+  },
+  {
+    path: 'exam', loadChildren: () =>
+      import('./features/exam/exam.module')
+        .then(m => m.ExamModule)
+  },
+  {
     path:'**',
     redirectTo: 'dashboard',
     pathMatch: 'full',

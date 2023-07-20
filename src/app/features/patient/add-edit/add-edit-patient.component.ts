@@ -5,7 +5,7 @@ import { PatientService } from '@services/patient';
 import { CepService } from '@services/cep';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppointmentRequest } from "../../../shared/models/AppointmentRequest";
-import { Exam } from "../../../shared/models/Exam";
+import { ExamResponse } from "../../../shared/models/ExamResponse";
 import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
 import { ExamService } from "../../../shared/services/exam/exam.service";
 import { ActivatedRoute, Router } from "@angular/router";

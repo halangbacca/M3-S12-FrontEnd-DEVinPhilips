@@ -1,0 +1,32 @@
+.full-width {
+  width: 100%;
+}
+
+.add-exam-card {
+  min-width: 120px;
+  margin: 10px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}
+
+.add-form-button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+mat-spinner {
+  margin: auto;
+}

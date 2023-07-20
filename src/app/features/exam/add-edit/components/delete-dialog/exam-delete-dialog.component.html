@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>ATENÇÃO!</h1>
+<div mat-dialog-content>
+  <p>Tem certeza que deseja excluir o esta consulta de {{ data }}?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="warn" (click)="onReject()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Confirmar</button>
+</div>
