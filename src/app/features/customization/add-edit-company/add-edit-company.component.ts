@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company } from 'src/app/shared/model/company';
-import { NotificationService } from 'src/app/shared/service/notification.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CustomizationService } from '../customization.service';
 
 @Component({

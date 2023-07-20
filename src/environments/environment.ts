@@ -10,6 +10,7 @@ export const environment = {
   API_APPOINTMENT: '/consultas',
   API_COMPANY: '/empresas',
   API_EXAM: '/exames',
+  API_EXERCISE: '/exercise',
   API_USER: 'user/',
 
 

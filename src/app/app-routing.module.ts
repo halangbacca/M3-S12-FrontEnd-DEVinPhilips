@@ -15,7 +15,12 @@ const routes: Routes = [
         .then((m) => m.CustomizationModule),
   },
   {
-    path: 'patient',
+    path: 'exercise',
+    loadChildren: () =>
+      import('./features/exercise/exercise.module')
+        .then((m) => m.ExerciseModule),
+  },
+  { path: 'patient',
     loadChildren: () =>
       import('./features/patient/patient.module')
         .then(m => m.PatientModule)
