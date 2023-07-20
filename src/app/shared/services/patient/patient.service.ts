@@ -46,7 +46,7 @@ export class PatientService {
   }
 
   deletePatient(id: Number): Observable<Patient> {
-    return this.httpClient.delete<Patient>(`${this.url}/deletar/${id}`);
+    return this.httpClient.delete<Patient>(`${this.url}/${id}`);
   }
 
   handleError(error: HttpErrorResponse) {

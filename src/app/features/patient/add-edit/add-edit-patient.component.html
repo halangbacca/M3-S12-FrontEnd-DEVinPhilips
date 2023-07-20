@@ -360,12 +360,12 @@
                                 *ngIf="patientForm.controls['cep'].hasError('minlength')
                                 && !patientForm.controls['cep'].hasError('required')">
                                 O CEP deve conter pelo menos <strong>8 dígitos</strong>
-                              </mat-error>
-                              <mat-error
-                                *ngIf="patientForm.controls['cep'].hasError('maxlength')
+                                <mat-error
+                                  *ngIf="patientForm.controls['cep'].hasError('maxlength')
                                 && !patientForm.controls['cep'].hasError('required')">
-                                O CEP deve conter no máximo <strong>8 dígitos</strong>
-                              </mat-error>
+                                  O CEP deve conter no máximo <strong>8 dígitos</strong>
+                                </mat-error>       </mat-error>
+
               </mat-form-field>
             </div>
             <div class="col">

@@ -1,1 +1,159 @@
-<p>add-edit-exercise works!</p>
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title> Cadastro de Exercício </mat-card-title>
+      <div fxLayout="column">
+        <form [formGroup]="formPatient">
+          <mat-form-field
+            *ngIf="pacientes.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Paciente</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="nomePaciente">
+              <mat-option
+                class="nomePaciente"
+                *ngFor="let paciente of pacientes"
+                [value]="paciente.nome"
+              >
+                {{ paciente.nome }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error id="requiredNomePacienteError">
+              Você deve selecionar um paciente
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="exercises.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Exercício</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="exercicio">
+              <mat-option
+                class="exercicio"
+                *ngFor="let exercise of exercises"
+                [value]="exercise.nome"
+              >
+                {{ exercise.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+
+        <form [formGroup]="formExercise" (ngSubmit)="onSubmit()">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nome do Exercício</mat-label>
+            <input
+              (focus)="onFocus()"
+              matInput
+              placeholder="Nome"
+              formControlName="nome"
+            />
+
+            <mat-error id="requiredNomeError">
+              O nome do exercício é
+              <strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Data</mat-label>
+            <input matInput placeholder="Data" formControlName="data" />
+
+            <mat-error id="invalidDataError">
+              Você deve inserir a data do exercício
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Horário</mat-label>
+            <input matInput placeholder="Horário" formControlName="horario" />
+
+            <mat-error id="invalidHorarioError">
+              Você deve inserir o horário do exercício
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipo">
+              <mat-option value="resistencia-aerobica"
+                >Resistência aeróbica</mat-option
+              >
+              <mat-option value="resistencia-muscular"
+                >Resistência muscular</mat-option
+              >
+              <mat-option value="flexibilidade">Flexibilidade</mat-option>
+              <mat-option value="forca">Força</mat-option>
+              <mat-option value="agilidade">Agilidade</mat-option>
+              <mat-option value="outro">Outro</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidTipoError">
+              Você deve selecionar o tipo do exercício
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Quantidade por semana</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="Quantidade por semana"
+              formControlName="qtdSemana"
+            />
+
+            <mat-error id="invalidQtdSemanaError">
+              Você deve inserir a quantidade por semana do exercício
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Descrição</mat-label>
+            <input
+              matInput
+              placeholder="Descrição"
+              formControlName="descricao"
+            />
+
+            <mat-error id="invalidDescriptionError">
+              Você deve inserir a descrição do exercício
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button
+              mat-raised-button
+              color="primary"
+              id="cadastrar"
+              [disabled]="isEditing"
+              type="submit"
+            >
+              CADASTRAR
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              id="editar"
+              [disabled]="isDisabled"
+              (click)="editExercise()"
+            >
+              EDITAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="deleteExercise()"
+              color="accent"
+            >
+              DELETAR
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

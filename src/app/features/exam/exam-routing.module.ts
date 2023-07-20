@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddEditPatient } from "./add-edit/add-edit-patient.component";
+import { AddEditExamComponent } from './add-edit/add-edit-exam.component';
 import { LayoutComponent } from "../../shared/layout/layout.component";
 
 const routes: Routes = [
@@ -10,20 +10,19 @@ const routes: Routes = [
     children: [
       {
         path: 'add',
-        title: 'LABMedical - Cadastrar Paciente',
-        component: AddEditPatient
+        title: 'LABMedical - Cadastro de exame',
+        component: AddEditExamComponent
       },
       {
         path: 'edit/:id',
-        title: 'LABMedical - Editar Paciente',
-        component: AddEditPatient
+        title: 'LABMedical - Edição de exame',
+        component: AddEditExamComponent
       }
     ]
-  }
-];
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PatientRoutingModule { }
+export class ExamRoutingModule { }

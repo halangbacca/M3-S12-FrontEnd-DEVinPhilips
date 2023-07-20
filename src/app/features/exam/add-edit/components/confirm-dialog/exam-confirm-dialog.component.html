@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Por favor, confirme os dados abaixo antes de continuar</h1>
+<div mat-dialog-content>
+  <p><strong>Nome do paciente: </strong>{{ data.nomeDoPaciente }}</p>
+  <p><strong>Nome do exame: </strong>{{ data.descricao }}</p>
+  <p><strong>Data do exame: </strong>{{ data.dtaExame | date: 'dd/MM/yyyy' }}</p>
+  <p><strong>Horário do exame: </strong>{{ data.horaExame }}</p>
+  <p><strong>Tipo do exame: </strong>{{ data.tipo  }}</p>
+  <p *ngIf="data.documento"><strong>URL do documento: </strong>{{ data.documento }}</p>
+  <p><strong>Resultado: </strong>{{ data.resultado }}</p>
+  <p><strong>Dosagem e precaução: </strong>{{ data.resultado }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button color="warn" (click)="onReject()">Corrigir</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true">Confirmar</button>
+</div>

@@ -1,10 +1,10 @@
-export interface Consult {
+export interface AppointmentRequest {
   id: number;
-  idPatient: number;
+  idPaciente: number;
   motivo: string;
   dtaConsulta: string;
   horaConsulta: string;
-  descricao: string;
+  problema: string;
   medicacao: string;
-  dosagem: string;
+  precaucao: string;
 }
