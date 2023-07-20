@@ -1,5 +1,6 @@
-import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
+
+import { formatDate } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Exercise } from 'src/app/shared/models/Exercicio';
 import { Patient } from 'src/app/shared/models/Patient';
@@ -10,6 +11,7 @@ import { PatientService } from 'src/app/shared/services/patient/patient.service'
 @Component({
   selector: 'app-add-edit-exercise',
   templateUrl: './add-edit-exercise.component.html',
+
   styleUrls: ['./add-edit-exercise.component.scss'],
 })
 export class AddEditExerciseComponent {

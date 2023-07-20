@@ -20,6 +20,27 @@ const routes: Routes = [
       import('./features/exercise/exercise.module')
         .then((m) => m.ExerciseModule),
   },
+  {
+    path: 'drug',
+    loadChildren: () =>
+      import('./features/drug/drug.module').then(
+        (m) => m.DrugModule
+      ),
+  },
+  // {
+  //   path: 'diet',
+  //   loadChildren: () =>
+  //     import('./features/diet/diet.module').then(
+  //       (m) => m.DietModule
+  //     ),
+  // },
+  // {
+  //   path: 'exercise',
+  //   loadChildren: () =>
+  //     import('./features/exercise/exercise.module').then(
+  //       (m) => m.ExerciseModule
+  //     ),
+  // },
   { path: 'patient',
     loadChildren: () =>
       import('./features/patient/patient.module')

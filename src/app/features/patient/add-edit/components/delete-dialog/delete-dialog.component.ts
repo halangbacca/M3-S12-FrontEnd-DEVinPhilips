@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Patient } from "@shared/models/Patient";
+import { Patient } from 'src/app/shared/models/Patient';
 
 @Component({
   selector: 'app-delete-dialog',

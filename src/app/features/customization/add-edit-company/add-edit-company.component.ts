@@ -16,7 +16,7 @@ export class AddEditCompanyComponent {
 
   companies = [] as Company[];
 
-  isDisabled = false;
+  isDisabled = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,6 +37,10 @@ export class AddEditCompanyComponent {
 
   ngOnInit(): void {
     this.createform(this.company);
+
+    this.customizationService.getCompany().subscribe((ret) => {
+      this.companies = ret;
+    });
   }
 
   onFocus() {
@@ -51,11 +55,6 @@ export class AddEditCompanyComponent {
         }
         this.isDisabled = false;
       });
-    } else {
-      this.isDisabled = true;
-      this.notificationService.openSnackBar(
-        'Você não pode editar durante o cadastro de uma empresa!'
-      );
     }
   }
 
