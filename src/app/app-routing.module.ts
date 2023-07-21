@@ -17,25 +17,31 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'medical-record',
+    loadChildren: () =>
+      import('./features/medical-record/medical-record.module').then(
+        (m) => m.MedicalRecordModule
+      ),
+  },
+  {
     path: 'diet',
     loadChildren: () =>
-      import('./features/diet/diet.module')
-        .then((m) => m.DietModule),
+      import('./features/diet/diet.module').then((m) => m.DietModule),
   },
   {
     path: 'exercise',
     loadChildren: () =>
-      import('./features/exercise/exercise.module')
-        .then((m) => m.ExerciseModule),
+      import('./features/exercise/exercise.module').then(
+        (m) => m.ExerciseModule
+      ),
   },
   {
     path: 'drug',
     loadChildren: () =>
-      import('./features/drug/drug.module').then(
-        (m) => m.DrugModule
-      ),
+      import('./features/drug/drug.module').then((m) => m.DrugModule),
   },
-  { path: 'user',
+  {
+    path: 'user',
     loadChildren: () =>
       import('./features/user/user.module').then((m) => m.UserModule),
   },
@@ -51,17 +57,20 @@ const routes: Routes = [
         (m) => m.AppointmentModule
       ),
   },
-  { path: 'appointment', loadChildren: () =>
-      import('./features/appointment/appointment.module')
-        .then(m => m.AppointmentModule)
+  {
+    path: 'appointment',
+    loadChildren: () =>
+      import('./features/appointment/appointment.module').then(
+        (m) => m.AppointmentModule
+      ),
   },
   {
-    path: 'exam', loadChildren: () =>
-      import('./features/exam/exam.module')
-        .then(m => m.ExamModule)
+    path: 'exam',
+    loadChildren: () =>
+      import('./features/exam/exam.module').then((m) => m.ExamModule),
   },
   {
-    path:'**',
+    path: '**',
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
