@@ -3,13 +3,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AppointmentRequest } from "../../../../../shared/models/AppointmentRequest";
 
 @Component({
-  selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.scss']
+  selector: 'appointment-confirm-dialog',
+  templateUrl: './appointment-confirm-dialog.component.html',
+  styleUrls: ['./appointment-confirm-dialog.component.scss']
 })
-export class ConfirmDialogComponent {
+export class AppointmentConfirmDialogComponent {
   constructor(
-    public dialogRef: MatDialogRef<ConfirmDialogComponent>,
+    public dialogRef: MatDialogRef<AppointmentConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AppointmentRequest
   ) {
   }

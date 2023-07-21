@@ -12,7 +12,6 @@ import { CustomMaterialModule } from './core/custom-material/custom-material.mod
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -24,7 +23,6 @@ import { HttpClientModule } from '@angular/common/http';
     SharedModule,
     ReactiveFormsModule,
     HttpClientModule,
-
   ],
   exports: [CustomMaterialModule],
   providers: [],

@@ -7,13 +7,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Company } from 'src/app/shared/models/Company';
+import { Drug } from '../../models/Drug';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomizationService {
-  url = `${environment.URL_API}${environment.API_COMPANY}`;
+export class DrugService {
+  url = `${environment.URL_API}${environment.API_DRUG}`;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -21,26 +21,36 @@ export class CustomizationService {
     headers: new HttpHeaders(environment.HEADER),
   };
 
-  getCompany(): Observable<Company[]> {
+  getDrug(): Observable<Drug[]> {
     return this.httpClient
-      .get<Company[]>(this.url, this.httpOptions)
+      .get<Drug[]>(this.url, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  saveCompany(company: Company): Observable<Company[]> {
+  getDrugByPatientName(nome: string): Observable<Drug[]> {
     return this.httpClient
-      .post<Company[]>(this.url, JSON.stringify(company), this.httpOptions)
+      .get<Drug[]>(`${this.url}/?nomePaciente=${nome}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  updateCompany(company: Company): Observable<Company[]> {
+  saveDrug(drug: Drug): Observable<Drug[]> {
     return this.httpClient
-      .put<Company[]>(
-        `${this.url}/${company.id}`,
-        JSON.stringify(company),
+      .post<Drug[]>(this.url, JSON.stringify(drug), this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  updateDrug(drug: Drug): Observable<Drug[]> {
+    return this.httpClient
+      .put<Drug[]>(
+        `${this.url}/${drug.id}`,
+        JSON.stringify(drug),
         this.httpOptions
       )
       .pipe(retry(2), catchError(this.handleError));
+  }
+
+  deleteDrug(id: Number): Observable<Drug> {
+    return this.httpClient.delete<Drug>(`${this.url}/${id}`);
   }
 
   handleError(error: HttpErrorResponse) {

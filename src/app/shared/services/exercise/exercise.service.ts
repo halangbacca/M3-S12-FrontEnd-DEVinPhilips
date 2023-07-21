@@ -7,13 +7,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Company } from 'src/app/shared/models/Company';
+import { Exercise } from '../../models/Exercicio';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomizationService {
-  url = `${environment.URL_API}${environment.API_COMPANY}`;
+export class ExerciseService {
+  url = `${environment.URL_API}${environment.API_EXERCISE}`;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
@@ -21,26 +21,36 @@ export class CustomizationService {
     headers: new HttpHeaders(environment.HEADER),
   };
 
-  getCompany(): Observable<Company[]> {
+  getExercise(): Observable<Exercise[]> {
     return this.httpClient
-      .get<Company[]>(this.url, this.httpOptions)
+      .get<Exercise[]>(this.url, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  saveCompany(company: Company): Observable<Company[]> {
+  getExerciseByPatientName(nome: string): Observable<Exercise[]> {
     return this.httpClient
-      .post<Company[]>(this.url, JSON.stringify(company), this.httpOptions)
+      .get<Exercise[]>(`${this.url}/?nomePaciente=${nome}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  updateCompany(company: Company): Observable<Company[]> {
+  saveExercise(exercise: Exercise): Observable<Exercise[]> {
     return this.httpClient
-      .put<Company[]>(
-        `${this.url}/${company.id}`,
-        JSON.stringify(company),
+      .post<Exercise[]>(this.url, JSON.stringify(exercise), this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  updateExercise(exercise: Exercise): Observable<Exercise[]> {
+    return this.httpClient
+      .put<Exercise[]>(
+        `${this.url}/${exercise.id}`,
+        JSON.stringify(exercise),
         this.httpOptions
       )
       .pipe(retry(2), catchError(this.handleError));
+  }
+
+  deleteExercise(id: Number): Observable<Exercise> {
+    return this.httpClient.delete<Exercise>(`${this.url}/${id}`);
   }
 
   handleError(error: HttpErrorResponse) {

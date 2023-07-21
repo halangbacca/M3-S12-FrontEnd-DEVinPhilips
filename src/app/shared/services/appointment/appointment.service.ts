@@ -20,7 +20,7 @@ export class AppointmentService {
 
   saveAppointment(appointment: AppointmentRequest): Observable<AppointmentRequest> {
     return this.httpClient
-      .post<AppointmentRequest>(`${this.url}/cadastrar`, JSON.stringify(appointment), this.httpOptions)
+      .post<AppointmentRequest>(`${this.url}`, JSON.stringify(appointment), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -46,7 +46,7 @@ export class AppointmentService {
   updateAppointment(appointment: AppointmentRequest): Observable<AppointmentRequest> {
     return this.httpClient
       .put<AppointmentRequest>(
-        `${this.url}/atualizar/${appointment.id}`,
+        `${this.url}/${appointment.id}`,
         JSON.stringify(appointment),
         this.httpOptions
       )

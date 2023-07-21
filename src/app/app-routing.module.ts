@@ -17,7 +17,25 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'user',
+    path: 'diet',
+    loadChildren: () =>
+      import('./features/diet/diet.module')
+        .then((m) => m.DietModule),
+  },
+  {
+    path: 'exercise',
+    loadChildren: () =>
+      import('./features/exercise/exercise.module')
+        .then((m) => m.ExerciseModule),
+  },
+  {
+    path: 'drug',
+    loadChildren: () =>
+      import('./features/drug/drug.module').then(
+        (m) => m.DrugModule
+      ),
+  },
+  { path: 'user',
     loadChildren: () =>
       import('./features/user/user.module').then((m) => m.UserModule),
   },
@@ -35,6 +53,17 @@ const routes: Routes = [
   },
   {
     path: '**',
+  { path: 'appointment', loadChildren: () =>
+      import('./features/appointment/appointment.module')
+        .then(m => m.AppointmentModule)
+  },
+  {
+    path: 'exam', loadChildren: () =>
+      import('./features/exam/exam.module')
+        .then(m => m.ExamModule)
+  },
+  {
+    path:'**',
     redirectTo: 'dashboard',
     pathMatch: 'full',
   },
