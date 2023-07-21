@@ -97,10 +97,10 @@ export class DashboardHomeComponent implements OnInit {
 
     this.filteredPatients = this.patients.filter((data) => {
       return (
-        data.nome.toLowerCase().includes(value) ||
-        data.cpf.toLowerCase().includes(value) ||
-        data.email.toLowerCase().includes(value) ||
-        data.telefone.toLowerCase().includes(value)
+        data.nome.toLowerCase().includes(value.toLowerCase()) ||
+        data.cpf.toLowerCase().includes(value.toLowerCase()) ||
+        data.email.toLowerCase().includes(value.toLowerCase()) ||
+        data.telefone.toLowerCase().includes(value.toLowerCase())
       );
     });
   }
@@ -112,10 +112,10 @@ export class DashboardHomeComponent implements OnInit {
 
     this.filteredPatients = this.patients.filter((data) => {
       return (
-        data.nome.toLowerCase().includes(value) ||
-        data.cpf.toLowerCase().includes(value) ||
-        data.email.toLowerCase().includes(value) ||
-        data.telefone.toLowerCase().includes(value)
+        data.nome.toLowerCase().includes(value.toLowerCase()) ||
+        data.cpf.toLowerCase().includes(value.toLowerCase()) ||
+        data.email.toLowerCase().includes(value.toLowerCase()) ||
+        data.telefone.toLowerCase().includes(value.toLowerCase())
       );
     });
   }
