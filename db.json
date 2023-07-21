@@ -1,4 +1,29 @@
 {
+  "appointment": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "motivo": "Teste",
+      "dtaConsulta": "21/07/1998",
+      "horaConsulta": "22:04:00",
+      "problema": "Teste",
+      "medicacao": "AAS",
+      "precaucao": "Alergia"
+    }
+  ],
+  "exam": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "descricao": "Teste",
+      "dtaExame": "21/07/1998",
+      "horaExame": "22:04:00",
+      "tipo": "Eletrocardiograma",
+      "laboratorio": "UFSC",
+      "documento": "www.google.com",
+      "resultado": "Extrassistole"
+    }
+  ],
   "user": [
     {
       "id": 1,
@@ -379,6 +404,19 @@
       "quantidade": "1",
       "unidade": "g",
       "observacoes": "111111111111111111111"
+    }
+  ],
+  "diet": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "nomePaciente": "Teste",
+      "nome": "Teste",
+      "data": "18/07/2023",
+      "horario": "2x ao dia",
+      "tipo": "jsjsjsjsjsj",
+      "descricao": "jsjsjsjsjsjsj",
+      "statusDoSistema": true
     }
   ]
 }
