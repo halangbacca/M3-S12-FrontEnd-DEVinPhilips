@@ -56,8 +56,9 @@
       "telefone": "jjjdjsjddddddddddddd",
       "email": "jdddddddddddddddd@outlook.com",
       "senha": "dddddddddddddddddddddddd",
-      "tipo": "enfermeiro",
-=======
+      "tipo": "enfermeiro"
+    }
+  ],
   "patient": [
     {
       "id": 1,
@@ -368,7 +369,7 @@
       "email": "sssssssssssssssssssssss@putlook.com",
       "senha": "sssssssssssssssssss",
       "tipo": "enfermeiro",
-      "statusDoSistema": true
+      "statusDoSistema": true,
       "idPaciente": 1,
       "nomePaciente": "Halan Germano Bacca",
       "nome": "SSSSSSSSSSSSSSSSSSSSSS",
