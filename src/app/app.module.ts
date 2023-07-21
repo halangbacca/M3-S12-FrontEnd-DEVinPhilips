@@ -21,7 +21,6 @@ import { HttpClientModule } from '@angular/common/http';
     CustomMaterialModule,
     RouterModule,
     SharedModule,
-
     ReactiveFormsModule,
     HttpClientModule,
   ],
