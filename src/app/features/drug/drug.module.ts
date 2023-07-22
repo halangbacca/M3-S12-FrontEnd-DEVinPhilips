@@ -6,6 +6,8 @@ import { CustomMaterialModule } from 'src/app/core/custom-material/custom-materi
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddEditDrugComponent } from './add-edit-drug/add-edit-drug.component';
 import { DrugRoutingModule } from './drug-routing.module';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [AddEditDrugComponent],
@@ -13,7 +15,7 @@ import { DrugRoutingModule } from './drug-routing.module';
     CommonModule,
     DrugRoutingModule,
     CustomMaterialModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
 })
 export class DrugModule {}

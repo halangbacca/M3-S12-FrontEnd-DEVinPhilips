@@ -7,7 +7,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Drug } from '../../models/Drug';
+import { Drug} from '../../models/Drug';
+import { DrugRequest } from '../../models/DrugRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,13 @@ export class DrugService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  saveDrug(drug: Drug): Observable<Drug[]> {
+  getDrugById(id: Number): Observable<Drug[]> {
+    return this.httpClient
+      .get<Drug[]>(`${this.url}/${id}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  saveDrug(drug: DrugRequest): Observable<Drug[]> {
     return this.httpClient
       .post<Drug[]>(this.url, JSON.stringify(drug), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));

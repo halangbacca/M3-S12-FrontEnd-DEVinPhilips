@@ -5,7 +5,8 @@ import { AddEditDrugComponent } from './add-edit-drug/add-edit-drug.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'add',
+    title: 'LABMedical - Cadastrar Medicamento',
     component: LayoutComponent,
     children: [
       { path: '', component: AddEditDrugComponent },
