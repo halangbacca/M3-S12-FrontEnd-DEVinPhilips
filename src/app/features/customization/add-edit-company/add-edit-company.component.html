@@ -2,11 +2,15 @@
   <mat-card>
     <mat-card-content>
       <mat-card-title> Cadastro de Empresa </mat-card-title>
-      <div fxLayout="row">
-        <form [formGroup]="formCompany" (ngSubmit)="onSubmit()">
-          <mat-form-field *ngIf="companies.length > 0" class="full-width" appearance="outline">
+      <div fxLayout="column">
+        <form [formGroup]="formExistingCompany">
+          <mat-form-field
+            *ngIf="companies.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
             <mat-label>Selecione uma Empresa</mat-label>
-            <mat-select (focus)="onFocus()" formControlName="empresa">
+            <mat-select (focus)="onFocus()" formControlName="nomeEmpresa">
               <mat-option
                 *ngFor="let company of companies"
                 [value]="company.nome"
@@ -15,7 +19,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </form>
 
+        <form [formGroup]="formCompany" (ngSubmit)="onSubmit()">
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Nome da Empresa</mat-label>
             <input
@@ -70,6 +76,7 @@
               mat-raised-button
               color="primary"
               id="cadastrar"
+              [disabled]="isEditing"
               type="submit"
             >
               CADASTRAR
@@ -83,7 +90,12 @@
             >
               EDITAR
             </button>
-            <button mat-raised-button [disabled]="isDisabled" color="accent" mat-dialog-close>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              color="accent"
+              (click)="deleteCompany()"
+            >
               DELETAR
             </button>
           </div>

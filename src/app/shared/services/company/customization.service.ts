@@ -12,7 +12,7 @@ import { Company } from 'src/app/shared/models/Company';
 @Injectable({
   providedIn: 'root',
 })
-export class CustomizationService {
+export class CompanyService {
   url = `${environment.URL_API}${environment.API_COMPANY}`;
 
   constructor(private httpClient: HttpClient, private router: Router) {}
@@ -31,6 +31,10 @@ export class CustomizationService {
     return this.httpClient
       .post<Company[]>(this.url, JSON.stringify(company), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
+  }
+
+  deleteCompany(id: Number): Observable<Company> {
+    return this.httpClient.delete<Company>(`${this.url}/${id}`);
   }
 
   updateCompany(company: Company): Observable<Company[]> {
