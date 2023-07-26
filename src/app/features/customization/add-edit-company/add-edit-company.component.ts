@@ -31,7 +31,8 @@ export class AddEditCompanyComponent {
       nome: [company.nome, [Validators.required]],
       slogan: [company.slogan],
       palhetaDeCores: [company.palhetaDeCores, [Validators.required]],
-      imagemDoLogotipo: [company.imagemDoLogotipo, [Validators.required]],
+      logotipo: [company.logotipo, [Validators.required]],
+      situacao: [true],
     });
   }
 
@@ -105,7 +106,7 @@ export class AddEditCompanyComponent {
     const novoNome = this.formCompany.get('nome')?.value;
     const novoSlogan = this.formCompany.get('slogan')?.value;
     const novaCor = this.formCompany.get('palhetaDeCores')?.value;
-    const novaLogo = this.formCompany.get('imagemDoLogotipo')?.value;
+    const novaLogo = this.formCompany.get('logotipo')?.value;
 
     if (this.formCompany.valid) {
       this.companyService.getCompany().subscribe((ret) => {
@@ -114,7 +115,8 @@ export class AddEditCompanyComponent {
             company.nome = novoNome;
             company.slogan = novoSlogan;
             company.palhetaDeCores = novaCor;
-            company.imagemDoLogotipo = novaLogo;
+            company.logotipo = novaLogo;
+            company.situacao = true;
             this.updateCompany(company);
           }
         });
@@ -137,7 +139,7 @@ export class AddEditCompanyComponent {
   }
 
   onSubmit() {
-    if (this.formCompany.valid) {
+    if (this.formCompany.valid && this.isEditing != true) {
       return this.saveCompany(this.formCompany.value);
     }
   }

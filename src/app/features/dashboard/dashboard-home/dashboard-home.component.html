@@ -17,17 +17,17 @@
         name="nome"
       />
     </mat-form-field>
-    <mat-card *ngFor="let patient of filteredPatients" class="usuarios">
+    <mat-card *ngFor="let user of filteredUsers" class="usuarios">
       <mat-card-header>
         <mat-card-title-group>
-          <mat-card-title>{{ patient.nome }}</mat-card-title>
-          <mat-card-subtitle>{{ patient.dtaNascimento }}</mat-card-subtitle>
-          <mat-card-subtitle>{{ patient.email }}</mat-card-subtitle>
-          <mat-card-subtitle>{{ patient.telefone }}</mat-card-subtitle>
-          <mat-card-subtitle>{{ patient.convenio }}</mat-card-subtitle>
+          <mat-card-title>{{ user.nome }}</mat-card-title>
+          <mat-card-subtitle>{{ user.cpf }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ user.telefone }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ user.tipo }}</mat-card-subtitle>
           <img
             mat-card-lg-image
-            src="https://cdn-icons-png.flaticon.com/512/1430/1430453.png"
+            src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
           />
         </mat-card-title-group>
       </mat-card-header>

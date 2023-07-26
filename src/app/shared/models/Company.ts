@@ -3,5 +3,6 @@ export interface Company {
   nome: string;
   slogan: string;
   palhetaDeCores: string;
-  imagemDoLogotipo: string;
+  logotipo: string;
+  situacao: boolean;
 }

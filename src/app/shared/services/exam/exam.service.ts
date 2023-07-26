@@ -20,7 +20,7 @@ export class ExamService {
 
   saveExam(exam: ExamRequest): Observable<ExamRequest> {
     return this.httpClient
-      .post<ExamRequest>(`${this.url}/cadastrar`, JSON.stringify(exam), this.httpOptions)
+      .post<ExamRequest>(`${this.url}`, JSON.stringify(exam), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -45,7 +45,7 @@ export class ExamService {
   updateExam(exam: ExamRequest): Observable<ExamResponse> {
     return this.httpClient
       .put<ExamResponse>(
-        `${this.url}/atualizar/${exam.id}`,
+        `${this.url}/${exam.id}`,
         JSON.stringify(exam),
         this.httpOptions
       )

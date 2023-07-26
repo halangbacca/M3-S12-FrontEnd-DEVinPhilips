@@ -45,7 +45,7 @@ export class AddEditDietComponent {
           Validators.maxLength(100),
         ],
       ],
-      data: [diet.data, [Validators.required]],
+      dtaDieta: [diet.data, [Validators.required]],
       horario: [diet.horario, [Validators.required]],
       tipo: [diet.tipo, [Validators.required]],
       descricao: [
@@ -76,7 +76,7 @@ export class AddEditDietComponent {
     });
 
     this.formDiet
-      .get('data')
+      .get('dtaDieta')
       ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDiet
@@ -124,7 +124,7 @@ export class AddEditDietComponent {
     this.isEditing = false;
 
     this.formDiet
-      .get('data')
+      .get('dtaDieta')
       ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDiet
@@ -149,7 +149,7 @@ export class AddEditDietComponent {
   editDiet() {
     const id = this.formDiet.get('id')?.value;
     const novoNome = this.formDiet.get('nome')?.value;
-    const novaData = this.formDiet.get('data')?.value;
+    const novaData = this.formDiet.get('dtaDieta')?.value;
     const novoHorario = this.formDiet.get('horario')?.value;
     const novoTipo = this.formDiet.get('tipo')?.value;
     const novaDescricao = this.formDiet.get('descricao')?.value;

@@ -6,8 +6,8 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { DrugService } from 'src/app/shared/services/drug/drug.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
-import { DatePipe } from "@angular/common";
-import { DrugRequest} from "src/app/shared/models/DrugRequest"
+import { DatePipe } from '@angular/common';
+import { DrugRequest } from 'src/app/shared/models/DrugRequest';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -35,7 +35,7 @@ export class AddEditDrugComponent {
     private patientService: PatientService,
     private drugService: DrugService,
     private router: Router,
-    private rout: ActivatedRoute,
+    private rout: ActivatedRoute
   ) {}
 
   createform(drug: Drug) {
@@ -82,38 +82,34 @@ export class AddEditDrugComponent {
     this.createPatientForm();
     this.today = new Date();
 
-
-    if(this.id){
-
-    }else{
-
-
-    }
-
-    const hora = this.today.getHours() < 10 ? `0${this.today.getHours()}` : `${this.today.getHours()}`;
-    const minuto = this.today.getMinutes() < 10 ? `0${this.today.getMinutes()}` : `${this.today.getMinutes()}`;
-    const horaConsulta = `${hora}:${minuto}`
+    const hora =
+      this.today.getHours() < 10
+        ? `0${this.today.getHours()}`
+        : `${this.today.getHours()}`;
+    const minuto =
+      this.today.getMinutes() < 10
+        ? `0${this.today.getMinutes()}`
+        : `${this.today.getMinutes()}`;
+    const horaConsulta = `${hora}:${minuto}`;
 
     this.formDrug.patchValue({
       ...this.drug,
       data: new Date(),
-      horario: horaConsulta
+      horario: horaConsulta,
     });
 
     this.patientService.getAllPatient().subscribe((ret) => {
       this.pacientes = ret;
     });
 
-    this.formDrug
-      .get('data')
-      ?.setValue(new Date());
+    this.formDrug.get('data')?.setValue(new Date());
 
     this.formDrug
       .get('horario')
       ?.setValue(formatDate(new Date(), 'H:mm', 'en'));
   }
 
-  onFocus() {  
+  onFocus() {
     this.pacientes.forEach((patient) => {
       if (patient.nome === this.formDrug.get('nomePaciente')?.value) {
         this.formDrug.get('idPaciente')?.setValue(patient.id);
@@ -150,7 +146,6 @@ export class AddEditDrugComponent {
   }
 
   saveDrug(drug: DrugRequest) {
-    
     this.drugService.saveDrug(drug).subscribe(() => {
       this.notificationService.openSnackBar(
         'Medicamento cadastrado com sucesso!'
@@ -213,32 +208,33 @@ export class AddEditDrugComponent {
 
   onSubmit() {
     if (this.formDrug.valid) {
-
       const dateValue = this.formDrug.get('data')?.value;
       const timeValue = this.formDrug.get('horario')?.value;
 
       const date = new Date(dateValue);
-      const time = new Date(`2000-01-01T${timeValue}`)
+      const time = new Date(`2000-01-01T${timeValue}`);
 
-    const combinedDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      time.getHours(),
-      time.getMinutes(),
-      time.getSeconds()
-    );
+      const combinedDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        time.getHours(),
+        time.getMinutes(),
+        time.getSeconds()
+      );
 
-    const formattedValue = this.datePipe.transform(combinedDate, 'dd/MM/yyyy HH:mm:ss');
-    
-    const drug: DrugRequest = {
-      ...this.formDrug.value,
-      dtaMedicamento: formattedValue
-    }
+      const formattedValue = this.datePipe.transform(
+        combinedDate,
+        'dd/MM/yyyy HH:mm:ss'
+      );
 
-     console.log(drug)
+      const drug: DrugRequest = {
+        ...this.formDrug.value,
+        dtaMedicamento: formattedValue,
+      };
+
+      console.log(drug);
       return this.saveDrug(drug);
-
     }
   }
 }

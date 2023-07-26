@@ -10,9 +10,9 @@ export const environment = {
   API_COMPANY: '/empresas',
   API_EXAM: '/exames',
   API_DRUG: '/medicamentos',
-  API_DIET: '/diet',
-  API_EXERCISE: '/exercise',
-  API_USER: 'user/',
+  API_DIET: '/dietas',
+  API_EXERCISE: '/exercicios',
+  API_USER: '/usuarios',
 
 
   //VIA CEP
