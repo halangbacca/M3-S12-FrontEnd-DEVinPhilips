@@ -3,7 +3,7 @@
     <mat-card-content>
       <mat-card-title> Cadastro de Medicamento </mat-card-title>
       <div fxLayout="column">
-        <form [formGroup]="formDrug" (ngSubmit)="onSubmit()">
+        <form [formGroup]="formPatient">
           <mat-form-field
             *ngIf="pacientes.length > 0"
             class="full-width"
@@ -20,6 +20,21 @@
             </mat-select>
           </mat-form-field>
 
+          <mat-form-field
+            *ngIf="drugs.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Medicamento</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="medicamento">
+              <mat-option *ngFor="let drug of drugs" [value]="drug.descricao">
+                {{ drug.descricao }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+
+        <form [formGroup]="formDrug" (ngSubmit)="onSubmit()">
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Nome do Medicamento</mat-label>
             <input
@@ -29,27 +44,28 @@
               formControlName="descricao"
             />
 
-            <mat-error id="requiredNomeError">
-              O nome do medicamento é
-              <strong>obrigatório</strong>
+            <mat-error id="requiredDescriptionError">
+              A descrição do medicamento é
+              <strong>obrigatória</strong>
             </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Data do Medicamento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="data">
-            <mat-hint>DD/MM/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="formDrug.controls['data'].hasError('required')">
-              A data do Medicamento é<strong> obrigatória</strong>
+            <mat-label>Data</mat-label>
+            <input matInput placeholder="Data" formControlName="dtaMedicamento" />
+
+            <mat-error id="invalidDataError">
+              Você deve inserir a data da medicação
             </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Hora da medicamento</mat-label>
-            <input type="time" matInput formControlName="horario">
-            <mat-hint>HH:MM</mat-hint>
+            <mat-label>Horário</mat-label>
+            <input matInput placeholder="Horário" formControlName="horario" />
+
+            <mat-error id="invalidHorarioError">
+              Você deve inserir o horário da medicação
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
@@ -74,7 +90,6 @@
             <mat-label>Quantidade</mat-label>
             <input
               matInput
-              type="number"
               placeholder="Quantidade"
               formControlName="quantidade"
             />
@@ -107,8 +122,8 @@
               formControlName="observacao"
             />
 
-            <mat-error id="invalidDescriptionError">
-              Você deve inserir a descrição da medicação
+            <mat-error id="invalidObservationError">
+              Você deve inserir a observation da medicação
             </mat-error>
           </mat-form-field>
 

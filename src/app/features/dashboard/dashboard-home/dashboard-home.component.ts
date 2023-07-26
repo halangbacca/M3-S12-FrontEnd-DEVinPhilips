@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Patient } from 'src/app/shared/models/Patient';
 import { User } from 'src/app/shared/models/User';
 import { AppointmentService } from 'src/app/shared/services/appointment/appointment.service';
+import { DietService } from 'src/app/shared/services/diet/diet.service';
+import { DrugService } from 'src/app/shared/services/drug/drug.service';
 import { ExamService } from 'src/app/shared/services/exam/exam.service';
 import { ExerciseService } from 'src/app/shared/services/exercise/exercise.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
@@ -31,6 +33,8 @@ export class DashboardHomeComponent implements OnInit {
     private patientService: PatientService,
     private userService: UserService,
     private examService: ExamService,
+    private drugService: DrugService,
+    private dietService: DietService,
     private exerciseService: ExerciseService,
     private appointmentService: AppointmentService
   ) {}
@@ -57,6 +61,14 @@ export class DashboardHomeComponent implements OnInit {
 
     this.appointmentService.getAllConsult().subscribe((appointment) => {
       this.qtAppointments = appointment.length;
+    });
+
+    this.drugService.getDrug().subscribe((drug) => {
+      this.qtDrugs = drug.length;
+    });
+
+    this.dietService.getDiet().subscribe((diet) => {
+      this.qtDiets = diet.length;
     });
 
     google.charts.load('current', { packages: ['bar'] });

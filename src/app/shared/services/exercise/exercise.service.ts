@@ -29,7 +29,7 @@ export class ExerciseService {
 
   getExerciseByPatientName(nome: string): Observable<Exercise[]> {
     return this.httpClient
-      .get<Exercise[]>(`${this.url}/?nomePaciente=${nome}`)
+      .get<Exercise[]>(`${this.url}?nomePaciente=${nome}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 

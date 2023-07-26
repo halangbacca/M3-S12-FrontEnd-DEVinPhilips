@@ -29,7 +29,7 @@ import { Diet } from '../../models/Dieta';
   
     getDietByPatientName(nome: string): Observable<Diet[]> {
       return this.httpClient
-        .get<Diet[]>(`${this.url}/?nomePaciente=${nome}`)
+        .get<Diet[]>(`${this.url}?nomePaciente=${nome}`)
         .pipe(retry(2), catchError(this.handleError));
     }
   

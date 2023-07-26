@@ -30,7 +30,7 @@ export class DrugService {
 
   getDrugByPatientName(nome: string): Observable<Drug[]> {
     return this.httpClient
-      .get<Drug[]>(`${this.url}/?nomePaciente=${nome}`)
+      .get<Drug[]>(`${this.url}?nomePaciente=${nome}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -40,7 +40,7 @@ export class DrugService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  saveDrug(drug: DrugRequest): Observable<Drug[]> {
+  saveDrug(drug: Drug): Observable<Drug[]> {
     return this.httpClient
       .post<Drug[]>(this.url, JSON.stringify(drug), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));

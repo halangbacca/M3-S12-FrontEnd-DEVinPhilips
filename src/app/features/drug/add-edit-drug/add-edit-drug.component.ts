@@ -6,9 +6,6 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { DrugService } from 'src/app/shared/services/drug/drug.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
-import { DatePipe } from '@angular/common';
-import { DrugRequest } from 'src/app/shared/models/DrugRequest';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -18,24 +15,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AddEditDrugComponent {
   drug = {} as Drug;
   patient = {} as Patient;
-  id!: number;
+
   formDrug!: FormGroup;
   formPatient!: FormGroup;
+
   drugs = [] as Drug[];
   pacientes = [] as Patient[];
+
   isDisabled = true;
   isEditing = false;
 
-  today!: Date;
-
   constructor(
-    private datePipe: DatePipe,
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private drugService: DrugService,
-    private router: Router,
-    private rout: ActivatedRoute
+    private drugService: DrugService
   ) {}
 
   createform(drug: Drug) {
@@ -51,7 +45,7 @@ export class AddEditDrugComponent {
           Validators.maxLength(100),
         ],
       ],
-      data: [drug.data, [Validators.required]],
+      dtaMedicamento: [drug.dtaMedicamento, [Validators.required]],
       horario: [drug.horario, [Validators.required]],
       tipo: [drug.tipo, [Validators.required]],
       quantidade: [drug.quantidade, [Validators.required]],
@@ -64,7 +58,7 @@ export class AddEditDrugComponent {
           Validators.maxLength(1000),
         ],
       ],
-      statusDoSistema: [true],
+      situacao: [true],
     });
   }
 
@@ -76,42 +70,37 @@ export class AddEditDrugComponent {
   }
 
   ngOnInit(): void {
-    this.id = this.rout.snapshot.params['id'];
-
     this.createform(this.drug);
     this.createPatientForm();
-    this.today = new Date();
-
-    const hora =
-      this.today.getHours() < 10
-        ? `0${this.today.getHours()}`
-        : `${this.today.getHours()}`;
-    const minuto =
-      this.today.getMinutes() < 10
-        ? `0${this.today.getMinutes()}`
-        : `${this.today.getMinutes()}`;
-    const horaConsulta = `${hora}:${minuto}`;
-
-    this.formDrug.patchValue({
-      ...this.drug,
-      data: new Date(),
-      horario: horaConsulta,
-    });
 
     this.patientService.getAllPatient().subscribe((ret) => {
       this.pacientes = ret;
     });
 
-    this.formDrug.get('data')?.setValue(new Date());
+    this.formDrug
+      .get('dtaMedicamento')
+      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDrug
       .get('horario')
-      ?.setValue(formatDate(new Date(), 'H:mm', 'en'));
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
   onFocus() {
+    if (this.formPatient.get('nomePaciente')?.value != null) {
+      this.patientService.getAllPatient().subscribe((ret) => {
+        this.pacientes = ret;
+
+        this.drugService
+          .getDrugByPatientName(this.formPatient.get('nomePaciente')?.value)
+          .subscribe((ret) => {
+            this.drugs = ret;
+          });
+      });
+    }
+
     this.pacientes.forEach((patient) => {
-      if (patient.nome === this.formDrug.get('nomePaciente')?.value) {
+      if (patient.nome === this.formPatient.get('nomePaciente')?.value) {
         this.formDrug.get('idPaciente')?.setValue(patient.id);
         this.formDrug.get('nomePaciente')?.setValue(patient.nome);
       }
@@ -137,20 +126,20 @@ export class AddEditDrugComponent {
     this.isEditing = false;
 
     this.formDrug
-      .get('data')
+      .get('dtaMedicamento')
       ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
 
     this.formDrug
       .get('horario')
-      ?.setValue(formatDate(new Date(), 'H:mm', 'en'));
+      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
   }
 
-  saveDrug(drug: DrugRequest) {
+  saveDrug(drug: Drug) {
     this.drugService.saveDrug(drug).subscribe(() => {
       this.notificationService.openSnackBar(
         'Medicamento cadastrado com sucesso!'
       );
-      this.router.navigateByUrl('/home');
+      this.clearForm();
     });
   }
 
@@ -165,20 +154,20 @@ export class AddEditDrugComponent {
 
   editDrug() {
     const id = this.formDrug.get('id')?.value;
-    const novoNome = this.formDrug.get('nome')?.value;
-    const novaData = this.formDrug.get('data')?.value;
+    const novoNome = this.formDrug.get('descricao')?.value;
+    const novaData = this.formDrug.get('dtaMedicamento')?.value;
     const novoHorario = this.formDrug.get('horario')?.value;
     const novoTipo = this.formDrug.get('tipo')?.value;
     const novaQuantidade = this.formDrug.get('quantidade')?.value;
     const novaUnidade = this.formDrug.get('unidade')?.value;
-    const novasObservacoes = this.formDrug.get('observacoes')?.value;
+    const novasObservacoes = this.formDrug.get('observacao')?.value;
 
     if (this.formDrug.valid) {
       this.drugService.getDrug().subscribe((ret) => {
         ret.forEach((drug) => {
           if (drug.id === id) {
             drug.descricao = novoNome;
-            drug.data = novaData;
+            drug.dtaMedicamento = novaData;
             drug.horario = novoHorario;
             drug.tipo = novoTipo;
             drug.quantidade = novaQuantidade;
@@ -208,33 +197,7 @@ export class AddEditDrugComponent {
 
   onSubmit() {
     if (this.formDrug.valid) {
-      const dateValue = this.formDrug.get('data')?.value;
-      const timeValue = this.formDrug.get('horario')?.value;
-
-      const date = new Date(dateValue);
-      const time = new Date(`2000-01-01T${timeValue}`);
-
-      const combinedDate = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        time.getHours(),
-        time.getMinutes(),
-        time.getSeconds()
-      );
-
-      const formattedValue = this.datePipe.transform(
-        combinedDate,
-        'dd/MM/yyyy HH:mm:ss'
-      );
-
-      const drug: DrugRequest = {
-        ...this.formDrug.value,
-        dtaMedicamento: formattedValue,
-      };
-
-      console.log(drug);
-      return this.saveDrug(drug);
+      return this.saveDrug(this.formDrug.value);
     }
   }
 }

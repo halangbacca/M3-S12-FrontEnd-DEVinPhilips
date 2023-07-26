@@ -37,17 +37,17 @@ export class AddEditDietComponent {
       id: [diet.id],
       idPaciente: [diet.idPaciente],
       nomePaciente: [diet.nomePaciente, [Validators.required]],
-      nome: [
-        diet.nome,
+      nomeDieta: [
+        diet.nomeDieta,
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(100),
         ],
       ],
-      dtaDieta: [diet.data, [Validators.required]],
+      dtaDieta: [diet.dtaDieta, [Validators.required]],
       horario: [diet.horario, [Validators.required]],
-      tipo: [diet.tipo, [Validators.required]],
+      tipoDieta: [diet.tipoDieta, [Validators.required]],
       descricao: [
         diet.descricao,
         [
@@ -56,7 +56,7 @@ export class AddEditDietComponent {
           Validators.maxLength(1000),
         ],
       ],
-      statusDoSistema: [true],
+      situacao: [true],
     });
   }
 
@@ -106,7 +106,7 @@ export class AddEditDietComponent {
 
     if (this.formPatient.get('dieta')?.value != null) {
       this.diets.forEach((item) => {
-        if (item.nome === this.formPatient.get('dieta')?.value) {
+        if (item.nomeDieta === this.formPatient.get('dieta')?.value) {
           this.formDiet.patchValue(item);
           this.isDisabled = false;
           this.isEditing = true;
@@ -148,22 +148,22 @@ export class AddEditDietComponent {
 
   editDiet() {
     const id = this.formDiet.get('id')?.value;
-    const novoNome = this.formDiet.get('nome')?.value;
+    const novoNome = this.formDiet.get('nomeDieta')?.value;
     const novaData = this.formDiet.get('dtaDieta')?.value;
     const novoHorario = this.formDiet.get('horario')?.value;
-    const novoTipo = this.formDiet.get('tipo')?.value;
+    const novoTipo = this.formDiet.get('tipoDieta')?.value;
     const novaDescricao = this.formDiet.get('descricao')?.value;
 
     if (this.formDiet.valid) {
       this.dietService.getDiet().subscribe((ret) => {
         ret.forEach((diet) => {
           if (diet.id === id) {
-            diet.nome = novoNome;
-            diet.data = novaData;
+            diet.nomeDieta = novoNome;
+            diet.dtaDieta = novaData;
             diet.horario = novoHorario;
-            diet.tipo = novoTipo;
+            diet.tipoDieta = novoTipo;
             diet.descricao = novaDescricao;
-            diet.statusDoSistema = true;
+            diet.situacao = true;
             this.updateDiet(diet);
           }
         });

@@ -3,7 +3,7 @@ export interface Drug {
     idPaciente: number;
     nomePaciente: string;
     descricao: string;
-    data: string;
+    dtaMedicamento: string;
     horario: string;
     tipo: string;
     quantidade: number;
