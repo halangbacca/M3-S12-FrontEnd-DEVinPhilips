@@ -1,1 +1,72 @@
-<p>dashboard-home works!</p>
+<mat-card class="card">
+  <mat-card-content>
+    <mat-card-title> Estatísticas e Informações </mat-card-title>
+    <div id="barchart_material"></div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="card">
+  <mat-card-content>
+    <mat-card-title> Pesquisa de Usuário </mat-card-title>
+    <mat-form-field appearance="fill" class="pesquisa-usuario">
+      <mat-label>Pesquise um Usuário</mat-label>
+      <input
+        matInput
+        placeholder="Digite o nome, cpf, e-mail ou telefone do usuário"
+        (input)="searchUser($event)"
+        name="nome"
+      />
+    </mat-form-field>
+    <mat-card *ngFor="let patient of filteredPatients" class="usuarios">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>{{ patient.nome }}</mat-card-title>
+          <mat-card-subtitle>{{ patient.dtaNascimento }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.email }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.telefone }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.convenio }}</mat-card-subtitle>
+          <img
+            mat-card-lg-image
+            src="https://cdn-icons-png.flaticon.com/512/1430/1430453.png"
+          />
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button color="primary">Ver mais</button>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="card">
+  <mat-card-content>
+    <mat-card-title> Pesquisa de Paciente </mat-card-title>
+    <mat-form-field appearance="fill" class="pesquisa-paciente">
+      <mat-label>Pesquise um Paciente</mat-label>
+      <input
+        matInput
+        placeholder="Digite o nome, cpf, e-mail ou telefone do paciente"
+        (input)="searchPatient($event)"
+        name="nome"
+      />
+    </mat-form-field>
+    <mat-card *ngFor="let patient of filteredPatients" class="pacientes">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>{{ patient.nome }}</mat-card-title>
+          <mat-card-subtitle>{{ patient.dtaNascimento }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.email }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.telefone }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ patient.convenio }}</mat-card-subtitle>
+          <img
+            mat-card-lg-image
+            src="https://cdn-icons-png.flaticon.com/512/1430/1430453.png"
+          />
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <button mat-button color="primary">Ver mais</button>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

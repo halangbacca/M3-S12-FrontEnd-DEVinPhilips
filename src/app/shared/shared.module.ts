@@ -7,8 +7,6 @@ import { CpfPipe } from './pipes/cpf/cpf.pipe';
 import { CepPipe } from './pipes/cep/cep.pipe';
 import { PhonePipe } from './pipes/phone/phone.pipe';
 
-
-
 @NgModule({
   declarations: [LayoutComponent, CpfPipe, CepPipe, PhonePipe],
   imports: [CommonModule, CustomMaterialModule, RouterModule],
