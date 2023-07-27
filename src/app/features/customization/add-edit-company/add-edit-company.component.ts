@@ -139,7 +139,7 @@ export class AddEditCompanyComponent {
   }
 
   onSubmit() {
-    if (this.formCompany.valid && this.isEditing != true) {
+    if (this.formCompany.valid && this.isEditing == false) {
       return this.saveCompany(this.formCompany.value);
     }
   }

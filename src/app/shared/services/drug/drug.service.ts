@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Drug} from '../../models/Drug';
-import { DrugRequest } from '../../models/DrugRequest';
 
 @Injectable({
   providedIn: 'root',

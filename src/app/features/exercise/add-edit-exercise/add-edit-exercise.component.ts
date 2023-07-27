@@ -38,7 +38,7 @@ export class AddEditExerciseComponent {
     this.formExercise = this.formBuilder.group({
       id: [exercise.id],
       idPaciente: [exercise.idPaciente],
-      nomePaciente: [exercise.nomePaciente, [Validators.required]],
+      nomePaciente: ['', [Validators.required]],
       nomeExercicio: [
         exercise.nomeExercicio,
         [
@@ -48,7 +48,7 @@ export class AddEditExerciseComponent {
         ],
       ],
       dtaExercicio: [exercise.dtaExercicio, [Validators.required]],
-      horario: [exercise.horario, [Validators.required]],
+      horario: ['', [Validators.required]],
       tipoExercicio: [exercise.tipoExercicio, [Validators.required]],
       qtdSemana: [exercise.qtdSemana, [Validators.required]],
       descricao: [
@@ -59,7 +59,6 @@ export class AddEditExerciseComponent {
           Validators.maxLength(1000),
         ],
       ],
-      situacao: [true],
     });
   }
 
@@ -80,7 +79,7 @@ export class AddEditExerciseComponent {
 
     this.formExercise
       .get('dtaExercicio')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formExercise
       .get('horario')
@@ -110,7 +109,10 @@ export class AddEditExerciseComponent {
     if (this.formPatient.get('exercicio')?.value != null) {
       this.exercises.forEach((item) => {
         if (item.nomeExercicio === this.formPatient.get('exercicio')?.value) {
+          const novaData = item.dtaExercicio.split(' ');
           this.formExercise.patchValue(item);
+          this.formExercise.get('dtaExercicio')?.setValue(novaData[0]);
+          this.formExercise.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -128,7 +130,7 @@ export class AddEditExerciseComponent {
 
     this.formExercise
       .get('dtaExercicio')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formExercise
       .get('horario')
@@ -156,8 +158,10 @@ export class AddEditExerciseComponent {
   editExercise() {
     const id = this.formExercise.get('id')?.value;
     const novoNome = this.formExercise.get('nomeExercicio')?.value;
-    const novaData = this.formExercise.get('dtaExercicio')?.value;
-    const novoHorario = this.formExercise.get('horario')?.value;
+    const idPaciente = this.formExercise.get('idPaciente')?.value;
+    const novaData = `${this.formExercise.get('dtaExercicio')?.value} ${
+      this.formExercise.get('horario')?.value
+    }`;
     const novoTipo = this.formExercise.get('tipoExercicio')?.value;
     const novaQtd = this.formExercise.get('qtdSemana')?.value;
     const novaDescricao = this.formExercise.get('descricao')?.value;
@@ -166,13 +170,12 @@ export class AddEditExerciseComponent {
       this.exerciseService.getExercise().subscribe((ret) => {
         ret.forEach((exercise) => {
           if (exercise.id === id) {
+            exercise.idPaciente = idPaciente;
             exercise.nomeExercicio = novoNome;
             exercise.dtaExercicio = novaData;
-            exercise.horario = novoHorario;
             exercise.tipoExercicio = novoTipo;
             exercise.qtdSemana = novaQtd;
             exercise.descricao = novaDescricao;
-            exercise.situacao = true;
             this.updateExercise(exercise);
           }
         });
@@ -195,7 +198,11 @@ export class AddEditExerciseComponent {
   }
 
   onSubmit() {
-    if (this.formExercise.valid) {
+    if (this.formExercise.valid && this.isEditing == false) {
+      const novaData = `${this.formExercise.get('dtaExercicio')?.value} ${
+        this.formExercise.get('horario')?.value
+      }`;
+      this.formExercise.get('dtaExercicio')?.setValue(novaData);
       return this.saveExercise(this.formExercise.value);
     }
   }

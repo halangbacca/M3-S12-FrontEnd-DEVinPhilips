@@ -36,7 +36,7 @@ export class AddEditDrugComponent {
     this.formDrug = this.formBuilder.group({
       id: [drug.id],
       idPaciente: [drug.idPaciente],
-      nomePaciente: [drug.nomePaciente, [Validators.required]],
+      nomePaciente: ['', [Validators.required]],
       descricao: [
         drug.descricao,
         [
@@ -46,7 +46,7 @@ export class AddEditDrugComponent {
         ],
       ],
       dtaMedicamento: [drug.dtaMedicamento, [Validators.required]],
-      horario: [drug.horario, [Validators.required]],
+      horario: ['', [Validators.required]],
       tipo: [drug.tipo, [Validators.required]],
       quantidade: [drug.quantidade, [Validators.required]],
       unidade: [drug.unidade, [Validators.required]],
@@ -58,7 +58,6 @@ export class AddEditDrugComponent {
           Validators.maxLength(1000),
         ],
       ],
-      situacao: [true],
     });
   }
 
@@ -79,7 +78,7 @@ export class AddEditDrugComponent {
 
     this.formDrug
       .get('dtaMedicamento')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDrug
       .get('horario')
@@ -109,7 +108,10 @@ export class AddEditDrugComponent {
     if (this.formPatient.get('medicamento')?.value != null) {
       this.drugs.forEach((item) => {
         if (item.descricao === this.formPatient.get('medicamento')?.value) {
+          const novaData = item.dtaMedicamento.split(' ');
           this.formDrug.patchValue(item);
+          this.formDrug.get('dtaMedicamento')?.setValue(novaData[0]);
+          this.formDrug.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -127,7 +129,7 @@ export class AddEditDrugComponent {
 
     this.formDrug
       .get('dtaMedicamento')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDrug
       .get('horario')
@@ -155,8 +157,10 @@ export class AddEditDrugComponent {
   editDrug() {
     const id = this.formDrug.get('id')?.value;
     const novoNome = this.formDrug.get('descricao')?.value;
-    const novaData = this.formDrug.get('dtaMedicamento')?.value;
-    const novoHorario = this.formDrug.get('horario')?.value;
+    const idPaciente = this.formDrug.get('idPaciente')?.value;
+    const novaData = `${this.formDrug.get('dtaMedicamento')?.value} ${
+      this.formDrug.get('horario')?.value
+    }`;
     const novoTipo = this.formDrug.get('tipo')?.value;
     const novaQuantidade = this.formDrug.get('quantidade')?.value;
     const novaUnidade = this.formDrug.get('unidade')?.value;
@@ -166,14 +170,13 @@ export class AddEditDrugComponent {
       this.drugService.getDrug().subscribe((ret) => {
         ret.forEach((drug) => {
           if (drug.id === id) {
+            drug.idPaciente = idPaciente;
             drug.descricao = novoNome;
             drug.dtaMedicamento = novaData;
-            drug.horario = novoHorario;
             drug.tipo = novoTipo;
             drug.quantidade = novaQuantidade;
             drug.unidade = novaUnidade;
             drug.observacao = novasObservacoes;
-            drug.situacao = true;
             this.updateDrug(drug);
           }
         });
@@ -196,7 +199,11 @@ export class AddEditDrugComponent {
   }
 
   onSubmit() {
-    if (this.formDrug.valid) {
+    if (this.formDrug.valid && this.isEditing == false) {
+      const novaData = `${this.formDrug.get('dtaMedicamento')?.value} ${
+        this.formDrug.get('horario')?.value
+      }`;
+      this.formDrug.get('dtaMedicamento')?.setValue(novaData);
       return this.saveDrug(this.formDrug.value);
     }
   }

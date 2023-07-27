@@ -36,7 +36,7 @@ export class AddEditDietComponent {
     this.formDiet = this.formBuilder.group({
       id: [diet.id],
       idPaciente: [diet.idPaciente],
-      nomePaciente: [diet.nomePaciente, [Validators.required]],
+      nomePaciente: ['', [Validators.required]],
       nomeDieta: [
         diet.nomeDieta,
         [
@@ -56,7 +56,6 @@ export class AddEditDietComponent {
           Validators.maxLength(1000),
         ],
       ],
-      situacao: [true],
     });
   }
 
@@ -77,7 +76,7 @@ export class AddEditDietComponent {
 
     this.formDiet
       .get('dtaDieta')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDiet
       .get('horario')
@@ -108,6 +107,10 @@ export class AddEditDietComponent {
       this.diets.forEach((item) => {
         if (item.nomeDieta === this.formPatient.get('dieta')?.value) {
           this.formDiet.patchValue(item);
+          const novaData = item.dtaDieta.split(' ');
+          this.formDiet.patchValue(item);
+          this.formDiet.get('dtaDieta')?.setValue(novaData[0]);
+          this.formDiet.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -125,7 +128,7 @@ export class AddEditDietComponent {
 
     this.formDiet
       .get('dtaDieta')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDiet
       .get('horario')
@@ -149,8 +152,10 @@ export class AddEditDietComponent {
   editDiet() {
     const id = this.formDiet.get('id')?.value;
     const novoNome = this.formDiet.get('nomeDieta')?.value;
-    const novaData = this.formDiet.get('dtaDieta')?.value;
-    const novoHorario = this.formDiet.get('horario')?.value;
+    const idPaciente = this.formDiet.get('idPaciente')?.value;
+    const novaData = `${this.formDiet.get('dtaDieta')?.value} ${
+      this.formDiet.get('horario')?.value
+    }`;
     const novoTipo = this.formDiet.get('tipoDieta')?.value;
     const novaDescricao = this.formDiet.get('descricao')?.value;
 
@@ -158,12 +163,11 @@ export class AddEditDietComponent {
       this.dietService.getDiet().subscribe((ret) => {
         ret.forEach((diet) => {
           if (diet.id === id) {
+            diet.idPaciente = idPaciente;
             diet.nomeDieta = novoNome;
             diet.dtaDieta = novaData;
-            diet.horario = novoHorario;
             diet.tipoDieta = novoTipo;
             diet.descricao = novaDescricao;
-            diet.situacao = true;
             this.updateDiet(diet);
           }
         });
@@ -184,7 +188,11 @@ export class AddEditDietComponent {
   }
 
   onSubmit() {
-    if (this.formDiet.valid) {
+    if (this.formDiet.valid && this.isEditing == false) {
+      const novaData = `${this.formDiet.get('dtaDieta')?.value} ${
+        this.formDiet.get('horario')?.value
+      }`;
+      this.formDiet.get('dtaDieta')?.setValue(novaData);
       return this.saveDiet(this.formDiet.value);
     }
   }
