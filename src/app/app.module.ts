@@ -13,7 +13,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
