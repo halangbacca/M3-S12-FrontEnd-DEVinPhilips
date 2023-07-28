@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 
 
 @NgModule({
@@ -32,6 +33,11 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
       multi: true,
     }],
   bootstrap: [AppComponent],
