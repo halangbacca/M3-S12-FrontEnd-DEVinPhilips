@@ -31,8 +31,8 @@
           >
             <mat-label>Selecione uma Dieta</mat-label>
             <mat-select (focus)="onFocus()" formControlName="dieta">
-              <mat-option *ngFor="let diet of diets" [value]="diet.nome">
-                {{ diet.nome }}
+              <mat-option *ngFor="let diet of diets" [value]="diet.nomeDieta">
+                {{ diet.nomeDieta }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -45,7 +45,7 @@
               (focus)="onFocus()"
               matInput
               placeholder="Nome"
-              formControlName="nome"
+              formControlName="nomeDieta"
             />
 
             <mat-error id="requiredNomeError">
@@ -56,7 +56,7 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Data</mat-label>
-            <input matInput placeholder="Data" formControlName="data" />
+            <input matInput placeholder="Data" formControlName="dtaDieta" />
 
             <mat-error id="invalidDataError">
               Você deve inserir a data da dieta
@@ -74,14 +74,14 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Tipo</mat-label>
-            <mat-select formControlName="tipo">
-              <mat-option value="low-carb">Low Carb</mat-option>
-              <mat-option value="dash">Dash</mat-option>
-              <mat-option value="paleolitica">Paleolítica</mat-option>
-              <mat-option value="cetogenica">Cetogênica</mat-option>
-              <mat-option value="dukan">Dukan</mat-option>
-              <mat-option value="mediterranea">Mediterrânea</mat-option>
-              <mat-option value="outra">Outra</mat-option>
+            <mat-select formControlName="tipoDieta">
+              <mat-option value="LOW_CARB">Low Carb</mat-option>
+              <mat-option value="DASH">Dash</mat-option>
+              <mat-option value="PALEOLITICA">Paleolítica</mat-option>
+              <mat-option value="CETOGENICA">Cetogênica</mat-option>
+              <mat-option value="DUKAN">Dukan</mat-option>
+              <mat-option value="MEDITERRANEA">Mediterrânea</mat-option>
+              <mat-option value="OUTRA">Outra</mat-option>
             </mat-select>
 
             <mat-error id="invalidTipoError">
@@ -128,6 +128,14 @@
               color="accent"
             >
               DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
             </button>
           </div>
         </form>

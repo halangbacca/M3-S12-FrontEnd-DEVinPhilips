@@ -6,6 +6,8 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { DrugService } from 'src/app/shared/services/drug/drug.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -29,36 +31,36 @@ export class AddEditDrugComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private drugService: DrugService
+    private drugService: DrugService,
+    public dialog: MatDialog
   ) {}
 
   createform(drug: Drug) {
     this.formDrug = this.formBuilder.group({
       id: [drug.id],
       idPaciente: [drug.idPaciente],
-      nomePaciente: [drug.nomePaciente, [Validators.required]],
-      nome: [
-        drug.nome,
+      nomePaciente: ['', [Validators.required]],
+      descricao: [
+        drug.descricao,
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(100),
         ],
       ],
-      data: [drug.data, [Validators.required]],
-      horario: [drug.horario, [Validators.required]],
+      dtaMedicamento: [drug.dtaMedicamento, [Validators.required]],
+      horario: ['', [Validators.required]],
       tipo: [drug.tipo, [Validators.required]],
       quantidade: [drug.quantidade, [Validators.required]],
       unidade: [drug.unidade, [Validators.required]],
-      observacoes: [
-        drug.observacoes,
+      observacao: [
+        drug.observacao,
         [
           Validators.required,
           Validators.minLength(10),
           Validators.maxLength(1000),
         ],
       ],
-      statusDoSistema: [true],
     });
   }
 
@@ -78,8 +80,8 @@ export class AddEditDrugComponent {
     });
 
     this.formDrug
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaMedicamento')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDrug
       .get('horario')
@@ -108,8 +110,11 @@ export class AddEditDrugComponent {
 
     if (this.formPatient.get('medicamento')?.value != null) {
       this.drugs.forEach((item) => {
-        if (item.nome === this.formPatient.get('medicamento')?.value) {
+        if (item.descricao === this.formPatient.get('medicamento')?.value) {
+          const novaData = item.dtaMedicamento.split(' ');
           this.formDrug.patchValue(item);
+          this.formDrug.get('dtaMedicamento')?.setValue(novaData[0]);
+          this.formDrug.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -126,8 +131,8 @@ export class AddEditDrugComponent {
     this.isEditing = false;
 
     this.formDrug
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaMedicamento')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDrug
       .get('horario')
@@ -135,11 +140,6 @@ export class AddEditDrugComponent {
   }
 
   saveDrug(drug: Drug) {
-    this.drugs.forEach((item) => {
-      if (item.id === drug.id) {
-        this.notificationService.openSnackBar('Medicamento já cadastrado!');
-      }
-    });
     this.drugService.saveDrug(drug).subscribe(() => {
       this.notificationService.openSnackBar(
         'Medicamento cadastrado com sucesso!'
@@ -159,26 +159,27 @@ export class AddEditDrugComponent {
 
   editDrug() {
     const id = this.formDrug.get('id')?.value;
-    const novoNome = this.formDrug.get('nome')?.value;
-    const novaData = this.formDrug.get('data')?.value;
-    const novoHorario = this.formDrug.get('horario')?.value;
+    const novoNome = this.formDrug.get('descricao')?.value;
+    const idPaciente = this.formDrug.get('idPaciente')?.value;
+    const novaData = `${this.formDrug.get('dtaMedicamento')?.value} ${
+      this.formDrug.get('horario')?.value
+    }`;
     const novoTipo = this.formDrug.get('tipo')?.value;
     const novaQuantidade = this.formDrug.get('quantidade')?.value;
     const novaUnidade = this.formDrug.get('unidade')?.value;
-    const novasObservacoes = this.formDrug.get('observacoes')?.value;
+    const novasObservacoes = this.formDrug.get('observacao')?.value;
 
     if (this.formDrug.valid) {
       this.drugService.getDrug().subscribe((ret) => {
         ret.forEach((drug) => {
           if (drug.id === id) {
-            drug.nome = novoNome;
-            drug.data = novaData;
-            drug.horario = novoHorario;
+            drug.idPaciente = idPaciente;
+            drug.descricao = novoNome;
+            drug.dtaMedicamento = novaData;
             drug.tipo = novoTipo;
             drug.quantidade = novaQuantidade;
             drug.unidade = novaUnidade;
-            drug.observacoes = novasObservacoes;
-            drug.statusDoSistema = true;
+            drug.observacao = novasObservacoes;
             this.updateDrug(drug);
           }
         });
@@ -200,8 +201,21 @@ export class AddEditDrugComponent {
     }
   }
 
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
+  }
+
   onSubmit() {
-    if (this.formDrug.valid) {
+    if (this.formDrug.valid && this.isEditing == false) {
+      const novaData = `${this.formDrug.get('dtaMedicamento')?.value} ${
+        this.formDrug.get('horario')?.value
+      }`;
+      this.formDrug.get('dtaMedicamento')?.setValue(novaData);
       return this.saveDrug(this.formDrug.value);
     }
   }

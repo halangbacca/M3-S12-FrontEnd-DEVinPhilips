@@ -98,14 +98,14 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Tipo</mat-label>
-            <mat-select formControlName="tipo">
-              <mat-option value="administrador">Administrador</mat-option>
-              <mat-option value="medico">Médico</mat-option>
-              <mat-option value="enfermeiro">Enfermeiro</mat-option>
+            <mat-select formControlName="nivel">
+              <mat-option value="ADMINISTRADOR">Administrador</mat-option>
+              <mat-option value="MEDICO">Médico</mat-option>
+              <mat-option value="ENFERMEIRO">Enfermeiro</mat-option>
             </mat-select>
 
-            <mat-error id="invalidTipoError">
-              Você deve selecionar o tipo do usuário
+            <mat-error id="invalidNivelError">
+              Você deve selecionar o nível do usuário
             </mat-error>
           </mat-form-field>
 
@@ -135,6 +135,14 @@
               color="accent"
             >
               INATIVAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
             </button>
           </div>
         </form>

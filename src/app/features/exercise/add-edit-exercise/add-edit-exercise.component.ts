@@ -7,6 +7,8 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { ExerciseService } from 'src/app/shared/services/exercise/exercise.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 
 @Component({
   selector: 'app-add-edit-exercise',
@@ -31,25 +33,26 @@ export class AddEditExerciseComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private exerciseService: ExerciseService
+    private exerciseService: ExerciseService,
+    public dialog: MatDialog
   ) {}
 
   createform(exercise: Exercise) {
     this.formExercise = this.formBuilder.group({
       id: [exercise.id],
       idPaciente: [exercise.idPaciente],
-      nomePaciente: [exercise.nomePaciente, [Validators.required]],
-      nome: [
-        exercise.nome,
+      nomePaciente: ['', [Validators.required]],
+      nomeExercicio: [
+        exercise.nomeExercicio,
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(100),
         ],
       ],
-      data: [exercise.data, [Validators.required]],
-      horario: [exercise.horario, [Validators.required]],
-      tipo: [exercise.tipo, [Validators.required]],
+      dtaExercicio: [exercise.dtaExercicio, [Validators.required]],
+      horario: ['', [Validators.required]],
+      tipoExercicio: [exercise.tipoExercicio, [Validators.required]],
       qtdSemana: [exercise.qtdSemana, [Validators.required]],
       descricao: [
         exercise.descricao,
@@ -59,7 +62,6 @@ export class AddEditExerciseComponent {
           Validators.maxLength(1000),
         ],
       ],
-      statusDoSistema: [true],
     });
   }
 
@@ -79,8 +81,8 @@ export class AddEditExerciseComponent {
     });
 
     this.formExercise
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaExercicio')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formExercise
       .get('horario')
@@ -109,8 +111,11 @@ export class AddEditExerciseComponent {
 
     if (this.formPatient.get('exercicio')?.value != null) {
       this.exercises.forEach((item) => {
-        if (item.nome === this.formPatient.get('exercicio')?.value) {
+        if (item.nomeExercicio === this.formPatient.get('exercicio')?.value) {
+          const novaData = item.dtaExercicio.split(' ');
           this.formExercise.patchValue(item);
+          this.formExercise.get('dtaExercicio')?.setValue(novaData[0]);
+          this.formExercise.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -127,8 +132,8 @@ export class AddEditExerciseComponent {
     this.isEditing = false;
 
     this.formExercise
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaExercicio')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formExercise
       .get('horario')
@@ -155,10 +160,12 @@ export class AddEditExerciseComponent {
 
   editExercise() {
     const id = this.formExercise.get('id')?.value;
-    const novoNome = this.formExercise.get('nome')?.value;
-    const novaData = this.formExercise.get('data')?.value;
-    const novoHorario = this.formExercise.get('horario')?.value;
-    const novoTipo = this.formExercise.get('tipo')?.value;
+    const novoNome = this.formExercise.get('nomeExercicio')?.value;
+    const idPaciente = this.formExercise.get('idPaciente')?.value;
+    const novaData = `${this.formExercise.get('dtaExercicio')?.value} ${
+      this.formExercise.get('horario')?.value
+    }`;
+    const novoTipo = this.formExercise.get('tipoExercicio')?.value;
     const novaQtd = this.formExercise.get('qtdSemana')?.value;
     const novaDescricao = this.formExercise.get('descricao')?.value;
 
@@ -166,13 +173,12 @@ export class AddEditExerciseComponent {
       this.exerciseService.getExercise().subscribe((ret) => {
         ret.forEach((exercise) => {
           if (exercise.id === id) {
-            exercise.nome = novoNome;
-            exercise.data = novaData;
-            exercise.horario = novoHorario;
-            exercise.tipo = novoTipo;
+            exercise.idPaciente = idPaciente;
+            exercise.nomeExercicio = novoNome;
+            exercise.dtaExercicio = novaData;
+            exercise.tipoExercicio = novoTipo;
             exercise.qtdSemana = novaQtd;
             exercise.descricao = novaDescricao;
-            exercise.statusDoSistema = true;
             this.updateExercise(exercise);
           }
         });
@@ -194,8 +200,21 @@ export class AddEditExerciseComponent {
     }
   }
 
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
+  }
+
   onSubmit() {
-    if (this.formExercise.valid) {
+    if (this.formExercise.valid && this.isEditing == false) {
+      const novaData = `${this.formExercise.get('dtaExercicio')?.value} ${
+        this.formExercise.get('horario')?.value
+      }`;
+      this.formExercise.get('dtaExercicio')?.setValue(novaData);
       return this.saveExercise(this.formExercise.value);
     }
   }

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from 'src/app/shared/models/User';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -22,7 +24,8 @@ export class AddEditUserComponent {
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    private userService: UserService
+    private userService: UserService,
+    public dialog: MatDialog
   ) {}
 
   createform(user: User) {
@@ -41,8 +44,8 @@ export class AddEditUserComponent {
       telefone: [user.telefone, [Validators.required]],
       email: [user.email, [Validators.required, Validators.email]],
       senha: [user.senha, [Validators.required, Validators.minLength(6)]],
-      tipo: [user.tipo, [Validators.required]],
-      statusDoSistema: [true],
+      nivel: [user.nivel, [Validators.required]],
+      situacao: [true],
     });
   }
 
@@ -106,7 +109,7 @@ export class AddEditUserComponent {
 
   updateUser(user: User) {
     this.userService.updateUser(user).subscribe(() => {
-      if (user.statusDoSistema === true) {
+      if (user.situacao === true) {
         this.notificationService.openSnackBar(
           'Usuário atualizado com sucesso!'
         );
@@ -126,7 +129,7 @@ export class AddEditUserComponent {
     const novoTelefone = this.formUser.get('telefone')?.value;
     const novoEmail = this.formUser.get('email')?.value;
     const novaSenha = this.formUser.get('senha')?.value;
-    const novoTipo = this.formUser.get('tipo')?.value;
+    const novoTipo = this.formUser.get('nivel')?.value;
 
     if (this.formUser.valid) {
       this.userService.getUser().subscribe((ret) => {
@@ -138,8 +141,8 @@ export class AddEditUserComponent {
             user.telefone = novoTelefone;
             user.email = novoEmail;
             user.senha = novaSenha;
-            user.tipo = novoTipo;
-            user.statusDoSistema = true;
+            user.nivel = novoTipo;
+            user.situacao = true;
             this.updateUser(user);
           }
         });
@@ -153,8 +156,8 @@ export class AddEditUserComponent {
     if (this.formUser.valid) {
       this.userService.getUser().subscribe((ret) => {
         ret.forEach((user) => {
-          if (user.id === id && user.statusDoSistema == true) {
-            user.statusDoSistema = false;
+          if (user.id === id && user.situacao == true) {
+            user.situacao = false;
             this.updateUser(user);
           } else {
             this.notificationService.openSnackBar(
@@ -166,8 +169,17 @@ export class AddEditUserComponent {
     }
   }
 
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
+  }
+
   onSubmit() {
-    if (this.formUser.valid) {
+    if (this.formUser.valid && this.isEditing == false) {
       return this.saveUser(this.formUser.value);
     }
   }

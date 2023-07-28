@@ -1,12 +1,10 @@
 export interface Diet {
     id: number;
     idPaciente: number;
-    nomePaciente: string;
-    nome: string;
-    data: string;
+    nomeDieta: string;
+    dtaDieta: string;
     horario: string;
-    tipo: string;
+    tipoDieta: string;
     descricao: string;
-    statusDoSistema: boolean;
   }
   

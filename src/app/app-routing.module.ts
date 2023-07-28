@@ -17,6 +17,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'logs',
+    loadChildren: () =>
+      import('./features/logs/logs.module').then((m) => m.LogsModule),
+  },
+  {
     path: 'medical-record',
     loadChildren: () =>
       import('./features/medical-record/medical-record.module').then(

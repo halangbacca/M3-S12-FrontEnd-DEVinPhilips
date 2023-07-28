@@ -27,8 +27,8 @@
           >
             <mat-label>Selecione um Medicamento</mat-label>
             <mat-select (focus)="onFocus()" formControlName="medicamento">
-              <mat-option *ngFor="let drug of drugs" [value]="drug.nome">
-                {{ drug.nome }}
+              <mat-option *ngFor="let drug of drugs" [value]="drug.descricao">
+                {{ drug.descricao }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -41,18 +41,18 @@
               (focus)="onFocus()"
               matInput
               placeholder="Nome"
-              formControlName="nome"
+              formControlName="descricao"
             />
 
-            <mat-error id="requiredNomeError">
-              O nome do medicamento é
-              <strong>obrigatório</strong>
+            <mat-error id="requiredDescriptionError">
+              A descrição do medicamento é
+              <strong>obrigatória</strong>
             </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Data</mat-label>
-            <input matInput placeholder="Data" formControlName="data" />
+            <input matInput placeholder="Data" formControlName="dtaMedicamento" />
 
             <mat-error id="invalidDataError">
               Você deve inserir a data da medicação
@@ -119,11 +119,11 @@
             <input
               matInput
               placeholder="Observações"
-              formControlName="observacoes"
+              formControlName="observacao"
             />
 
-            <mat-error id="invalidDescriptionError">
-              Você deve inserir a descrição da medicação
+            <mat-error id="invalidObservationError">
+              Você deve inserir a observation da medicação
             </mat-error>
           </mat-form-field>
 
@@ -153,6 +153,14 @@
               color="accent"
             >
               DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
             </button>
           </div>
         </form>

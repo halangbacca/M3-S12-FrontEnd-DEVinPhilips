@@ -60,11 +60,7 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>URL do Logotipo</mat-label>
-            <input
-              matInput
-              placeholder="Logotipo"
-              formControlName="imagemDoLogotipo"
-            />
+            <input matInput placeholder="Logotipo" formControlName="logotipo" />
 
             <mat-error id="invalidLogoError">
               Você deve inserir a URL do logotipo da sua empresa
@@ -97,6 +93,14 @@
               (click)="deleteCompany()"
             >
               DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              color="link"
+              (click)="logs()"
+            >
+              LOGS
             </button>
           </div>
         </form>

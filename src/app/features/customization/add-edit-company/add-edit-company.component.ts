@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company } from 'src/app/shared/models/Company';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CompanyService } from '../../../shared/services/company/customization.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-edit-company',
@@ -22,7 +24,8 @@ export class AddEditCompanyComponent {
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    public dialog: MatDialog
   ) {}
 
   createform(company: Company) {
@@ -31,7 +34,8 @@ export class AddEditCompanyComponent {
       nome: [company.nome, [Validators.required]],
       slogan: [company.slogan],
       palhetaDeCores: [company.palhetaDeCores, [Validators.required]],
-      imagemDoLogotipo: [company.imagemDoLogotipo, [Validators.required]],
+      logotipo: [company.logotipo, [Validators.required]],
+      situacao: [true],
     });
   }
 
@@ -105,7 +109,7 @@ export class AddEditCompanyComponent {
     const novoNome = this.formCompany.get('nome')?.value;
     const novoSlogan = this.formCompany.get('slogan')?.value;
     const novaCor = this.formCompany.get('palhetaDeCores')?.value;
-    const novaLogo = this.formCompany.get('imagemDoLogotipo')?.value;
+    const novaLogo = this.formCompany.get('logotipo')?.value;
 
     if (this.formCompany.valid) {
       this.companyService.getCompany().subscribe((ret) => {
@@ -114,7 +118,8 @@ export class AddEditCompanyComponent {
             company.nome = novoNome;
             company.slogan = novoSlogan;
             company.palhetaDeCores = novaCor;
-            company.imagemDoLogotipo = novaLogo;
+            company.logotipo = novaLogo;
+            company.situacao = true;
             this.updateCompany(company);
           }
         });
@@ -136,8 +141,17 @@ export class AddEditCompanyComponent {
     }
   }
 
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
+  }
+
   onSubmit() {
-    if (this.formCompany.valid) {
+    if (this.formCompany.valid && this.isEditing == false) {
       return this.saveCompany(this.formCompany.value);
     }
   }

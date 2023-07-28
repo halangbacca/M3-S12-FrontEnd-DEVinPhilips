@@ -1,13 +1,10 @@
 export interface Exercise {
     id: number;
     idPaciente: number;
-    nomePaciente: string;
-    nome: string;
-    data: string;
-    horario: string;
-    tipo: string;
+    nomeExercicio: string;
+    dtaExercicio: string;
+    tipoExercicio: string;
     qtdSemana: number;
     descricao: string;
-    statusDoSistema: boolean;
   }
   

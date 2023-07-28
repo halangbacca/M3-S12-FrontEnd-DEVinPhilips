@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Drug } from '../../models/Drug';
+import { Drug} from '../../models/Drug';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,13 @@ export class DrugService {
 
   getDrugByPatientName(nome: string): Observable<Drug[]> {
     return this.httpClient
-      .get<Drug[]>(`${this.url}/?nomePaciente=${nome}`)
+      .get<Drug[]>(`${this.url}?nomePaciente=${nome}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  getDrugById(id: Number): Observable<Drug[]> {
+    return this.httpClient
+      .get<Drug[]>(`${this.url}/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 

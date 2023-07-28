@@ -29,6 +29,14 @@
             [disabled]="patientForm.invalid">
             SALVAR
           </button>
+          <button
+              mat-raised-button
+              (click)="logs()"
+              color="link"
+              [disabled]="!editing"
+            >
+              LOGS
+            </button>
         </mat-card-actions>
         <mat-card-title>Identificação</mat-card-title>
         <div class="row">

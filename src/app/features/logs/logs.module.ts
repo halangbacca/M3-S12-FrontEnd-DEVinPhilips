@@ -4,18 +4,16 @@ import { CommonModule } from '@angular/common';
 import { CustomMaterialModule } from 'src/app/core/custom-material/custom-material.module';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddEditDrugComponent } from './add-edit-drug/add-edit-drug.component';
-import { DrugRoutingModule } from './drug-routing.module';
-import { DatePipe } from '@angular/common';
-
+import { ListLogsComponent } from './list-logs/list-logs.component';
+import { LogsRoutingModule } from './logs-routing.module';
 
 @NgModule({
-  declarations: [AddEditDrugComponent],
+  declarations: [ListLogsComponent],
   imports: [
     CommonModule,
-    DrugRoutingModule,
+    LogsRoutingModule,
     CustomMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
-export class DrugModule {}
+export class LogsModule {}

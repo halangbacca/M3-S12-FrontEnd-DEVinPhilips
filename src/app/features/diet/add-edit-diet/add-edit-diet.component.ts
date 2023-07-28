@@ -1,11 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Diet } from 'src/app/shared/models/Dieta';
 import { Patient } from 'src/app/shared/models/Patient';
 import { DietService } from 'src/app/shared/services/diet/diet.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -29,25 +31,26 @@ export class AddEditDietComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private dietService: DietService
+    private dietService: DietService,
+    public dialog: MatDialog
   ) {}
 
   createform(diet: Diet) {
     this.formDiet = this.formBuilder.group({
       id: [diet.id],
       idPaciente: [diet.idPaciente],
-      nomePaciente: [diet.nomePaciente, [Validators.required]],
-      nome: [
-        diet.nome,
+      nomePaciente: ['', [Validators.required]],
+      nomeDieta: [
+        diet.nomeDieta,
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(100),
         ],
       ],
-      data: [diet.data, [Validators.required]],
+      dtaDieta: [diet.dtaDieta, [Validators.required]],
       horario: [diet.horario, [Validators.required]],
-      tipo: [diet.tipo, [Validators.required]],
+      tipoDieta: [diet.tipoDieta, [Validators.required]],
       descricao: [
         diet.descricao,
         [
@@ -56,7 +59,6 @@ export class AddEditDietComponent {
           Validators.maxLength(1000),
         ],
       ],
-      statusDoSistema: [true],
     });
   }
 
@@ -76,8 +78,8 @@ export class AddEditDietComponent {
     });
 
     this.formDiet
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaDieta')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDiet
       .get('horario')
@@ -106,8 +108,12 @@ export class AddEditDietComponent {
 
     if (this.formPatient.get('dieta')?.value != null) {
       this.diets.forEach((item) => {
-        if (item.nome === this.formPatient.get('dieta')?.value) {
+        if (item.nomeDieta === this.formPatient.get('dieta')?.value) {
           this.formDiet.patchValue(item);
+          const novaData = item.dtaDieta.split(' ');
+          this.formDiet.patchValue(item);
+          this.formDiet.get('dtaDieta')?.setValue(novaData[0]);
+          this.formDiet.get('horario')?.setValue(novaData[1]);
           this.isDisabled = false;
           this.isEditing = true;
         }
@@ -124,8 +130,8 @@ export class AddEditDietComponent {
     this.isEditing = false;
 
     this.formDiet
-      .get('data')
-      ?.setValue(formatDate(new Date(), 'dd-MM-yyyy', 'en'));
+      .get('dtaDieta')
+      ?.setValue(new Date().toLocaleDateString('en-GB'));
 
     this.formDiet
       .get('horario')
@@ -148,22 +154,23 @@ export class AddEditDietComponent {
 
   editDiet() {
     const id = this.formDiet.get('id')?.value;
-    const novoNome = this.formDiet.get('nome')?.value;
-    const novaData = this.formDiet.get('data')?.value;
-    const novoHorario = this.formDiet.get('horario')?.value;
-    const novoTipo = this.formDiet.get('tipo')?.value;
+    const novoNome = this.formDiet.get('nomeDieta')?.value;
+    const idPaciente = this.formDiet.get('idPaciente')?.value;
+    const novaData = `${this.formDiet.get('dtaDieta')?.value} ${
+      this.formDiet.get('horario')?.value
+    }`;
+    const novoTipo = this.formDiet.get('tipoDieta')?.value;
     const novaDescricao = this.formDiet.get('descricao')?.value;
 
     if (this.formDiet.valid) {
       this.dietService.getDiet().subscribe((ret) => {
         ret.forEach((diet) => {
           if (diet.id === id) {
-            diet.nome = novoNome;
-            diet.data = novaData;
-            diet.horario = novoHorario;
-            diet.tipo = novoTipo;
+            diet.idPaciente = idPaciente;
+            diet.nomeDieta = novoNome;
+            diet.dtaDieta = novaData;
+            diet.tipoDieta = novoTipo;
             diet.descricao = novaDescricao;
-            diet.statusDoSistema = true;
             this.updateDiet(diet);
           }
         });
@@ -183,8 +190,21 @@ export class AddEditDietComponent {
     }
   }
 
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
+  }
+
   onSubmit() {
-    if (this.formDiet.valid) {
+    if (this.formDiet.valid && this.isEditing == false) {
+      const novaData = `${this.formDiet.get('dtaDieta')?.value} ${
+        this.formDiet.get('horario')?.value
+      }`;
+      this.formDiet.get('dtaDieta')?.setValue(novaData);
       return this.saveDiet(this.formDiet.value);
     }
   }

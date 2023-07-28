@@ -1,20 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from 'src/app/shared/layout/layout.component';
-import { AddEditDrugComponent } from './add-edit-drug/add-edit-drug.component';
+import { ListLogsComponent } from './list-logs/list-logs.component';
 
 const routes: Routes = [
   {
-    path: 'add',
-    title: 'LABMedical - Cadastrar Medicamento',
+    path: '',
     component: LayoutComponent,
-    children: [
-      { path: '', component: AddEditDrugComponent },
-    ]
+    children: [{ path: '', component: ListLogsComponent }],
   },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DrugRoutingModule {}
+export class LogsRoutingModule {}

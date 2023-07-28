@@ -35,9 +35,9 @@
               <mat-option
                 class="exercicio"
                 *ngFor="let exercise of exercises"
-                [value]="exercise.nome"
+                [value]="exercise.nomeExercicio"
               >
-                {{ exercise.nome }}
+                {{ exercise.nomeExercicio }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -50,7 +50,7 @@
               (focus)="onFocus()"
               matInput
               placeholder="Nome"
-              formControlName="nome"
+              formControlName="nomeExercicio"
             />
 
             <mat-error id="requiredNomeError">
@@ -61,7 +61,7 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Data</mat-label>
-            <input matInput placeholder="Data" formControlName="data" />
+            <input matInput placeholder="Data" formControlName="dtaExercicio" />
 
             <mat-error id="invalidDataError">
               Você deve inserir a data do exercício
@@ -79,17 +79,17 @@
 
           <mat-form-field class="full-width" appearance="outline">
             <mat-label>Tipo</mat-label>
-            <mat-select formControlName="tipo">
-              <mat-option value="resistencia-aerobica"
+            <mat-select formControlName="tipoExercicio">
+              <mat-option value="RESISTENCIA_AEROBICA"
                 >Resistência aeróbica</mat-option
               >
-              <mat-option value="resistencia-muscular"
+              <mat-option value="RESISTENCIA_MUSCULAR"
                 >Resistência muscular</mat-option
               >
-              <mat-option value="flexibilidade">Flexibilidade</mat-option>
-              <mat-option value="forca">Força</mat-option>
-              <mat-option value="agilidade">Agilidade</mat-option>
-              <mat-option value="outro">Outro</mat-option>
+              <mat-option value="FLEXIBILIDADE">Flexibilidade</mat-option>
+              <mat-option value="FORCA">Força</mat-option>
+              <mat-option value="AGILIDADE">Agilidade</mat-option>
+              <mat-option value="OUTRO">Outro</mat-option>
             </mat-select>
 
             <mat-error id="invalidTipoError">
@@ -150,6 +150,14 @@
               color="accent"
             >
               DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
             </button>
           </div>
         </form>
