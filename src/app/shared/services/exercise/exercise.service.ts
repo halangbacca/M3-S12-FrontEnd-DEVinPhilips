@@ -33,6 +33,12 @@ export class ExerciseService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
+  getExerciseByPatientId(id: number): Observable<Exercise[]> {
+    return this.httpClient
+      .get<Exercise[]>(`${this.url}/?idPaciente=${id}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
   saveExercise(exercise: Exercise): Observable<Exercise[]> {
     return this.httpClient
       .post<Exercise[]>(this.url, JSON.stringify(exercise), this.httpOptions)

@@ -1,0 +1,422 @@
+{
+  "appointment": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "motivo": "Teste",
+      "dtaConsulta": "21/07/1998",
+      "horaConsulta": "22:04:00",
+      "problema": "Teste",
+      "medicacao": "AAS",
+      "precaucao": "Alergia"
+    }
+  ],
+  "exam": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "descricao": "Teste",
+      "dtaExame": "21/07/1998",
+      "horaExame": "22:04:00",
+      "tipo": "Eletrocardiograma",
+      "laboratorio": "UFSC",
+      "documento": "www.google.com",
+      "resultado": "Extrassistole"
+    }
+  ],
+  "user": [
+    {
+      "id": 1,
+      "nome": "Halan Germano Bacca",
+      "genero": "masculino",
+      "cpf": "111-111-111-11",
+      "telefone": "(47) 99999-0000",
+      "email": "halan@outlook.com",
+      "senha": "123456789",
+      "tipo": "enfermeiro",
+      "statusDoSistema": false
+    },
+    {
+      "id": 2,
+      "nome": "Usuário Teste",
+      "genero": "feminino",
+      "cpf": "111-111-111-11",
+      "telefone": "(47) 99999-0000",
+      "email": "halan@outlook.com",
+      "senha": "123456789",
+      "tipo": "administrador",
+      "statusDoSistema": false
+    },
+    {
+      "id": 3,
+      "usuario": null,
+      "nome": "Luciana Lamim",
+      "genero": "feminino",
+      "cpf": "1111111111111",
+      "telefone": "44444444",
+      "email": "luciana@outlook.com",
+      "senha": "kkdkdkdkdkdkdkd",
+      "tipo": "medico",
+      "statusDoSIstema": null,
+      "statusDoSistema": false
+    },
+    {
+      "id": 4,
+      "usuario": null,
+      "nome": "Luciana Lamim",
+      "genero": "feminino",
+      "cpf": "wwwwwwwwwwwwww",
+      "telefone": "wwwwwwwwwwwwwwwwwwww",
+      "email": "luciana@outlook.com",
+      "senha": "ddddddddddddddddddddddd",
+      "tipo": "medico",
+      "statusDoSistema": true
+    },
+    {
+      "id": 5,
+      "usuario": null,
+      "nome": "skjsjsjsjsj",
+      "genero": "feminino",
+      "cpf": "sjsjsjsjsjsj",
+      "telefone": "jjjdjsjddddddddddddd",
+      "email": "jdddddddddddddddd@outlook.com",
+      "senha": "dddddddddddddddddddddddd",
+      "tipo": "enfermeiro"
+    }
+  ],
+  "patient": [
+    {
+      "id": 1,
+      "nome": "Halan Germano Bacca",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    },
+    {
+      "id": 2,
+      "nome": "Teste",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    }
+  ],
+  "exercise": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "Exercício Teste I",
+      "data": "18/07/2023",
+      "horario": "TESTE",
+      "tipo": "forca",
+      "qtdSemana": 77,
+      "descricao": "dddddddddddddddddddddddddd",
+      "statusDoSistema": true
+    },
+    {
+      "id": 2,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "Exercício Teste II",
+      "data": "18/07/2023",
+      "horario": "TESTE",
+      "tipo": "forca",
+      "qtdSemana": 7,
+      "descricao": "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+      "statusDoSistema": true
+    },
+    {
+      "id": 3,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "dddddddddddddddddd",
+      "data": "19-07-2023",
+      "horario": "17:11:23",
+      "tipo": "agilidade",
+      "qtdSemana": 1,
+      "descricao": "dddddddddddddddddddddddd",
+      "statusDoSistema": true
+    }
+  ],
+  "patient": [
+    {
+      "id": 1,
+      "nome": "Halan Germano Bacca",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    },
+    {
+      "id": 2,
+      "nome": "Teste",
+      "genero": "Masculino",
+      "dtaNascimento": "21/07/1998",
+      "cpf": "111.111.111-11",
+      "rg": "7823504",
+      "estadoCivil": "Solteiro",
+      "telefone": "(11) 11111-1111",
+      "email": "halan@exemplo.com",
+      "naturalidade": "Itajaiense",
+      "convenio": "SUS",
+      "nroConvenio": "5555",
+      "validadeConvenio": "21/07/2030",
+      "telEmergencia": "(11) 11111-1111",
+      "alergias": {
+        "alergia": [
+          {
+            "id": 1,
+            "descricao": "AAS"
+          }
+        ]
+      },
+      "precaucoes": {
+        "precaucao": [
+          {
+            "id": 1,
+            "descricao": "Teste"
+          }
+        ]
+      },
+      "cep": "88309-000",
+      "cidade": "Itajaí",
+      "estado": "SC",
+      "logradouro": "Rua Teste",
+      "numero": "150",
+      "complemento": "Casa",
+      "bairro": "Teste",
+      "referencia": "Teste"
+    }
+  ],
+  "drug": [
+    {
+      "id": 2,
+      "idPaciente": 2,
+      "nomePaciente": "Teste",
+      "nome": "Losartana Potássica",
+      "data": "18/07/2023",
+      "horario": "2x ao dia",
+      "tipo": "creme",
+      "quantidade": "60",
+      "unidade": "mg",
+      "observacoes": "Renovar mensalmente",
+      "statusDoSistema": true
+    },
+    {
+      "id": 3,
+      "medicamento": null,
+      "idPaciente": null,
+      "nomePaciente": null,
+      "nome": "AASssssss",
+      "data": "18/07/2023, 16:58:11",
+      "horario": "18/07/2023, 16:58:11",
+      "tipo": "gel",
+      "quantidade": "1",
+      "unidade": "mL",
+      "observacoes": "sssssssssssss"
+    },
+    {
+      "id": 4,
+      "medicamento": null,
+      "idPaciente": null,
+      "nomePaciente": "Teste",
+      "nome": "AHSHSHSHSH",
+      "data": "18/07/2023, 17:15:25",
+      "horario": "18/07/2023, 17:15:25",
+      "tipo": "capsula",
+      "quantidade": "1",
+      "unidade": "%",
+      "observacoes": "DDDDDDDDDDDDDDDDDDDDD"
+    },
+    {
+      "id": 5,
+      "medicamento": null,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "AKSJSJSJS",
+      "data": "18/07/2023, 17:19:47",
+      "horario": "18/07/2023, 17:19:47",
+      "tipo": "capsula",
+      "quantidade": "1",
+      "unidade": "mL",
+      "observacoes": "ssssssssssssssssssssssssssDDDDDDDDDDDDDDDDDDDD",
+      "statusDoSistema": true
+    },
+    {
+      "id": 6,
+      "usuario": null,
+      "nome": "ssssssssssssssssssssssss",
+      "genero": "masculino",
+      "cpf": "ssssssssssssssssss",
+      "telefone": "sssssssssssssss",
+      "email": "sss@outlook.com",
+      "senha": "ssssssssssssssssssssss",
+      "tipo": "medico",
+      "statusDoSistema": false
+    },
+    {
+      "id": 7,
+      "nome": "jsjsjsjsjsjjsjss",
+      "genero": "feminino",
+      "cpf": "ssssssssssssssssss",
+      "telefone": "ssssssssssssssss",
+      "email": "sssssssssss@outlook.com",
+      "senha": "ssssssssssssssssssssssssss",
+      "tipo": "enfermeiro",
+      "statusDoSistema": true
+    },
+    {
+      "id": 8,
+      "nome": "ssssssssss",
+      "genero": "feminino",
+      "cpf": "ssssssssssssss",
+      "telefone": "ssssssssssssss",
+      "email": "ssssssssssssss@outlook.com",
+      "senha": "ssssssssssssssss",
+      "tipo": "administrador",
+      "statusDoSistema": null
+    },
+    {
+      "id": 9,
+      "nome": "sssssssssssssssss",
+      "genero": "masculino",
+      "cpf": "111111111111111",
+      "telefone": "11111111111111",
+      "email": "s!@outlook.com",
+      "senha": "ssssssssssssssss",
+      "tipo": "enfermeiro",
+      "statusDoSistema": "true"
+    },
+    {
+      "id": 10,
+      "nome": "sssssssssssssss",
+      "genero": "masculino",
+      "cpf": "sssssssssssssssssss",
+      "telefone": "ssssssssssssssssssss",
+      "email": "sssssssssssssssssssssss@putlook.com",
+      "senha": "sssssssssssssssssss",
+      "tipo": "enfermeiro",
+      "statusDoSistema": true,
+      "idPaciente": 1,
+      "nomePaciente": "Halan Germano Bacca",
+      "nome": "SSSSSSSSSSSSSSSSSSSSSS",
+      "data": "19-07-2023",
+      "horario": "17:08:01",
+      "tipo": "comprimido",
+      "quantidade": "1",
+      "unidade": "g",
+      "observacoes": "111111111111111111111"
+    }
+  ],
+  "diet": [
+    {
+      "id": 1,
+      "idPaciente": 1,
+      "nomePaciente": "Teste",
+      "nome": "Teste",
+      "data": "18/07/2023",
+      "horario": "2x ao dia",
+      "tipo": "jsjsjsjsjsj",
+      "descricao": "jsjsjsjsjsjsj",
+      "statusDoSistema": true
+    }
+  ]
+}
