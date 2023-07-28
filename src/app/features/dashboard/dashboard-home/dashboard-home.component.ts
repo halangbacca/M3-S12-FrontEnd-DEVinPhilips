@@ -59,10 +59,10 @@ export class DashboardHomeComponent implements OnInit {
       this.qtExercises = exercise.length;
     });
 
-    this.appointmentService.getAllConsult().subscribe((appointment) => {
+    this.appointmentService.getAllAppointments().subscribe(appointment=>{
       this.qtAppointments = appointment.length;
     });
-
+    
     this.drugService.getDrug().subscribe((drug) => {
       this.qtDrugs = drug.length;
     });
