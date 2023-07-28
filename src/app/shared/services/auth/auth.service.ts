@@ -19,7 +19,6 @@ export class AuthService {
   };
 
   login(login : Login ) {
-    alert(JSON.stringify(login))
     this.httpClient
     .post<User>(this.url, JSON.stringify(login) ,this.httpOptions)
       .subscribe((res) => {
