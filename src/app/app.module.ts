@@ -10,8 +10,10 @@ import { SharedModule } from './shared/shared.module';
 
 import { CustomMaterialModule } from './core/custom-material/custom-material.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +28,17 @@ import { DatePipe } from '@angular/common';
     HttpClientModule,
   ],
   exports: [CustomMaterialModule],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true,
+    }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
