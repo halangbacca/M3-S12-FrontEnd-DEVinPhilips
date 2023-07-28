@@ -41,6 +41,14 @@
             [disabled]="editing ?
                 addEditExamForm.invalid :
                 (addEditExamForm.invalid || patientControl.invalid)">SALVAR</button>
+                <button
+              mat-raised-button
+              [disabled]="!editing"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
+            </button>
         </mat-card-actions>
         <mat-card-title *ngIf="selectedPatient">Exame de {{ selectedPatient.nome }}</mat-card-title>
         <div>

@@ -1,11 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Diet } from 'src/app/shared/models/Dieta';
 import { Patient } from 'src/app/shared/models/Patient';
 import { DietService } from 'src/app/shared/services/diet/diet.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -29,7 +31,8 @@ export class AddEditDietComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private dietService: DietService
+    private dietService: DietService,
+    public dialog: MatDialog
   ) {}
 
   createform(diet: Diet) {
@@ -185,6 +188,15 @@ export class AddEditDietComponent {
 
       this.clearForm();
     }
+  }
+
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
   }
 
   onSubmit() {

@@ -7,6 +7,8 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { ExerciseService } from 'src/app/shared/services/exercise/exercise.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 
 @Component({
   selector: 'app-add-edit-exercise',
@@ -31,7 +33,8 @@ export class AddEditExerciseComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private exerciseService: ExerciseService
+    private exerciseService: ExerciseService,
+    public dialog: MatDialog
   ) {}
 
   createform(exercise: Exercise) {
@@ -195,6 +198,15 @@ export class AddEditExerciseComponent {
 
       this.clearForm();
     }
+  }
+
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
   }
 
   onSubmit() {

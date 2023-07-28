@@ -154,6 +154,14 @@
             >
               DELETAR
             </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
+            </button>
           </div>
         </form>
       </div>

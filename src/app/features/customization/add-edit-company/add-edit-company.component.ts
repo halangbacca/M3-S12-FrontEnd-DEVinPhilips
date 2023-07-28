@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company } from 'src/app/shared/models/Company';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { CompanyService } from '../../../shared/services/company/customization.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-edit-company',
@@ -22,7 +24,8 @@ export class AddEditCompanyComponent {
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    public dialog: MatDialog
   ) {}
 
   createform(company: Company) {
@@ -136,6 +139,15 @@ export class AddEditCompanyComponent {
 
       this.clearForm();
     }
+  }
+
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
   }
 
   onSubmit() {

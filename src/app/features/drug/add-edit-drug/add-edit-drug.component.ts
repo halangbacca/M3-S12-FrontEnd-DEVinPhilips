@@ -6,6 +6,8 @@ import { Patient } from 'src/app/shared/models/Patient';
 import { DrugService } from 'src/app/shared/services/drug/drug.service';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -29,7 +31,8 @@ export class AddEditDrugComponent {
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private patientService: PatientService,
-    private drugService: DrugService
+    private drugService: DrugService,
+    public dialog: MatDialog
   ) {}
 
   createform(drug: Drug) {
@@ -196,6 +199,15 @@ export class AddEditDrugComponent {
 
       this.clearForm();
     }
+  }
+
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'USUARIO',
+        codLink: 1,
+      },
+    });
   }
 
   onSubmit() {
