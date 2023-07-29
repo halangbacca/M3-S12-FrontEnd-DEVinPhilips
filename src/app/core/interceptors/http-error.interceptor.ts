@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
 } from '@angular/common/http';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { catchError, EMPTY, Observable, throwError } from 'rxjs';
 import { HttpErrorHandlerService } from 'src/app/shared/services/http-error/http-error-handler.service';
 
 @Injectable()
@@ -18,9 +18,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error) => {
-        this.httpErrorHandlerService.handleError(error);
+        const customError = {
+          error: true,
+          status: error.status,
+          message: error.message
+        };
 
-        return EMPTY;
+        this.httpErrorHandlerService.handleError(error);
+        return throwError(error);
       })
     );
   }
