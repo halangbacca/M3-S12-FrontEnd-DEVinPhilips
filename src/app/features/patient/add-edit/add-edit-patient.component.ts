@@ -107,11 +107,11 @@ export class AddEditPatient implements OnInit {
 
     if (this.id) {
       this.loading = true;
-      this.patientService.getPatientById(this.id).subscribe((patient) => {
+      this.patientService.getPatientById(this.id).subscribe({next: (patient) => {
         const dataNascimentoResponse = patient.dtaNascimento;
         const dataNascimentoPartes = dataNascimentoResponse.split('/');
         const diaNascimento = Number(dataNascimentoPartes[0]);
-        const mesNascimento = Number(dataNascimentoResponse[1]);
+        const mesNascimento = Number(dataNascimentoPartes[1]);
         const anoNascimento = Number(dataNascimentoPartes[2]);
 
         const dataNascimentoObject = new Date(
@@ -128,7 +128,7 @@ export class AddEditPatient implements OnInit {
         if (dataValidadeResponse) {
           dataValidadePartes = dataValidadeResponse.split('/');
           const diaValidade = Number(dataValidadePartes[0]);
-          const mesValidade = Number(dataValidadeResponse[1]);
+          const mesValidade = Number(dataValidadePartes[1]);
           const anoValidade = Number(dataValidadePartes[2]);
 
           dataValidadeObject = new Date(anoValidade, mesValidade, diaValidade);
@@ -152,7 +152,12 @@ export class AddEditPatient implements OnInit {
 
         this.title = `Editando o cadastro de ${patient.nome}`;
         this.loading = false;
-      });
+      },
+        error: () => {
+          this.loading = false;
+          this.router.navigateByUrl("/home");
+        }
+    });
       this.editing = true;
     } else {
       this.title = 'Preencha os campos para cadastrar';
@@ -247,26 +252,24 @@ export class AddEditPatient implements OnInit {
   }
 
   deletePatient() {
-    this.examService.getExamByPatientId(this.id).subscribe((exams) => {
-      if (exams.length > 0) {
-        alert('pessoa possui exame ou consulta');
-      } else {
-        const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
-          data: { ...this.patientForm.value },
-        });
-        confirmDeleteDialogRef.afterClosed().subscribe((result) => {
-          if (result) {
-            this.patientService.deletePatient(result.id).subscribe(() => {
-              this._snackBar.open(`Cadastro excluído com sucesso.`, 'OK', {
-                duration: 3000,
-              });
-              this.router.navigateByUrl('/home');
-            });
-          }
-        });
-      }
-    });
-  }
+    this.patient = this.patientForm.value;
+    const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: { ...this.patient },
+      });
+      confirmDeleteDialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.patientService.deletePatient(this.id)
+            .subscribe(
+              (patientDeleted) => {
+                this._snackBar.open(`Cadastro de ${patientDeleted.nome} excluído com sucesso.`, 'OK', {
+                  duration: 5000,
+                });
+                this.router.navigateByUrl('/home');
+              }
+            );
+        }
+      });
+    }
 
   getAddressFromViaCep(cep: string) {
     if (cep !== '') {
@@ -344,10 +347,10 @@ export class AddEditPatient implements OnInit {
   ];
 
   ESTADOCIVIL = [
-    { estcivil: 'SOLTEIRO', descricao: 'Solteiro' },
-    { estcivil: 'CASADO', descricao: 'Casado' },
-    { estcivil: 'VIUVO', descricao: 'Viúvo' },
-    { estcivil: 'DIVORCIADO', descricao: 'Divorciado' },
+    { estcivil: 'SOLTEIRO', descricao: 'Solteiro(a)' },
+    { estcivil: 'CASADO', descricao: 'Casado(a)' },
+    { estcivil: 'VIUVO', descricao: 'Viúvo(a)' },
+    { estcivil: 'DIVORCIADO', descricao: 'Divorciado(a)' },
   ];
 }
 

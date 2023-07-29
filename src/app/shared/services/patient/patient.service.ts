@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { catchError, Observable, retry, throwError } from "rxjs";
+import { catchError, Observable, retry, tap, throwError } from "rxjs";
 import { Patient } from '../../models/Patient';
 import { environment } from 'src/environments/environment';
 
@@ -46,7 +46,11 @@ export class PatientService {
   }
 
   deletePatient(id: Number): Observable<Patient> {
-    return this.httpClient.delete<Patient>(`${this.url}/${id}`);
+    return this.httpClient.delete<Patient>(`${this.url}/${id}`)
+      .pipe(
+        tap((patientDeleted) => patientDeleted),
+        catchError(this.handleError)
+      );
   }
 
   handleError(error: HttpErrorResponse) {
