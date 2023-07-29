@@ -20,7 +20,7 @@
       "@shared/services/notification": [
         "src/app/shared/services/notification/notification.service.ts"
       ],
-      "@envoriments": [
+      "@environments": [
         "src/environments/environment.ts"
       ],
       "@shared/models/Consult": [
