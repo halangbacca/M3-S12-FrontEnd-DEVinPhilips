@@ -1,0 +1,101 @@
+.login-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 3;
+}
+
+.right-side {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 2;
+}
+
+.left-side-header {
+  height: 80px;
+}
+
+.left-side-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.cover {
+  width: 700px;
+  height: 600px;
+}
+
+.labmedical-logo {
+  height: 200px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*align-items: center;*/
+  margin: 0 20px;
+}
+
+//.right-side header {
+//  display: flex;
+//  flex-direction: row;
+//  justify-content: flex-end;
+//  align-items: baseline;
+//  gap: 10px;
+//  margin: 10px;
+//}
+
+.right-side footer {
+  display: flex;
+  justify-content: center;
+}
+
+.login-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px;
+}
+
+.login-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (min-width: 900px) {
+  .right-side {
+    border-left: solid darkblue 2px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .login-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-side {
+    flex-grow: 1;
+  }
+
+  .right-side {
+    flex-grow: 1;
+  }
+
+  .cover {
+    height: 200px;
+    width: 300px;
+  }
+}
