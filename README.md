@@ -1,11 +1,5 @@
 # LABMedical - LABMedicine LTDA
 
-![GitHub repo size](https://img.shields.io/github/repo-size/DEVin-Philips/angular-http?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/DEVin-Philips/angular-http?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/DEVin-Philips/angular-http?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/DEVin-Philips/angular-http?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/DEVin-Philips/angular-http?style=for-the-badge)
-
 <img src=".../../src/assets/projeto.png" alt="tela-de-login">
 
 > Tela de Login do Sistema.
@@ -35,7 +29,6 @@ Certifique-se de que tenha o Oracle instalado em sua máquina.
 Certifique-se que o Oracle esteja em executação na sua máquina.
 Executar a API REST desenvolvida em Java e Spring.
 Lembrando que por padrão a API vai funcionar no endereço: http://localhost:8081.
-
 ```
 
 
