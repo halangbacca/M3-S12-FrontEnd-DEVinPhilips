@@ -10,12 +10,12 @@ const routes: Routes = [
     children: [
       {
         path: 'add',
-        title: 'LABMedical - Cadastro de exame',
+        title: 'LABMedical - Cadastrar de exame',
         component: AddEditExamComponent
       },
       {
         path: 'edit/:id',
-        title: 'LABMedical - Edição de exame',
+        title: 'LABMedical - Editar de exame',
         component: AddEditExamComponent
       }
     ]

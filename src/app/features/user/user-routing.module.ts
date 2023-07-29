@@ -6,6 +6,7 @@ import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 const routes: Routes = [
   {
     path: 'add',
+    title: 'LABMedical - Cadastrar Usuário',
     component: LayoutComponent,
     children: [{ path: '', component: AddEditUserComponent }],
     

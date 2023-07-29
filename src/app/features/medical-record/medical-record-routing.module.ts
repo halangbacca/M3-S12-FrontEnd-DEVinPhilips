@@ -6,6 +6,7 @@ import { ListMedicalRecordComponent } from './list-medical-record/list-medical-r
 const routes: Routes = [
   {
     path: '',
+    title: 'LABMedical - Prontuario',
     component: LayoutComponent,
     children: [{ path: '', component: ListMedicalRecordComponent }],
   },

@@ -7,6 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    title: 'LABMedical - Cadastrar Dieta',
     children: [
       { path: '', component: AddEditDietComponent },
     ]

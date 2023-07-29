@@ -6,6 +6,7 @@ import { LayoutComponent } from 'src/app/shared/layout/layout.component';
 const routes: Routes = [
   {
     path: '',
+    title: 'LABMedical - Cadastrar Empresa',
     component: LayoutComponent,
     children: [
       { path: '', component: AddEditCompanyComponent },
