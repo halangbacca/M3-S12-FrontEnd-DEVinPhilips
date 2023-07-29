@@ -1,4 +1,4 @@
-# LABMedical - LABMedicine LTDA
+# LABMedical - MedSoft Group
 
 <img src=".../../src/assets/projeto.png" alt="tela-de-login">
 
