@@ -241,8 +241,8 @@ export class AddEditAppointment implements OnInit {
   logs() {
     this.dialog.open(ListLogsComponent, {
       data: {
-        tabLink: 'USUARIO',
-        codLink: 1,
+        tabLink: 'CONSULTA',
+        codLink: this.id,
       },
     });
   }
@@ -259,7 +259,7 @@ export class AddEditAppointment implements OnInit {
 
     confirmDeleteDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.patientService.deletePatient(this.id).subscribe(() => {
+        this.appointmentService.deleteAppointment(this.id).subscribe(() => {
           this._snackBar.open(`Cadastro excluído com sucesso.`, 'OK', {
             duration: 3000,
           });
