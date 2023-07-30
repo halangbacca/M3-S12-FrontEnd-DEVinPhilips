@@ -13,9 +13,6 @@ export class ListLogsComponent implements OnInit {
   filteredLogs = [] as Log[];
 
   displayedColumns: string[] = [
-    'id',
-    'tablink',
-    'codlink',
     'regatual',
     'reganterior',
     'dtaocorrencia',

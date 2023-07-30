@@ -203,8 +203,8 @@ export class AddEditExerciseComponent {
   logs() {
     this.dialog.open(ListLogsComponent, {
       data: {
-        tabLink: 'USUARIO',
-        codLink: 1,
+        tabLink: 'EXERCICIO',
+        codLink: this.formExercise.get('id')?.value,
       },
     });
   }
