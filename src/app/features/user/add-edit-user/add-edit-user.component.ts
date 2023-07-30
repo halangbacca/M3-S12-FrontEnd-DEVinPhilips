@@ -193,7 +193,7 @@ export class AddEditUserComponent {
     this.dialog.open(ListLogsComponent, {
       data: {
         tabLink: 'USUARIO',
-        codLink: 1,
+        codLink: this.formUser.get('id')?.value
       },
     });
   }
