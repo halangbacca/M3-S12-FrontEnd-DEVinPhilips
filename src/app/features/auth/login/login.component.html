@@ -11,13 +11,13 @@
   <div>
   </div>
   <div class="right-side">
-<!--    <header>-->
-<!--      <p>Não possui uma conta?</p>-->
-<!--      <button mat-stroked-button-->
-<!--              color="primary"-->
-<!--              (click)="openAddUserDialog()">Criar conta</button>-->
-<!--    </header>-->
-    <form [formGroup]="form" novalidate class="form" (ngSubmit)="onSubmit()">
+    <header>
+      <p>Não possui uma conta?</p>
+      <button mat-stroked-button
+              color="primary"
+              (click)="openWarnDialog()">Criar conta</button>
+    </header>
+    <form [formGroup]="form" novalidate class="form">
       <h2 class="mat-title">Login</h2>
       <mat-form-field class="row" appearance="outline">
         <mat-label>E-mail</mat-label>
@@ -42,11 +42,11 @@
         </mat-error>
       </mat-form-field>
       <div class="login-button">
-        <button mat-raised-button color="primary">Entrar</button>
+        <button class="row" mat-flat-button (click)="onClick($event);openResetPasswordDialog()">Esqueci minha senha</button>
+        <button mat-raised-button color="primary" (click)="login()">Entrar</button>
       </div>
-<!--      <div class="col">-->
-<!--        <button class="row" mat-flat-button (click)="resetPassword()">Esqueceu sua senha?</button>-->
-<!--      </div>-->
+      <div class="col">
+      </div>
     </form>
     <footer>
       <div class="login-footer">
@@ -55,60 +55,3 @@
     </footer>
   </div>
 </div>
-
-
-<!--<div class=" container login-container" fxLayout="row" fxLayoutAlign="center center">-->
-
-<!--    <div fxFlex="30%" fxFlex.sm="100%" fxFlex.xs="90%">-->
-<!--        <form [formGroup]="form" (ngSubmit)="onSubmit()">-->
-<!--            <mat-card>-->
-<!--                <mat-card-title>LabMedical</mat-card-title>-->
-<!--                <mat-card-subtitle>Log in</mat-card-subtitle>-->
-<!--                <mat-card-content>-->
-
-<!--                    <mat-form-field class="full-width">-->
-<!--                        <input id="email" matInput placeholder="E-mail" formControlName="email" autocomplete="email"-->
-<!--                            type="email">-->
-
-<!--                        <mat-error id="invalidEmailError">-->
-<!--                            Digite um e-mail-->
-<!--                            <strong>válido</strong>-->
-<!--                        </mat-error>-->
-<!--                        <mat-error id="requiredEmailError">-->
-<!--                            E-mail é-->
-<!--                            <strong>obrigatório</strong>-->
-<!--                        </mat-error>-->
-
-<!--                    </mat-form-field>-->
-
-<!--                    <mat-form-field class="full-width">-->
-<!--                        <input id="password" matInput placeholder="Senha" formControlName="senha" type="password"-->
-<!--                            autocomplete="current-password">-->
-
-<!--                        <mat-error id="requiredPasswordErro">-->
-<!--                            Senha é-->
-<!--                            <strong>obrigatória</strong>-->
-<!--                        </mat-error>-->
-
-<!--                    </mat-form-field>-->
-
-<!--                    &lt;!&ndash; <div class="full-width">-->
-<!--                        <mat-slide-toggle formControlName="rememberMe">Lembrar meu e-mail</mat-slide-toggle>-->
-<!--                    </div> &ndash;&gt;-->
-
-<!--                </mat-card-content>-->
-
-<!--                <mat-card-actions>-->
-<!--                    <button mat-raised-button id="login" color="primary" class="login-actions">Entrar</button>-->
-<!--                </mat-card-actions>-->
-<!--                <mat-card-actions class="login-actions">-->
-<!--                    &lt;!&ndash; <button mat-button id="resetPassword" class="reset-password" (click)="alterPassword()">Alterar a &ndash;&gt;-->
-<!--                    &lt;!&ndash; Senha</button> &ndash;&gt;-->
-<!--                </mat-card-actions>-->
-
-<!--            </mat-card>-->
-
-<!--            <mat-progress-bar></mat-progress-bar>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->

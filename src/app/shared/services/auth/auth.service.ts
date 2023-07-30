@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { User } from '../../models/User';
 import { Router } from '@angular/router';
-import { Login } from '../../models/Login';
+import { Credential } from '../../models/Credential';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class AuthService {
     headers: new HttpHeaders(environment.HEADER)
   };
 
-  login(login : Login ) {
+  login(login : Credential ) {
     this.httpClient
     .post<User>(this.url, JSON.stringify(login) ,this.httpOptions)
       .subscribe((res) => {
@@ -35,7 +35,7 @@ export class AuthService {
     return true
   }
 
-  getToken(): Login | null {
+  getToken(): Credential | null {
     return this.isLoggedIn() ? JSON.parse(localStorage.getItem('medsoftToken') || '{}') : null;
   }
 
