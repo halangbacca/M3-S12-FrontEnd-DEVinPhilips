@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Login } from 'src/app/shared/models/Login';
+import { Credential } from '../../../shared/models/Credential';
 import { AuthService } from 'src/app/shared/services/auth/auth.service';
+import { MatDialog } from "@angular/material/dialog";
+import { WarnDialogComponent } from "./components/warn-dialog/warn-dialog.component";
+import { ResetPasswordDialogComponent } from "./components/reset-password-dialog/reset-password-dialog.component";
 
 @Component({
   selector: 'app-login',
@@ -11,11 +14,13 @@ import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 export class LoginComponent implements OnInit {
   form!: FormGroup;
-  login: Login = {};
+  credential: Credential = {};
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    public warnDialog: MatDialog,
+    public resetPasswordDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -25,10 +30,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  login() {
     if (this.form.valid) {
-      this.login = {...this.form.value};
-      this.authService.login(this.login);
+      this.credential = {...this.form.value};
+      this.authService.login(this.credential);
     } else {
       Object.keys(this.form.controls).forEach((field) => {
         const control = this.form.get(field);
@@ -37,4 +42,15 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  openWarnDialog() {
+    const warnDialog = this.warnDialog.open(WarnDialogComponent);
+  }
+
+  openResetPasswordDialog() {
+    const resetPasswordDialog = this.resetPasswordDialog.open(ResetPasswordDialogComponent);
+  }
+
+  onClick(event: Event) {
+    event.preventDefault();
+  }
 }

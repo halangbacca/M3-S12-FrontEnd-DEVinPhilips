@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { catchError, Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../../models/User';
+import { UserIdResponse } from "../../models/UserIdResponse";
+import { PasswordRequest } from "../../models/PasswordRequest";
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +53,16 @@ export class UserService {
 
   deleteUser(id: Number): Observable<User> {
     return this.httpClient.delete<User>(`${this.url}/${id}`);
+  }
+
+  getUserId(email: String): Observable<UserIdResponse> {
+    return this.httpClient.get<UserIdResponse>(`${this.url}/obter_id/${email}`)
+        .pipe(retry(2), catchError(this.handleError));
+  }
+
+  resetPassword(passwordRequest: PasswordRequest): Observable<any> {
+    return this.httpClient.put<Observable<any>>(`${this.url}/resetarsenha`, JSON.stringify(passwordRequest), this.httpOptions)
+        .pipe(retry(2), catchError(this.handleError));
   }
 
   handleError(error: HttpErrorResponse) {

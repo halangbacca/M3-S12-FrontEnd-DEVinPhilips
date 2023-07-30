@@ -2,7 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { LoadingService } from 'src/app/core/services/loading.service';
 import { AuthService } from '../services/auth/auth.service';
-import { Login } from '../models/Login';
+import { Credential } from '../models/Credential';
 
 @Component({
   selector: 'app-layout',
@@ -30,7 +30,7 @@ export class LayoutComponent {
     this.auth.logout();
   }
 
-  getToken(): Login| null{
+  getToken(): Credential| null{
     return this.auth.getToken();
   }
 
