@@ -1,10 +1,19 @@
 .full-width {
   width: 100%;
+  margin: 10px;
 }
 
 .add-appointment-card {
   min-width: 120px;
   margin: 10px;
+}
+
+.add-appointment-card > mat-card-title {
+  padding: 10px;
+}
+
+.first-line-input {
+
 }
 
 .row {
@@ -18,7 +27,7 @@
 }
 
 .col:last-child {
-  margin-right: 0;
+  margin-right: 20px;
 }
 
 .add-form-button-group {

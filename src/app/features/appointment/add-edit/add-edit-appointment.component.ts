@@ -32,9 +32,9 @@ export class AddEditAppointment implements OnInit {
   addEditAppointmentForm!: FormGroup;
   id!: number;
   patients = [] as Patient[];
-  patientControl = new FormControl('');
+  patientControl = new FormControl('', Validators.required);
   filteredPatient!: Observable<Patient[]>;
-  selectedPatient = {} as SelectedPatient;
+  selectedPatient!: SelectedPatient;
   submitting = false;
   loading = false;
   editing = false;
@@ -103,10 +103,9 @@ export class AddEditAppointment implements OnInit {
 
     if (this.id) {
       this.loading = true;
-      this.editing = true;
       this.appointmentService
         .getAppointmentById(this.id)
-        .subscribe((appointment) => {
+        .subscribe({next: (appointment) => {
           const dataHoraConsulta = appointment.dtaConsulta.split(' ');
 
           const dataHoraConsultaPartes = dataHoraConsulta[0].split('/');
@@ -141,8 +140,11 @@ export class AddEditAppointment implements OnInit {
             id: appointment.paciente.id,
             nome: appointment.paciente.nome,
           };
-        });
-      this.loading = false;
+        }, error: () => {
+            this.loading = false;
+            this.router.navigateByUrl("/dashboard");
+          }
+      });
     } else {
       this.today = new Date();
 
@@ -170,7 +172,7 @@ export class AddEditAppointment implements OnInit {
       nome: nome,
     };
   }
-  onSubmit() {
+  saveAppointment() {
     const dateValue = this.addEditAppointmentForm.get('dtaConsulta')?.value;
     const timeValue = this.addEditAppointmentForm.get('horaConsulta')?.value;
 
@@ -231,7 +233,7 @@ export class AddEditAppointment implements OnInit {
 
     confirmDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.onSubmit();
+        this.saveAppointment();
       } else {
         this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
       }
@@ -260,10 +262,10 @@ export class AddEditAppointment implements OnInit {
     confirmDeleteDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.appointmentService.deleteAppointment(this.id).subscribe(() => {
-          this._snackBar.open(`Cadastro excluído com sucesso.`, 'OK', {
+          this._snackBar.open(`Consulta excluída com sucesso.`, 'OK', {
             duration: 3000,
           });
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/dashboard');
         });
       }
     });
