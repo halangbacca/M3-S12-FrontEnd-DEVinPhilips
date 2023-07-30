@@ -42,6 +42,13 @@ export class ExamService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
+
+  getExamByPatientNome(nome: string): Observable<ExamResponse[]> {
+    return this.httpClient
+      .get<ExamResponse[]>(`${this.url}?nomePaciente=${nome}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
   updateExam(exam: ExamRequest): Observable<ExamResponse> {
     return this.httpClient
       .put<ExamResponse>(
@@ -55,7 +62,6 @@ export class ExamService {
   deleteExam(id: Number): Observable<ExamResponse[]> {
     return this.httpClient.delete<ExamResponse[]>(`${this.url}/${id}`);
   }
-
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
