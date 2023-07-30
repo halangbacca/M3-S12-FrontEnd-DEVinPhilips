@@ -45,6 +45,12 @@ import { Diet } from '../../models/Dieta';
         .pipe(retry(2), catchError(this.handleError));
     }
 
+    getDietById(id: Number): Observable<Diet[]> {
+      return this.httpClient
+        .get<Diet[]>(`${this.url}/listar/${id}`)
+        .pipe(retry(2), catchError(this.handleError));
+    }
+
     updateDiet(diet: Diet): Observable<Diet[]> {
       return this.httpClient
         .put<Diet[]>(
