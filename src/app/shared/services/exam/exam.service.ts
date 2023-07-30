@@ -38,7 +38,14 @@ export class ExamService {
 
   getExamByPatientId(id: Number): Observable<ExamResponse[]> {
     return this.httpClient
-      .get<ExamResponse[]>(`${this.url}/?idPatient=${id}&_sort=dtaExame&_order=desc`)
+      .get<ExamResponse[]>(`${this.url}?idPatient=${id}&_sort=dtaExame&_order=desc`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+
+  getExamByPatientNome(nome: string): Observable<ExamResponse[]> {
+    return this.httpClient
+      .get<ExamResponse[]>(`${this.url}?nomePaciente=${nome}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -55,7 +62,6 @@ export class ExamService {
   deleteExam(id: Number): Observable<ExamResponse[]> {
     return this.httpClient.delete<ExamResponse[]>(`${this.url}/${id}`);
   }
-
   handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

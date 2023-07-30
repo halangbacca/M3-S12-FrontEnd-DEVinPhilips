@@ -5,6 +5,7 @@ import { User } from 'src/app/shared/models/User';
 import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -15,6 +16,8 @@ export class AddEditUserComponent {
   user = {} as User;
   users = [] as User[];
 
+  usuarioId = '';
+
   formUser!: FormGroup;
   formExistingUser!: FormGroup;
 
@@ -23,9 +26,11 @@ export class AddEditUserComponent {
 
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private notificationService: NotificationService,
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   createform(user: User) {
@@ -50,12 +55,27 @@ export class AddEditUserComponent {
   }
 
   ngOnInit(): void {
-    this.createform(this.user);
-    this.createExistingUserForm();
+    this.usuarioId = this.route.snapshot.paramMap.get('id')!;
 
-    this.userService.getUser().subscribe((ret) => {
-      this.users = ret;
-    });
+    if (this.usuarioId != 'add') {
+      this.createform(this.user);
+      this.createExistingUserForm();
+
+      this.userService
+        .getUserById(parseInt(this.usuarioId))
+        .subscribe((ret) => {
+          this.formUser.patchValue(ret);
+        });
+      this.isDisabled = false;
+      this.isEditing = true;
+    } else {
+      this.createform(this.user);
+      this.createExistingUserForm();
+
+      this.userService.getUser().subscribe((ret) => {
+        this.users = ret;
+      });
+    }
   }
 
   createExistingUserForm() {
@@ -113,10 +133,10 @@ export class AddEditUserComponent {
         this.notificationService.openSnackBar(
           'Usuário atualizado com sucesso!'
         );
-        this.clearForm();
+        this.router.navigate(['/dashboard']);
       } else {
         this.notificationService.openSnackBar('Usuário inativado com sucesso!');
-        this.clearForm();
+        this.router.navigate(['/dashboard']);
       }
     });
   }

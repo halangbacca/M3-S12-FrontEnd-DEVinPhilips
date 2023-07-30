@@ -1,32 +1,32 @@
 import {
-    HttpClient,
-    HttpErrorResponse,
-    HttpHeaders,
-  } from '@angular/common/http';
-  import { Injectable } from '@angular/core';
-  import { Router } from '@angular/router';
-  import { catchError, Observable, retry, tap, throwError } from 'rxjs';
-  import { environment } from 'src/environments/environment';
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, Observable, retry, tap, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Diet } from '../../models/Dieta';
-  
+
   @Injectable({
     providedIn: 'root',
   })
   export class DietService {
     url = `${environment.URL_API}${environment.API_DIET}`;
-  
+
     constructor(private httpClient: HttpClient, private router: Router) {}
-  
+
     httpOptions = {
       headers: new HttpHeaders(environment.HEADER),
     };
-  
+
     getDiet(): Observable<Diet[]> {
       return this.httpClient
         .get<Diet[]>(this.url, this.httpOptions)
         .pipe(retry(2), catchError(this.handleError));
     }
-  
+
     getDietByPatientName(nome: string): Observable<Diet[]> {
       return this.httpClient
         .get<Diet[]>(`${this.url}?nomePaciente=${nome}`)
@@ -35,16 +35,16 @@ import { Diet } from '../../models/Dieta';
 
     getDietByPatientId(id: number): Observable<Diet[]> {
       return this.httpClient
-        .get<Diet[]>(`${this.url}/?idPaciente=${id}`)
+        .get<Diet[]>(`${this.url}?idPaciente=${id}`)
         .pipe(retry(2), catchError(this.handleError));
     }
-  
+
     saveDiet(diet: Diet): Observable<Diet[]> {
       return this.httpClient
         .post<Diet[]>(this.url, JSON.stringify(diet), this.httpOptions)
         .pipe(retry(2), catchError(this.handleError));
     }
-  
+
     updateDiet(diet: Diet): Observable<Diet[]> {
       return this.httpClient
         .put<Diet[]>(
@@ -54,11 +54,11 @@ import { Diet } from '../../models/Dieta';
         )
         .pipe(retry(2), catchError(this.handleError));
     }
-  
+
     deleteDiet(id: Number): Observable<Diet> {
       return this.httpClient.delete<Diet>(`${this.url}/${id}`);
     }
-  
+
     handleError(error: HttpErrorResponse) {
       let errorMessage = '';
       if (error.error instanceof ErrorEvent) {

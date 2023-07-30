@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Patient } from '@shared/models/Patient';
 import { Cep } from '@shared/models/Cep';
 import { PatientService } from '@services/patient';
@@ -7,13 +7,9 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AppointmentRequest } from '../../../shared/models/AppointmentRequest';
-import { ExamResponse } from '../../../shared/models/ExamResponse';
-import { AppointmentService } from '../../../shared/services/appointment/appointment.service';
 import { ExamService } from '../../../shared/services/exam/exam.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +17,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
+import { DietService } from "../../../shared/services/diet/diet.service";
+import { DrugService } from "../../../shared/services/drug/drug.service";
+import { ExerciseService } from "../../../shared/services/exercise/exercise.service";
+import { forkJoin, map, Observable } from "rxjs";
 
 @Component({
   selector: 'app-add-edit',
@@ -36,6 +37,7 @@ export class AddEditPatient implements OnInit {
   loading = false;
   submitting = false;
   address: Cep = {} as Cep;
+  hasRegistry = false;
 
   today!: Date;
 
@@ -43,6 +45,10 @@ export class AddEditPatient implements OnInit {
     private fb: FormBuilder,
     private cepService: CepService,
     private examService: ExamService,
+    private appointmentService: AppointmentService,
+    private dietService: DietService,
+    private drugService: DrugService,
+    private exerciseService: ExerciseService,
     private rout: ActivatedRoute,
     public dialog: MatDialog,
     private patientService: PatientService,
@@ -150,6 +156,41 @@ export class AddEditPatient implements OnInit {
           validadeConvenio: dataValidadeObject,
         });
 
+        this.appointmentService.getAppointmentByPatientName(patient.nome)
+          .subscribe(appointmentList => {
+            if (appointmentList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.exerciseService.getExerciseByPatientName(patient.nome)
+          .subscribe(exerciseList => {
+            if (exerciseList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.examService.getExamByPatientNome(patient.nome)
+          .subscribe(examList => {
+            if (examList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.drugService.getDrugByPatientName(patient.nome)
+          .subscribe(drugList => {
+            if (drugList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.dietService.getDietByPatientName(patient.nome)
+          .subscribe(dietlist => {
+            if (dietlist.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
         this.title = `Editando o cadastro de ${patient.nome}`;
         this.loading = false;
       },
@@ -172,20 +213,19 @@ export class AddEditPatient implements OnInit {
 
     confirmDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.onSubmit();
+        this.setEditing(true);
       } else {
         this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
       }
     });
   }
 
-  onSubmit(): void {
+  savePatient(): void {
     this.submitting = true;
 
     if (this.patientForm.get('dtaNascimento')?.value) {
       const dataNascimentoSeleciona =
         this.patientForm.get('dtaNascimento')?.value;
-      console.log(dataNascimentoSeleciona);
       const dataNascimentoObject: Date = new Date(dataNascimentoSeleciona);
       const dataNascimentoFormatada = this.formatDate(dataNascimentoObject);
       this.patientForm.patchValue({ dtaNascimento: dataNascimentoFormatada });
@@ -340,7 +380,14 @@ export class AddEditPatient implements OnInit {
     return `${day}/${month}/${year}`;
   }
 
-  //Constantes
+  setHasRegistry(value: boolean): void {
+    this.hasRegistry = value;
+  }
+
+  setEditing(value: boolean): void {
+    this.editing = value;
+  }
+
   GENEROS = [
     { genero: 'MASCULINO', descricao: 'Masculino' },
     { genero: 'FEMININO', descricao: 'Feminino' },

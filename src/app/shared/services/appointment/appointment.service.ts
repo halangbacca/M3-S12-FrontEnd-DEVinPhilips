@@ -8,6 +8,7 @@ import { environment } from '../../../../environments/environment';
 import { AppointmentRequest } from '../../models/AppointmentRequest';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import { AppointmentResponse } from '../../models/AppointmentResponse';
+import { Exercise } from "../../models/Exercicio";
 
 @Injectable({
   providedIn: 'root',
@@ -45,10 +46,17 @@ export class AppointmentService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
+  getAppointmentByPatientName(nome: string): Observable<AppointmentResponse[]> {
+    const nomeEncoded = encodeURIComponent(nome)
+    return this.httpClient
+      .get<AppointmentResponse[]>(`${this.url}?nomePaciente=${nomeEncoded}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
   getAppointmentByPatientId(id: Number): Observable<AppointmentRequest[]> {
     return this.httpClient
       .get<AppointmentRequest[]>(
-        `${this.url}/?idPatient=${id}&_sort=dtaConsulta&_order=desc`
+        `${this.url}?idPatient=${id}&_sort=dtaConsulta&_order=desc`
       )
       .pipe(retry(2), catchError(this.handleError));
   }

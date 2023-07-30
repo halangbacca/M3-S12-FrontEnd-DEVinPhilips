@@ -11,9 +11,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { DetailedMedicalRecordComponent } from './detailed-medical-record/detailed-medical-record.component';
 
 @NgModule({
-  declarations: [ListMedicalRecordComponent],
+  declarations: [ListMedicalRecordComponent, DetailedMedicalRecordComponent],
   imports: [
     CommonModule,
     MedicalRecordRoutingModule,

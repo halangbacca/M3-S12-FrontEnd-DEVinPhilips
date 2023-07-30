@@ -6,13 +6,9 @@ import { AddEditExerciseComponent } from './add-edit-exercise/add-edit-exercise.
 const routes: Routes = [
   {
     path: '',
+    title: 'LABMedical - Cadastrar Exercício',
     component: LayoutComponent,
-    children: [
-      {
-        path: 'add',
-        title: 'LABMedical - Cadastrar Exercicio',
-        component: AddEditExerciseComponent
-      }],
+    children: [{ path: '', component: AddEditExerciseComponent }],
   },
 ];
 @NgModule({
