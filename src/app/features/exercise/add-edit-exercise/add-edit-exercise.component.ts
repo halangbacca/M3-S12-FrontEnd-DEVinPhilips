@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/shared/services/notification/notifi
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-exercise',
@@ -20,6 +21,8 @@ export class AddEditExerciseComponent {
   exercise = {} as Exercise;
   patient = {} as Patient;
 
+  exercicioId = '';
+
   formExercise!: FormGroup;
   formPatient!: FormGroup;
 
@@ -29,12 +32,16 @@ export class AddEditExerciseComponent {
   isDisabled = true;
   isEditing = false;
 
+  paciente = {} as any;
+
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private notificationService: NotificationService,
     private patientService: PatientService,
     private exerciseService: ExerciseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   createform(exercise: Exercise) {
@@ -73,20 +80,47 @@ export class AddEditExerciseComponent {
   }
 
   ngOnInit(): void {
-    this.createform(this.exercise);
-    this.createPatientForm();
+    this.exercicioId = this.route.snapshot.paramMap.get('id')!;
 
-    this.patientService.getAllPatient().subscribe((ret) => {
-      this.pacientes = ret;
-    });
+    if (this.exercicioId != 'add') {
+      this.createform(this.exercise);
+      this.createPatientForm();
 
-    this.formExercise
-      .get('dtaExercicio')
-      ?.setValue(new Date().toLocaleDateString('en-GB'));
+      this.exerciseService
+        .getExerciseById(parseInt(this.exercicioId))
+        .subscribe((ret) => {
+          this.paciente = ret;
+          this.formExercise.patchValue(ret);
+          this.formExercise
+            .get('idPaciente')
+            ?.setValue(this.paciente.paciente.id);
+          this.formExercise
+            .get('nomePaciente')
+            ?.setValue(this.paciente.paciente.nome);
+          const novaData = this.formExercise
+            .get('dtaExercicio')
+            ?.value.split(' ');
+          this.formExercise.get('dtaExercicio')?.setValue(novaData[0]);
+          this.formExercise.get('horario')?.setValue(novaData[1]);
+        });
+      this.isDisabled = false;
+      this.isEditing = true;
+    } else {
+      this.createform(this.exercise);
+      this.createPatientForm();
 
-    this.formExercise
-      .get('horario')
-      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
+      this.patientService.getAllPatient().subscribe((ret) => {
+        this.pacientes = ret;
+      });
+
+      this.formExercise
+        .get('dtaExercicio')
+        ?.setValue(new Date().toLocaleDateString('en-GB'));
+
+      this.formExercise
+        .get('horario')
+        ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
+    }
   }
 
   onFocus() {
@@ -154,11 +188,12 @@ export class AddEditExerciseComponent {
       this.notificationService.openSnackBar(
         'Exercício atualizado com sucesso!'
       );
-      this.clearForm();
+      this.router.navigate(['/dashboard']);
     });
   }
 
   editExercise() {
+    console.log(this.formExercise);
     const id = this.formExercise.get('id')?.value;
     const novoNome = this.formExercise.get('nomeExercicio')?.value;
     const idPaciente = this.formExercise.get('idPaciente')?.value;
@@ -196,7 +231,7 @@ export class AddEditExerciseComponent {
           );
         });
 
-      this.clearForm();
+      this.router.navigate(['/dashboard']);
     }
   }
 

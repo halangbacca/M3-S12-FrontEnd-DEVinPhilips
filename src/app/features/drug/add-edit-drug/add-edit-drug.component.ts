@@ -8,6 +8,7 @@ import { NotificationService } from 'src/app/shared/services/notification/notifi
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -18,6 +19,8 @@ export class AddEditDrugComponent {
   drug = {} as Drug;
   patient = {} as Patient;
 
+  medicamentoId = '';
+
   formDrug!: FormGroup;
   formPatient!: FormGroup;
 
@@ -27,12 +30,16 @@ export class AddEditDrugComponent {
   isDisabled = true;
   isEditing = false;
 
+  paciente = {} as any;
+
   constructor(
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private notificationService: NotificationService,
     private patientService: PatientService,
     private drugService: DrugService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {}
 
   createform(drug: Drug) {
@@ -72,20 +79,45 @@ export class AddEditDrugComponent {
   }
 
   ngOnInit(): void {
-    this.createform(this.drug);
-    this.createPatientForm();
+    this.medicamentoId = this.route.snapshot.paramMap.get('id')!;
 
-    this.patientService.getAllPatient().subscribe((ret) => {
-      this.pacientes = ret;
-    });
+    if (this.medicamentoId != 'add') {
+      this.createform(this.drug);
+      this.createPatientForm();
 
-    this.formDrug
-      .get('dtaMedicamento')
-      ?.setValue(new Date().toLocaleDateString('en-GB'));
+      this.drugService
+        .getDrugById(parseInt(this.medicamentoId))
+        .subscribe((ret) => {
+          this.paciente = ret;
+          this.formDrug.patchValue(ret);
+          this.formDrug.get('idPaciente')?.setValue(this.paciente.paciente.id);
+          this.formDrug
+            .get('nomePaciente')
+            ?.setValue(this.paciente.paciente.nome);
+          const novaData = this.formDrug
+            .get('dtaMedicamento')
+            ?.value.split(' ');
+          this.formDrug.get('dtaMedicamento')?.setValue(novaData[0]);
+          this.formDrug.get('horario')?.setValue(novaData[1]);
+        });
+      this.isDisabled = false;
+      this.isEditing = true;
+    } else {
+      this.createform(this.drug);
+      this.createPatientForm();
 
-    this.formDrug
-      .get('horario')
-      ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
+      this.patientService.getAllPatient().subscribe((ret) => {
+        this.pacientes = ret;
+      });
+
+      this.formDrug
+        .get('dtaMedicamento')
+        ?.setValue(new Date().toLocaleDateString('en-GB'));
+
+      this.formDrug
+        .get('horario')
+        ?.setValue(formatDate(new Date(), 'H:mm:ss', 'en'));
+    }
   }
 
   onFocus() {
@@ -153,7 +185,7 @@ export class AddEditDrugComponent {
       this.notificationService.openSnackBar(
         'Medicamento atualizado com sucesso!'
       );
-      this.clearForm();
+      this.router.navigate(['/dashboard']);
     });
   }
 
@@ -197,7 +229,7 @@ export class AddEditDrugComponent {
           );
         });
 
-      this.clearForm();
+      this.router.navigate(['/dashboard']);
     }
   }
 

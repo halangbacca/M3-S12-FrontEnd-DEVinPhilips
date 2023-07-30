@@ -29,7 +29,7 @@ export class UserService {
 
   getUserById(id: number): Observable<Number[]> {
     return this.httpClient
-      .get<Number[]>(`${this.url}/?=${id}`)
+      .get<Number[]>(`${this.url}/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 

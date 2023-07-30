@@ -55,7 +55,6 @@ export class DetailedMedicalRecordComponent implements OnInit {
   displayedDrugColumns: string[] = [
     'nome',
     'data',
-    'horario',
     'tipo',
     'quantidade',
     'unidade',
@@ -66,7 +65,6 @@ export class DetailedMedicalRecordComponent implements OnInit {
   displayedDietColumns: string[] = [
     'nome',
     'data',
-    'horario',
     'tipo',
     'descricao',
     'editar',
@@ -75,7 +73,6 @@ export class DetailedMedicalRecordComponent implements OnInit {
   displayedExerciseColumns: string[] = [
     'nome',
     'data',
-    'horario',
     'tipo',
     'qtdSemana',
     'descricao',
@@ -94,32 +91,40 @@ export class DetailedMedicalRecordComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const patientId = this.route.snapshot.paramMap.get('id');
+    const patientId = this.route.snapshot.paramMap.get('id')!;
 
-    this.patientService.getPatientById(parseInt('1')).subscribe((patient) => {
-      this.patient = patient;
-    });
+    this.patientService
+      .getPatientById(parseInt(patientId))
+      .subscribe((patient) => {
+        this.patient = patient;
+      });
 
     this.appointmentService
-      .getAppointmentByPatientId(parseInt('1'))
+      .getAppointmentByPatientId(parseInt(patientId))
       .subscribe((appointment) => {
         this.appointments = appointment;
       });
 
-    this.examService.getExamByPatientId(parseInt('1')).subscribe((exam) => {
-      this.exams = exam;
-    });
+    this.examService
+      .getExamByPatientId(parseInt(patientId))
+      .subscribe((exam) => {
+        this.exams = exam;
+      });
 
-    this.drugService.getDrugByPatientId(parseInt('1')).subscribe((drug) => {
-      this.drugs = drug;
-    });
+    this.drugService
+      .getDrugByPatientId(parseInt(patientId))
+      .subscribe((drug) => {
+        this.drugs = drug;
+      });
 
-    this.dietService.getDietByPatientId(parseInt('1')).subscribe((diet) => {
-      this.diets = diet;
-    });
+    this.dietService
+      .getDietByPatientId(parseInt(patientId))
+      .subscribe((diet) => {
+        this.diets = diet;
+      });
 
     this.exerciseService
-      .getExerciseByPatientId(parseInt('1'))
+      .getExerciseByPatientId(parseInt(patientId))
       .subscribe((exercise) => {
         this.exercises = exercise;
       });

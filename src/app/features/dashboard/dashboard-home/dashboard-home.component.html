@@ -17,7 +17,11 @@
         name="nome"
       />
     </mat-form-field>
-    <mat-card *ngFor="let user of filteredUsers" class="usuarios">
+    <mat-card
+      *ngFor="let user of filteredUsers"
+      routerLink="/user/{{ user.id }}"
+      class="usuarios"
+    >
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>{{ user.nome }}</mat-card-title>
@@ -32,7 +36,9 @@
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content>
-        <button mat-button color="primary">Ver mais</button>
+        <button mat-button routerLink="/user/{{ user.id }}" color="primary">
+          Ver mais
+        </button>
       </mat-card-content>
     </mat-card>
   </mat-card-content>

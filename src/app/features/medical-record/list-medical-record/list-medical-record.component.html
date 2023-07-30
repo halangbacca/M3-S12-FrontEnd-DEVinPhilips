@@ -45,7 +45,13 @@
       <ng-container matColumnDef="ver-mais">
         <th mat-header-cell *matHeaderCellDef>Detalhes</th>
         <td mat-cell *matCellDef="let element">
-          <button mat-button color="primary">Ver mais</button>
+          <button
+            mat-button
+            routerLink="/medical-record/detailed/{{ element.id }}"
+            color="primary"
+          >
+            Ver mais
+          </button>
         </td>
       </ng-container>
 

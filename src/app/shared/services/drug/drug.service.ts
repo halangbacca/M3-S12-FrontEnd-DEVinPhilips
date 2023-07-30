@@ -41,7 +41,7 @@ export class DrugService {
 
   getDrugByPatientId(id: number): Observable<Drug[]> {
     return this.httpClient
-      .get<Drug[]>(`${this.url}/?idPaciente=${id}`)
+      .get<Drug[]>(`${this.url}/paciente/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 

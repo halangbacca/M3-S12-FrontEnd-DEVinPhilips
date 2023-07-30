@@ -48,7 +48,7 @@ export class AppointmentService {
   getAppointmentByPatientId(id: Number): Observable<AppointmentRequest[]> {
     return this.httpClient
       .get<AppointmentRequest[]>(
-        `${this.url}/?idPatient=${id}&_sort=dtaConsulta&_order=desc`
+        `${this.url}?idPatient=${id}&_sort=dtaConsulta&_order=desc`
       )
       .pipe(retry(2), catchError(this.handleError));
   }
