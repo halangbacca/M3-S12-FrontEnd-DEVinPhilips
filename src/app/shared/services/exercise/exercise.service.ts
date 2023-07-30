@@ -27,6 +27,12 @@ export class ExerciseService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
+  getExerciseById(id: Number): Observable<Exercise[]> {
+    return this.httpClient
+      .get<Exercise[]>(`${this.url}/listar/${id}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
   getExerciseByPatientName(nome: string): Observable<Exercise[]> {
     return this.httpClient
       .get<Exercise[]>(`${this.url}?nomePaciente=${nome}`)
@@ -35,7 +41,7 @@ export class ExerciseService {
 
   getExerciseByPatientId(id: number): Observable<Exercise[]> {
     return this.httpClient
-      .get<Exercise[]>(`${this.url}/?idPaciente=${id}`)
+      .get<Exercise[]>(`${this.url}/paciente/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 

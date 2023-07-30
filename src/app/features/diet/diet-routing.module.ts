@@ -6,11 +6,9 @@ import { AddEditDietComponent } from './add-edit-diet/add-edit-diet.component';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
     title: 'LABMedical - Cadastrar Dieta',
-    children: [
-      { path: '', component: AddEditDietComponent },
-    ]
+    component: LayoutComponent,
+    children: [{ path: '', component: AddEditDietComponent }],
   },
 ];
 @NgModule({
