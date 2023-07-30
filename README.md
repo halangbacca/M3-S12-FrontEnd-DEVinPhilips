@@ -42,4 +42,8 @@ Caso encontre alguma vulnerabilidade execute o comando: npm audit fix.
 # Executando o projeto
 Inicializar o projeto com ng serve --o.
 Lembrando que por padrão o projeto vai funcionar no endereço: http://localhost:4200.
+
+#Login no sistema
+Usuário: admin@admin.com.
+Senha: 123.
 ```

@@ -56,7 +56,11 @@
         name="nome"
       />
     </mat-form-field>
-    <mat-card *ngFor="let patient of filteredPatients" class="pacientes">
+    <mat-card
+      *ngFor="let patient of filteredPatients"
+      routerLink="/patient/edit/{{ patient.id }}"
+      class="pacientes"
+    >
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>{{ patient.nome }}</mat-card-title>
@@ -71,7 +75,9 @@
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content>
-        <button mat-button color="primary">Ver mais</button>
+        <button mat-button routerLink="/patient/edit/{{ patient.id }}" color="primary">
+          Ver mais
+        </button>
       </mat-card-content>
     </mat-card>
   </mat-card-content>

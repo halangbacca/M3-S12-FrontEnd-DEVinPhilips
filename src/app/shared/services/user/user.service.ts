@@ -29,9 +29,9 @@ export class UserService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getUserById(id: number): Observable<Number[]> {
+  getUserById(id: number): Observable<User[]> {
     return this.httpClient
-      .get<Number[]>(`${this.url}/${id}`)
+      .get<User[]>(`${this.url}/${id}`)
       .pipe(retry(2), catchError(this.handleError));
   }
 
@@ -60,8 +60,8 @@ export class UserService {
         .pipe(retry(2), catchError(this.handleError));
   }
 
-  resetPassword(passwordRequest: PasswordRequest): Observable<any> {
-    return this.httpClient.put<Observable<any>>(`${this.url}/resetarsenha`, JSON.stringify(passwordRequest), this.httpOptions)
+  resetPassword(passwordRequest: PasswordRequest, id: Number): Observable<any> {
+    return this.httpClient.put<Observable<any>>(`${this.url}/resetarsenha/${id}`, JSON.stringify(passwordRequest), this.httpOptions)
         .pipe(retry(2), catchError(this.handleError));
   }
 
