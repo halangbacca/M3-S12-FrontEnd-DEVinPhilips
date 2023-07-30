@@ -236,8 +236,8 @@ export class AddEditDrugComponent {
   logs() {
     this.dialog.open(ListLogsComponent, {
       data: {
-        tabLink: 'USUARIO',
-        codLink: 1,
+        tabLink: 'MEDICAMENTO',
+        codLink:  this.formDrug.get('id')?.value,
       },
     });
   }

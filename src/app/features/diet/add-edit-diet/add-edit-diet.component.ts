@@ -221,8 +221,8 @@ export class AddEditDietComponent {
   logs() {
     this.dialog.open(ListLogsComponent, {
       data: {
-        tabLink: 'USUARIO',
-        codLink: 1,
+        tabLink: 'DIETA',
+        codLink: this.formDiet.get('id')?.value,
       },
     });
   }
