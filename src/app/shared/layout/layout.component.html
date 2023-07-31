@@ -23,11 +23,6 @@
     </button>
     <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
 
-      <a mat-menu-item [routerLink]="['/account/profile']">
-        <mat-icon>person</mat-icon>
-        <span>Conta</span>
-      </a>
-
       <a mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Sair</span>
