@@ -4,6 +4,10 @@
 
 > Tela de Login do Sistema.
 
+<img src=".../../src/assets/telainicial.png" alt="tela-inicial">
+
+> Tela Inicial do Sistema.
+
 ### Descrição do Projeto
 
 A LABMedicine LTDA, empresa líder no segmento tecnológico de gestão hospitalar, foi selecionada em edital e recebeu um aporte financeiro para aprimorar seu principal produto, o LABMedical. A expectativa é desenvolver um novo sistema no formato white-label, capaz de ser personalizado e comercializado para hospitais, clínicas particulares e postos de saúde em todo o país.
