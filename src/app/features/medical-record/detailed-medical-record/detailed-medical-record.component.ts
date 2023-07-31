@@ -34,7 +34,6 @@ export class DetailedMedicalRecordComponent implements OnInit {
   displayedAppointmentColumns: string[] = [
     'motivo',
     'data',
-    'hora',
     'problema',
     'medicacao',
     'precaucao',
@@ -46,7 +45,6 @@ export class DetailedMedicalRecordComponent implements OnInit {
     'tipo',
     'laboratorio',
     'data',
-    'hora',
     'resultado',
     'anexo',
     'editar',
