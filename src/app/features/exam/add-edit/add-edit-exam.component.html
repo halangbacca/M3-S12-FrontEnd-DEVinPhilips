@@ -2,24 +2,7 @@
   <form
     [formGroup]="addEditExamForm"
     novalidate
-    (ngSubmit)="openConfirmDialog()">
-    <div class="col">
-      <mat-form-field class="full-width" appearance="outline" *ngIf="!id">
-        <mat-label>Digite o nome do paciente</mat-label>
-        <input matInput
-               [matAutocomplete]="auto"
-               [formControl]="patientControl"
-        >
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <mat-option *ngFor="let patient of filteredPatient | async" [value]="patient.nome" (click)="setPatient(patient.id, patient.nome)">
-            <span>id: {{ patient.id }} | {{ patient.nome }}</span>
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="patientControl.hasError('required')">
-          O nome do paciente é <strong>obrigatório</strong>
-        </mat-error>
-      </mat-form-field>
-    </div>
+    >
     <mat-card class="add-exam-card">
       <mat-card-content>
         <mat-card-actions class="add-form-button-group">
@@ -40,7 +23,9 @@
             type="submit"
             [disabled]="editing ?
                 addEditExamForm.invalid :
-                (addEditExamForm.invalid || patientControl.invalid)">SALVAR</button>
+                (addEditExamForm.invalid || patientControl.invalid)"
+            (click)="openConfirmDialog()"
+          >SALVAR</button>
                 <button
               mat-raised-button
               [disabled]="!editing"
@@ -50,6 +35,23 @@
               LOGS
             </button>
         </mat-card-actions>
+        <div class="col">
+          <mat-form-field class="full-width" appearance="outline" *ngIf="!id">
+            <mat-label>Digite o nome do paciente</mat-label>
+            <input matInput
+                   [matAutocomplete]="auto"
+                   [formControl]="patientControl"
+            >
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let patient of filteredPatient | async" [value]="patient.nome" (click)="setPatient(patient.id, patient.nome)">
+                <span>id: {{ patient.id }} | {{ patient.nome }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="patientControl.hasError('required')">
+              O nome do paciente é <strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
         <mat-card-title *ngIf="selectedPatient">Exame de {{ selectedPatient.nome }}</mat-card-title>
         <div>
           <div class="row">

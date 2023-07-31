@@ -103,6 +103,7 @@ export class AddEditAppointment implements OnInit {
 
     if (this.id) {
       this.loading = true;
+      this.editing = true;
       this.appointmentService
         .getAppointmentById(this.id)
         .subscribe({next: (appointment) => {
@@ -140,6 +141,7 @@ export class AddEditAppointment implements OnInit {
             id: appointment.paciente.id,
             nome: appointment.paciente.nome,
           };
+          this.loading = false;
         }, error: () => {
             this.loading = false;
             this.router.navigateByUrl("/dashboard");
@@ -235,7 +237,7 @@ export class AddEditAppointment implements OnInit {
       if (result) {
         this.saveAppointment();
       } else {
-        this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
+        this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 5000 });
       }
     });
   }

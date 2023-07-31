@@ -112,7 +112,7 @@ export class AddEditExamComponent implements OnInit {
     if (this.id) {
       this.loading = true;
       this.editing = true;
-      this.exameService.getExamById(this.id).subscribe((exam) => {
+      this.exameService.getExamById(this.id).subscribe({next: (exam) => {
         const dataHoraExame = exam.dtaExame.split(' ');
 
         const dataHoraExamePartes = dataHoraExame[0].split('/');
@@ -141,12 +141,15 @@ export class AddEditExamComponent implements OnInit {
         this.selectedPatient = {
           id: exam.paciente.id,
           nome: exam.paciente.nome,
-        };
+        }
+        this.loading = false;
+      }, error: () => {
+          this.loading = false;
+          this.router.navigateByUrl("/dashboard")
+        }
       });
-      this.loading = false;
     } else {
       this.today = new Date();
-
       const hora =
         this.today.getHours() < 10
           ? `0${this.today.getHours()}`
@@ -171,7 +174,7 @@ export class AddEditExamComponent implements OnInit {
       nome: nome,
     };
   }
-  onSubmit() {
+  saveAppointment() {
     const dateValue = this.addEditExamForm.get('dtaExame')?.value;
     const timeValue = this.addEditExamForm.get('horaExame')?.value;
 
@@ -204,20 +207,20 @@ export class AddEditExamComponent implements OnInit {
         this._snackBar.open(
           `Exame de ${this.selectedPatient.nome} editada com sucesso.`,
           'OK',
-          { duration: 3000 }
+          { duration: 5000 }
         );
         this.submitting = false;
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/dashboard');
       });
     } else {
       this.exameService.saveExam(exam).subscribe(() => {
         this._snackBar.open(
           `Exame de ${this.selectedPatient.nome} cadastrada com sucesso.`,
           'OK',
-          { duration: 3000 }
+          { duration: 5000 }
         );
         this.submitting = false;
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('/dashboard');
       });
     }
   }
@@ -234,9 +237,9 @@ export class AddEditExamComponent implements OnInit {
 
     confirmDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.onSubmit();
+        this.saveAppointment();
       } else {
-        this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
+        this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 5000 });
       }
     });
   }
@@ -258,10 +261,10 @@ export class AddEditExamComponent implements OnInit {
     confirmDeleteDialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.patientService.deletePatient(this.id).subscribe(() => {
-          this._snackBar.open(`Cadastro excluído com sucesso.`, 'OK', {
+          this._snackBar.open(`Exame excluído com sucesso.`, 'OK', {
             duration: 3000,
           });
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/dashboard');
         });
       }
     });
