@@ -21,7 +21,6 @@ import { AppointmentService } from "../../../shared/services/appointment/appoint
 import { DietService } from "../../../shared/services/diet/diet.service";
 import { DrugService } from "../../../shared/services/drug/drug.service";
 import { ExerciseService } from "../../../shared/services/exercise/exercise.service";
-import { forkJoin, map, Observable } from "rxjs";
 
 @Component({
   selector: 'app-add-edit',
@@ -213,7 +212,7 @@ export class AddEditPatient implements OnInit {
 
     confirmDialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.setEditing(true);
+        this.savePatient();
       } else {
         this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
       }
@@ -307,6 +306,8 @@ export class AddEditPatient implements OnInit {
                 this.router.navigateByUrl('/home');
               }
             );
+        } else {
+          this._snackBar.open("Operação cancelada.", "OK", { duration: 5000});
         }
       });
     }
