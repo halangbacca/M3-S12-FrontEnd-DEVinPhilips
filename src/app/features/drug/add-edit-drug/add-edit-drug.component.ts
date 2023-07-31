@@ -177,6 +177,7 @@ export class AddEditDrugComponent {
         'Medicamento cadastrado com sucesso!'
       );
       this.clearForm();
+      this.router.navigateByUrl('/home');
     });
   }
 

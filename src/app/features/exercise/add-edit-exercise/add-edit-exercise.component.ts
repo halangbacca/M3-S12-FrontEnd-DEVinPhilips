@@ -180,6 +180,7 @@ export class AddEditExerciseComponent {
         'Exercício cadastrado com sucesso!'
       );
       this.clearForm();
+      this.router.navigateByUrl('/home');
     });
   }
 

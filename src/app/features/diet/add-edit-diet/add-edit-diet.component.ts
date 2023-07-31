@@ -170,6 +170,7 @@ export class AddEditDietComponent {
     this.dietService.saveDiet(diet).subscribe(() => {
       this.notificationService.openSnackBar('Dieta cadastrada com sucesso!');
       this.clearForm();
+      this.router.navigateByUrl('/home');
     });
   }
 
