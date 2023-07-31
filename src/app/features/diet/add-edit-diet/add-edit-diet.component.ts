@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/shared/services/notification/notifi
 import { PatientService } from 'src/app/shared/services/patient/patient.service';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-add-edit-drug',
@@ -39,7 +40,8 @@ export class AddEditDietComponent {
     private patientService: PatientService,
     private dietService: DietService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   createform(diet: Diet) {
@@ -236,5 +238,9 @@ export class AddEditDietComponent {
       this.formDiet.get('dtaDieta')?.setValue(novaData);
       return this.saveDiet(this.formDiet.value);
     }
+  }
+
+  isAdmin(){
+    return !this.auth.isAdmin();
   }
 }

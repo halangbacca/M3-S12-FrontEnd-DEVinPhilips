@@ -21,6 +21,7 @@ import { AppointmentService } from "../../../shared/services/appointment/appoint
 import { DietService } from "../../../shared/services/diet/diet.service";
 import { DrugService } from "../../../shared/services/drug/drug.service";
 import { ExerciseService } from "../../../shared/services/exercise/exercise.service";
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-add-edit',
@@ -52,7 +53,8 @@ export class AddEditPatient implements OnInit {
     public dialog: MatDialog,
     private patientService: PatientService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private auth : AuthService
   ) {
     this.today = new Date();
   }
@@ -312,6 +314,10 @@ export class AddEditPatient implements OnInit {
       });
     }
 
+    isAdmin(){
+      return !this.auth.isAdmin();
+    }
+
   getAddressFromViaCep(cep: string) {
     if (cep !== '') {
       cep = cep.replace(/\D+/g, '');
@@ -436,4 +442,7 @@ function ValidateCPF(
     return { isValidCPF: false };
   }
   return null;
+
+  
 }
+

@@ -30,7 +30,7 @@
           >SALVAR</button>
           <button
               mat-raised-button
-              [disabled]="!editing"
+              [disabled]="!editing ||isAdmin()"
               (click)="logs()"
               color="link"
             >

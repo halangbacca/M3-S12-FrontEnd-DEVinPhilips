@@ -160,7 +160,7 @@
             </button>
             <button
               mat-raised-button
-              [disabled]="isDisabled"
+              [disabled]="isDisabled ||isAdmin()"
               (click)="logs()"
               color="link"
             >

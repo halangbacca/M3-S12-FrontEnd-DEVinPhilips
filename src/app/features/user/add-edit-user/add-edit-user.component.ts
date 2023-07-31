@@ -6,6 +6,7 @@ import { NotificationService } from 'src/app/shared/services/notification/notifi
 import { UserService } from 'src/app/shared/services/user/user.service';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -30,7 +31,8 @@ export class AddEditUserComponent {
     private notificationService: NotificationService,
     private userService: UserService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   createform(user: User) {
@@ -202,5 +204,9 @@ export class AddEditUserComponent {
     if (this.formUser.valid && this.isEditing == false) {
       return this.saveUser(this.formUser.value);
     }
+  }
+
+  isAdmin(){
+    return !this.auth.isAdmin();
   }
 }

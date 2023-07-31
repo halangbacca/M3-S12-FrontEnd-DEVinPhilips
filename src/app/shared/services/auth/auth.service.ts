@@ -39,6 +39,11 @@ export class AuthService {
     return this.isLoggedIn() ? JSON.parse(localStorage.getItem('medsoftToken') || '{}') : null;
   }
 
+  isAdmin(): boolean {
+    const user  = JSON.parse(localStorage.getItem('medsoftToken') || '{}');
+    return user.nivel=='ADMINISTRADOR' ? true : false;
+  }
+
   logout(): void {
     localStorage.removeItem('medsoftToken');
     this.router.navigate(['/login']);

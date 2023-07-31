@@ -17,6 +17,7 @@ import { ExamRequest } from '../../../shared/models/ExamRequest';
 import { ExamDeleteDialogComponent } from './components/delete-dialog/exam-delete-dialog.component';
 import { ExamConfirmDialogComponent } from './components/confirm-dialog/exam-confirm-dialog.component';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 export interface SelectedPatient {
   id: number;
@@ -48,7 +49,8 @@ export class AddEditExamComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private rout: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private auth: AuthService
   ) {
     this.patientService
       .getAllPatient()
@@ -269,4 +271,9 @@ export class AddEditExamComponent implements OnInit {
       }
     });
   }
+
+  isAdmin(){
+    return !this.auth.isAdmin();
+  }
+  
 }

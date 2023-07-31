@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentConfirmDialogComponent } from './components/confirm-dialog/appointment-confirm-dialog.component';
 import { AppointmentDeleteDialogComponent } from './components/delete-dialog/appointment-delete-dialog.component';
 import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 export interface SelectedPatient {
   id: number;
@@ -48,7 +49,8 @@ export class AddEditAppointment implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private rout: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private auth : AuthService,
   ) {
     this.patientService
       .getAllPatient()
@@ -271,5 +273,9 @@ export class AddEditAppointment implements OnInit {
         });
       }
     });
+  }
+
+  isAdmin(){
+    return !this.auth.isAdmin();
   }
 }
