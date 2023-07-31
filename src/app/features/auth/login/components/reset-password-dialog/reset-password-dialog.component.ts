@@ -46,14 +46,14 @@ export class ResetPasswordDialogComponent implements OnInit {
     const email = this.resetPasswordForm.get('email')?.value;
     this.service
       .getUserId(email)
-      .subscribe((result) => (this.userId = result.id));
+      .subscribe((result) => this.userId = result.id);
   }
 
   resetPassword() {
     this.passwordRequest = {
       id: this.userId,
       email: this.resetPasswordForm.get('email')?.value,
-      password: this.resetPasswordForm.get('password')?.value,
+      senha: this.resetPasswordForm.get('password')?.value,
     };
     console.log(this.passwordRequest);
     this.service
