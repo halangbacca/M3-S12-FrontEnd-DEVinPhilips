@@ -1,0 +1,145 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title> Cadastro de Dieta </mat-card-title>
+      <div fxLayout="column">
+        <form [formGroup]="formPatient">
+          <mat-form-field
+            *ngIf="pacientes.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Paciente</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="nomePaciente">
+              <mat-option
+                *ngFor="let paciente of pacientes"
+                [value]="paciente.nome"
+              >
+                {{ paciente.nome }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error id="requiredNomePacienteError">
+              Você deve selecionar um paciente
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="diets.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione uma Dieta</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="dieta">
+              <mat-option *ngFor="let diet of diets" [value]="diet.nomeDieta">
+                {{ diet.nomeDieta }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+
+        <form [formGroup]="formDiet" (ngSubmit)="onSubmit()">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nome da Dieta</mat-label>
+            <input
+              (focus)="onFocus()"
+              matInput
+              placeholder="Nome"
+              formControlName="nomeDieta"
+            />
+
+            <mat-error id="requiredNomeError">
+              O nome da dieta é
+              <strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Data</mat-label>
+            <input matInput placeholder="Data" formControlName="dtaDieta" />
+
+            <mat-error id="invalidDataError">
+              Você deve inserir a data da dieta
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Horário</mat-label>
+            <input matInput placeholder="Horário" formControlName="horario" />
+
+            <mat-error id="invalidHorarioError">
+              Você deve inserir o horário da dieta
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="tipoDieta">
+              <mat-option value="LOW_CARB">Low Carb</mat-option>
+              <mat-option value="DASH">Dash</mat-option>
+              <mat-option value="PALEOLITICA">Paleolítica</mat-option>
+              <mat-option value="CETOGENICA">Cetogênica</mat-option>
+              <mat-option value="DUKAN">Dukan</mat-option>
+              <mat-option value="MEDITERRANEA">Mediterrânea</mat-option>
+              <mat-option value="OUTRA">Outra</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidTipoError">
+              Você deve selecionar o tipo da dieta
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Descrição</mat-label>
+            <input
+              matInput
+              placeholder="Descrição"
+              formControlName="descricao"
+            />
+
+            <mat-error id="invalidDescriptionError">
+              Você deve inserir a descrição da dieta
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button
+              mat-raised-button
+              color="primary"
+              id="cadastrar"
+              [disabled]="isEditing"
+              type="submit"
+            >
+              CADASTRAR
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              id="editar"
+              [disabled]="isDisabled"
+              (click)="editDiet()"
+            >
+              EDITAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="deleteDiet()"
+              color="accent"
+            >
+              DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled ||isAdmin()"
+              (click)="logs()"
+              color="link"
+            >
+              LOGS
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

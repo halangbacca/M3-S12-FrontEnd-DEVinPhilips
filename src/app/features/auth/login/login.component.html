@@ -1,0 +1,57 @@
+<div class="login-page">
+  <div class="left-side">
+    <div class="left-side-header">
+
+    </div>
+    <img src="/assets/labmedical-cover.jpg" alt="labmedical cover" class="cover">
+    <div class="left-side-footer">
+      <img src="/assets/labmedical-logo.png" alt="lab365 logo" class="medsoft-logo">
+    </div>
+  </div>
+  <div>
+  </div>
+  <div class="right-side">
+    <header>
+      <p>Não possui uma conta?</p>
+      <button mat-stroked-button
+              color="primary"
+              (click)="openWarnDialog()">Criar conta</button>
+    </header>
+    <form [formGroup]="form" novalidate class="form">
+      <h2 class="mat-title">Login</h2>
+      <mat-form-field class="row" appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput placeholder="Ex. alex@email.com" formControlName="email" type="email" class="full-width">
+        <mat-error *ngIf="form.controls['email'].hasError('required')">
+          E-mail obrigatório
+        </mat-error>
+        <mat-error *ngIf="form.controls['email'].hasError('email')
+                     && !form.controls['email'].hasError('required')">
+          Digite um e-mail vádilo (Ex. alex@email.com)
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="row" appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput placeholder="Informe sua senha" formControlName="senha" type="password" class="full-width">
+        <mat-error *ngIf="form.controls['senha'].hasError('required')">
+          Informe sua senha
+        </mat-error>
+        <mat-error *ngIf="form.controls['senha'].hasError('minlength')
+                     && !form.controls['senha'].hasError('required')">
+          A senha deve conter pelo menos <strong>8 caracteres</strong>
+        </mat-error>
+      </mat-form-field>
+      <div class="login-button">
+        <button class="row" mat-flat-button (click)="onClick($event);openResetPasswordDialog()">Esqueci minha senha</button>
+        <button mat-raised-button color="primary" (click)="login()">Entrar</button>
+      </div>
+      <div class="col">
+      </div>
+    </form>
+    <footer>
+      <div class="login-footer">
+        <img src="/assets/medsoft-logo.png" alt="labmedical logo" class="labmedical-logo">
+      </div>
+    </footer>
+  </div>
+</div>

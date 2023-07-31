@@ -1,0 +1,144 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-title> Cadastro de Usuário </mat-card-title>
+      <div fxLayout="column">
+        <form [formGroup]="formExistingUser">
+          <mat-form-field
+            *ngIf="users.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
+            <mat-label>Selecione um Usuário</mat-label>
+            <mat-select (focus)="onFocus()" formControlName="nomeUsuario">
+              <mat-option
+                class="nomeUsuario"
+                *ngFor="let user of users"
+                [value]="user.nome"
+              >
+                {{ user.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="formUser">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nome do Usuário</mat-label>
+            <input
+              (focus)="onFocus()"
+              matInput
+              placeholder="Nome"
+              formControlName="nome"
+            />
+
+            <mat-error id="requiredNomeError">
+              O nome do usuário é
+              <strong>obrigatório</strong>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Gênero</mat-label>
+            <mat-select formControlName="genero">
+              <mat-option value="masculino">Masculino</mat-option>
+              <mat-option value="feminino">Feminino</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidGeneroError">
+              Você deve selecionar o gênero do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>CPF</mat-label>
+            <input matInput placeholder="CPF" formControlName="cpf" />
+
+            <mat-error id="invalidCPFError">
+              Você deve inserir o CPF do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Telefone</mat-label>
+            <input matInput placeholder="Telefone" formControlName="telefone" />
+
+            <mat-error id="invalidTelefoneError">
+              Você deve inserir o telefone do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>E-mail</mat-label>
+            <input
+              matInput
+              placeholder="E-mail"
+              type="email"
+              formControlName="email"
+            />
+
+            <mat-error id="invalidEmailError">
+              Você deve inserir o e-mail do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Senha</mat-label>
+            <input
+              matInput
+              placeholder="Senha"
+              type="password"
+              formControlName="senha"
+            />
+
+            <mat-error id="invalidSenhaError">
+              Você deve inserir a senha do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="nivel">
+              <mat-option value="ADMINISTRADOR">Administrador</mat-option>
+              <mat-option value="MEDICO">Médico</mat-option>
+              <mat-option value="ENFERMEIRO">Enfermeiro</mat-option>
+            </mat-select>
+
+            <mat-error id="invalidNivelError">
+              Você deve selecionar o nível do usuário
+            </mat-error>
+          </mat-form-field>
+
+          <div fxLayoutAlign="center center" fxLayoutGap="5px">
+            <button
+              mat-raised-button
+              color="primary"
+              id="cadastrar"
+              [disabled]="isEditing"
+              type="submit"
+            >
+              CADASTRAR
+            </button>
+            <button
+              mat-raised-button
+              color="warn"
+              id="editar"
+              [disabled]="isDisabled"
+              (click)="editUser()"
+            >
+              EDITAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              (click)="disableUser()"
+              color="accent"
+            >
+              INATIVAR
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,23 +1,32 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Patient } from '@shared/models/Patient';
 import { Cep } from '@shared/models/Cep';
 import { PatientService } from '@services/patient';
 import { CepService } from '@services/cep';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppointmentRequest } from "../../../shared/models/AppointmentRequest";
-import { Exam } from "../../../shared/models/Exam";
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { ExamService } from '../../../shared/services/exam/exam.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
+import { ListLogsComponent } from '../../logs/list-logs/list-logs.component';
 import { AppointmentService } from "../../../shared/services/appointment/appointment.service";
-import { ExamService } from "../../../shared/services/exam/exam.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component";
-import { DeleteDialogComponent } from "./components/delete-dialog/delete-dialog.component";
+import { DietService } from "../../../shared/services/diet/diet.service";
+import { DrugService } from "../../../shared/services/drug/drug.service";
+import { ExerciseService } from "../../../shared/services/exercise/exercise.service";
+import { AuthService } from 'src/app/shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-add-edit',
   templateUrl: './add-edit-patient.component.html',
-  styleUrls: ['./add-edit-patient.component.scss']
+  styleUrls: ['./add-edit-patient.component.scss'],
 })
 export class AddEditPatient implements OnInit {
   patientForm!: FormGroup;
@@ -28,6 +37,7 @@ export class AddEditPatient implements OnInit {
   loading = false;
   submitting = false;
   address: Cep = {} as Cep;
+  hasRegistry = false;
 
   today!: Date;
 
@@ -35,11 +45,16 @@ export class AddEditPatient implements OnInit {
     private fb: FormBuilder,
     private cepService: CepService,
     private examService: ExamService,
+    private appointmentService: AppointmentService,
+    private dietService: DietService,
+    private drugService: DrugService,
+    private exerciseService: ExerciseService,
     private rout: ActivatedRoute,
     public dialog: MatDialog,
     private patientService: PatientService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private auth : AuthService
   ) {
     this.today = new Date();
   }
@@ -48,10 +63,13 @@ export class AddEditPatient implements OnInit {
     this.id = this.rout.snapshot.params['id'];
 
     this.patientForm = this.fb.group({
-      cep: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8)])
+      cep: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(8),
+        ]),
       ],
       estado: ['', Validators.required],
       logradouro: ['', Validators.required],
@@ -60,152 +78,196 @@ export class AddEditPatient implements OnInit {
       complemento: [''],
       bairro: ['', Validators.required],
       referencia: [''],
-      alergias: this.fb.array([
-        this.fb.group({descricao: ['']})
-      ]),
-      naturalidade: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(64)])
+      alergias: this.fb.array([this.fb.group({ descricao: [''] })]),
+      naturalidade: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(64),
+        ]),
       ],
       dtaNascimento: ['', Validators.required],
-      cpf: ['', Validators.compose([
-        Validators.required,
-        ValidateCPF
-      ])],
+      cpf: ['', Validators.compose([Validators.required, ValidateCPF])],
       email: ['', Validators.email],
       telEmergencia: ['', Validators.required],
       genero: ['', Validators.required],
       nroConvenio: [''],
       convenio: [''],
       estadoCivil: ['', Validators.required],
-      nome: ['', Validators.compose([
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(64)
-      ])],
+      nome: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(64),
+        ]),
+      ],
       telefone: ['', Validators.required],
-      rg: ['', Validators.compose([
-        Validators.required,
-        Validators.maxLength(20)
-      ])],
-      precaucoes: this.fb.array([
-        this.fb.group({descricao: ['']})
-      ]),
-      validadeConvenio: ['']
+      rg: [
+        '',
+        Validators.compose([Validators.required, Validators.maxLength(20)]),
+      ],
+      precaucoes: this.fb.array([this.fb.group({ descricao: [''] })]),
+      validadeConvenio: [''],
     });
 
     if (this.id) {
       this.loading = true;
-      this.patientService.getPatientById(this.id)
-        .subscribe(patient => {
+      this.patientService.getPatientById(this.id).subscribe({next: (patient) => {
+        const dataNascimentoResponse = patient.dtaNascimento;
+        const dataNascimentoPartes = dataNascimentoResponse.split('/');
+        const diaNascimento = Number(dataNascimentoPartes[0]);
+        const mesNascimento = Number(dataNascimentoPartes[1]);
+        const anoNascimento = Number(dataNascimentoPartes[2]);
 
-          const dataNascimentoResponse = patient.dtaNascimento;
-          const dataNascimentoPartes = dataNascimentoResponse.split("/");
-          const diaNascimento = Number(dataNascimentoPartes[0]);
-          const mesNascimento = Number(dataNascimentoResponse[1]);
-          const anoNascimento = Number(dataNascimentoPartes[2]);
+        const dataNascimentoObject = new Date(
+          anoNascimento,
+          mesNascimento,
+          diaNascimento
+        );
 
-          const dataNascimentoObject = new Date(anoNascimento, mesNascimento, diaNascimento);
+        const dataValidadeResponse = patient.validadeConvenio;
 
-          const dataValidadeResponse = patient.validadeConvenio;
+        let dataValidadePartes: string[];
+        let dataValidadeObject: Date | null;
 
-          let dataValidadePartes: string[];
-          let dataValidadeObject: Date | null;
+        if (dataValidadeResponse) {
+          dataValidadePartes = dataValidadeResponse.split('/');
+          const diaValidade = Number(dataValidadePartes[0]);
+          const mesValidade = Number(dataValidadePartes[1]);
+          const anoValidade = Number(dataValidadePartes[2]);
 
-          if (dataValidadeResponse) {
-            dataValidadePartes = dataValidadeResponse.split("/");
-            const diaValidade = Number(dataValidadePartes[0]);
-            const mesValidade = Number(dataValidadeResponse[1]);
-            const anoValidade = Number(dataValidadePartes[2]);
+          dataValidadeObject = new Date(anoValidade, mesValidade, diaValidade);
+        } else {
+          dataValidadeObject = null;
+        }
 
-            dataValidadeObject = new Date(anoValidade, mesValidade, diaValidade);
-          } else {
-            dataValidadeObject = null;
-          }
+        for (let i = patient.alergias.length - 1; i > 0; i--) {
+          this.addAlergia();
+        }
 
-          for (let i = patient.alergias.length - 1; i > 0; i-- ) {
-            this.addAlergia();
-          }
+        for (let i = patient.precaucoes.length - 1; i > 0; i--) {
+          this.addPrecaucao();
+        }
 
-          for (let i = patient.precaucoes.length -1; i > 0; i--) {
-            this.addPrecaucao();
-          }
+        this.patientForm.patchValue({
+          ...patient,
+          dtaNascimento: dataNascimentoObject,
+          validadeConvenio: dataValidadeObject,
+        });
 
-          this.patientForm.patchValue(
-            {...patient,
-              dtaNascimento: dataNascimentoObject,
-              validadeConvenio: dataValidadeObject
+        this.appointmentService.getAppointmentByPatientName(patient.nome)
+          .subscribe(appointmentList => {
+            if (appointmentList.length > 0) {
+              this.setHasRegistry(true)
             }
-          );
+          });
 
-          this.title = `Editando o cadastro de ${patient.nome}`;
+        this.exerciseService.getExerciseByPatientName(patient.nome)
+          .subscribe(exerciseList => {
+            if (exerciseList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.examService.getExamByPatientNome(patient.nome)
+          .subscribe(examList => {
+            if (examList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.drugService.getDrugByPatientName(patient.nome)
+          .subscribe(drugList => {
+            if (drugList.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.dietService.getDietByPatientName(patient.nome)
+          .subscribe(dietlist => {
+            if (dietlist.length > 0) {
+              this.setHasRegistry(true)
+            }
+          });
+
+        this.title = `Editando o cadastro de ${patient.nome}`;
+        this.loading = false;
+      },
+        error: () => {
           this.loading = false;
-        })
+          this.router.navigateByUrl("/home");
+        }
+    });
       this.editing = true;
     } else {
-      this.title = "Preencha os campos para cadastrar";
+      this.title = 'Preencha os campos para cadastrar';
     }
   }
 
   openConfirmDialog(): void {
     this.patient = this.patientForm.value;
     const confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { ...this.patient }
+      data: { ...this.patient },
     });
 
-    confirmDialogRef.afterClosed()
-      .subscribe(result => {
-        if (result) {
-          this.onSubmit();
-        } else {
-          this._snackBar.open(
-            `Operação cancelada.`,
-            'OK',
-            { duration: 3000 }
-          );
-        }
-      });
+    confirmDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.savePatient();
+      } else {
+        this._snackBar.open(`Operação cancelada.`, 'OK', { duration: 3000 });
+      }
+    });
   }
 
-  onSubmit(): void {
+  savePatient(): void {
     this.submitting = true;
 
     if (this.patientForm.get('dtaNascimento')?.value) {
-      const dataNascimentoSeleciona = this.patientForm.get('dtaNascimento')?.value;
-      console.log(dataNascimentoSeleciona)
+      const dataNascimentoSeleciona =
+        this.patientForm.get('dtaNascimento')?.value;
       const dataNascimentoObject: Date = new Date(dataNascimentoSeleciona);
-      const dataNascimentoFormatada = this.formatDate(dataNascimentoObject)
-      this.patientForm.patchValue({'dtaNascimento' : dataNascimentoFormatada})
+      const dataNascimentoFormatada = this.formatDate(dataNascimentoObject);
+      this.patientForm.patchValue({ dtaNascimento: dataNascimentoFormatada });
     }
 
     if (this.patientForm.get('validadeConvenio')?.value) {
-      const validadeConvenioSelecionada = this.patientForm.get('validadeConvenio')?.value;
-      const validadeConvenioObject: Date = new Date(validadeConvenioSelecionada);
+      const validadeConvenioSelecionada =
+        this.patientForm.get('validadeConvenio')?.value;
+      const validadeConvenioObject: Date = new Date(
+        validadeConvenioSelecionada
+      );
       const validadeConvenioFormatada = this.formatDate(validadeConvenioObject);
-      this.patientForm.patchValue({'validadeConvenio' : validadeConvenioFormatada});
+      this.patientForm.patchValue({
+        validadeConvenio: validadeConvenioFormatada,
+      });
     }
 
     for (let i = this.alergias.length - 1; i >= 0; i--) {
-      if (this.alergias.at(i).get('descricao')?.value == null ||
-        this.alergias.at(i).get('descricao')?.value == '') {
+      if (
+        this.alergias.at(i).get('descricao')?.value == null ||
+        this.alergias.at(i).get('descricao')?.value == ''
+      ) {
         this.alergias.removeAt(i);
       }
     }
 
     for (let i = this.precaucoes.length - 1; i >= 0; i--) {
-      if (this.precaucoes.at(i).get('descricao')?.value == null ||
+      if (
+        this.precaucoes.at(i).get('descricao')?.value == null ||
         this.precaucoes.at(i).get('descricao')?.value == ''
       ) {
         this.precaucoes.removeAt(i);
       }
     }
 
-    const updatedPatientForm = {...this.patientForm.value}
+    const updatedPatientForm = { ...this.patientForm.value };
 
     if (!this.editing) {
-      this.patientService.savePatient(updatedPatientForm)
-        .subscribe(newPatient => {
+      this.patientService
+        .savePatient(updatedPatientForm)
+        .subscribe((newPatient) => {
           this._snackBar.open(
             `${newPatient.nome} adicionado com sucesso.`,
             'OK',
@@ -213,11 +275,12 @@ export class AddEditPatient implements OnInit {
           );
           this.submitting = false;
           this.router.navigateByUrl('/home');
-        })
+        });
     } else {
       updatedPatientForm.id = this.id;
-      this.patientService.updatePatient(updatedPatientForm)
-        .subscribe(editedPerson => {
+      this.patientService
+        .updatePatient(updatedPatientForm)
+        .subscribe((editedPerson) => {
           this._snackBar.open(
             `Dados de ${editedPerson.nome} editado com sucesso.`,
             'OK',
@@ -225,52 +288,50 @@ export class AddEditPatient implements OnInit {
           );
           this.submitting = false;
           this.router.navigateByUrl('/home');
-        })
+        });
     }
   }
 
   deletePatient() {
-    this.examService.getExamByPatientId(this.id)
-      .subscribe(exams => {
-        if (exams.length > 0) {
-          alert('pessoa possui exame ou consulta');
-        } else {
-          const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
-            data: {...this.patientForm.value}
-          });
-          confirmDeleteDialogRef.afterClosed()
-            .subscribe(result => {
-              if (result) {
-                this.patientService.deletePatient(result.id)
-                  .subscribe(() => {
-                    this._snackBar.open(
-                      `Cadastro excluído com sucesso.`,
-                      'OK',
-                      {duration: 3000}
-                    )
-                    this.router.navigateByUrl('/home');
-                  })
+    this.patient = this.patientForm.value;
+    const confirmDeleteDialogRef = this.dialog.open(DeleteDialogComponent, {
+        data: { ...this.patient },
+      });
+      confirmDeleteDialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.patientService.deletePatient(this.id)
+            .subscribe(
+              (patientDeleted) => {
+                this._snackBar.open(`Cadastro de ${patientDeleted.nome} excluído com sucesso.`, 'OK', {
+                  duration: 5000,
+                });
+                this.router.navigateByUrl('/home');
               }
-            });
+            );
+        } else {
+          this._snackBar.open("Operação cancelada.", "OK", { duration: 5000});
         }
-      })
-  }
+      });
+    }
+
+    isAdmin(){
+      return !this.auth.isAdmin();
+    }
 
   getAddressFromViaCep(cep: string) {
-    if (cep !== "") {
-      cep = cep.replace(/\D+/g,'')
+    if (cep !== '') {
+      cep = cep.replace(/\D+/g, '');
       let validateCep = /^[0-9]{8}$/;
       if (validateCep.test(cep)) {
-        this.cepService.getCep(cep)
-          .subscribe(adress => {
-            this.address = adress
-            this.patientForm.patchValue({
-              cidade: adress.localidade,
-              estado: adress.uf,
-              logradouro: adress.logradouro,
-              bairro: adress.bairro
-            })
+        this.cepService.getCep(cep).subscribe((adress) => {
+          this.address = adress;
+          this.patientForm.patchValue({
+            cidade: adress.localidade,
+            estado: adress.uf,
+            logradouro: adress.logradouro,
+            bairro: adress.bairro,
           });
+        });
       }
     }
   }
@@ -285,30 +346,37 @@ export class AddEditPatient implements OnInit {
 
   addAlergia() {
     const descricao = this.fb.group({
-      descricao: ['']
-    })
+      descricao: [''],
+    });
     this.alergias.push(descricao);
   }
 
   removeAlergia(i: number) {
-    if (this.alergias.length > 1)
-    this.alergias.removeAt(i);
+    if (this.alergias.length > 1) this.alergias.removeAt(i);
   }
 
   addPrecaucao() {
     const descricao = this.fb.group({
-      descricao: ['']
-    })
+      descricao: [''],
+    });
     this.precaucoes.push(descricao);
   }
 
   removePrecaucao(i: number) {
-    if (this.precaucoes.length > 1)
-    this.precaucoes.removeAt(i);
+    if (this.precaucoes.length > 1) this.precaucoes.removeAt(i);
   }
 
   onClick(event: Event) {
-    event.preventDefault()
+    event.preventDefault();
+  }
+
+  logs() {
+    this.dialog.open(ListLogsComponent, {
+      data: {
+        tabLink: 'PACIENTE',
+        codLink: this.id,
+      },
+    });
   }
 
   private formatDate(date: Date): string {
@@ -319,25 +387,34 @@ export class AddEditPatient implements OnInit {
     return `${day}/${month}/${year}`;
   }
 
-  //Constantes
+  setHasRegistry(value: boolean): void {
+    this.hasRegistry = value;
+  }
+
+  setEditing(value: boolean): void {
+    this.editing = value;
+  }
+
   GENEROS = [
     { genero: 'MASCULINO', descricao: 'Masculino' },
     { genero: 'FEMININO', descricao: 'Feminino' },
   ];
 
   ESTADOCIVIL = [
-    { estcivil: 'SOLTEIRO', descricao: 'Solteiro' },
-    { estcivil: 'CASADO', descricao: 'Casado' },
-    { estcivil: 'VIUVO', descricao: 'Viúvo' },
-    { estcivil: 'DIVORCIADO', descricao: 'Divorciado' },
+    { estcivil: 'SOLTEIRO', descricao: 'Solteiro(a)' },
+    { estcivil: 'CASADO', descricao: 'Casado(a)' },
+    { estcivil: 'VIUVO', descricao: 'Viúvo(a)' },
+    { estcivil: 'DIVORCIADO', descricao: 'Divorciado(a)' },
   ];
 }
 
-function ValidateCPF(control: AbstractControl): { [s: string]: boolean } | null {
+function ValidateCPF(
+  control: AbstractControl
+): { [s: string]: boolean } | null {
   if (!control) {
     return { isValidCPF: false };
   }
-  const cpf = control.value.replace(/\D+/g,'');
+  const cpf = control.value.replace(/\D+/g, '');
   if (cpf.length !== 11) {
     return { isValidCPF: false };
   }
@@ -365,4 +442,7 @@ function ValidateCPF(control: AbstractControl): { [s: string]: boolean } | null 
     return { isValidCPF: false };
   }
   return null;
+
+  
 }
+

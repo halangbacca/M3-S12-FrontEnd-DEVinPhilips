@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
+    title: 'LABMedical - Dashboard',
     children: [
       { path: '', component: DashboardHomeComponent },
     ]

@@ -1,8 +1,7 @@
 <div *ngIf="!submitting && !loading">
   <form
     [formGroup]="patientForm"
-    novalidate
-    (ngSubmit)="openConfirmDialog()">
+    novalidate>
     <mat-card class="add-people-card">
       <mat-card-header>
         <mat-card-title>
@@ -21,14 +20,25 @@
             color="warn"
             type="button"
             (click)="deletePatient()"
-            [disabled]="!editing">DELETAR</button>
+            [disabled]="!editing || hasRegistry">
+            DELETAR</button>
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="patientForm.invalid">
+            [disabled]="patientForm.invalid"
+            (click)="openConfirmDialog()"
+          >
             SALVAR
           </button>
+          <button
+              mat-raised-button
+              (click)="logs()"
+              color="link"
+              [disabled]="!editing || isAdmin()"
+            >
+              LOGS
+            </button>
         </mat-card-actions>
         <mat-card-title>Identificação</mat-card-title>
         <div class="row">

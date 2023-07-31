@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { CustomMaterialModule } from 'src/app/core/custom-material/custom-material.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
-  declarations: [
-    DashboardHomeComponent
-  ],
+  declarations: [DashboardHomeComponent],
   imports: [
     CommonModule,
     CustomMaterialModule,
-    DashboardRoutingModule
-  ]
+    DashboardRoutingModule,
+    MatTableModule,
+    MatPaginatorModule,
+  ],
 })
-export class DashboardModule { }
+export class DashboardModule {}

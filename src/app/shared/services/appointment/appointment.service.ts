@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { environment } from "../../../../environments/environment";
-import { AppointmentRequest } from "../../models/AppointmentRequest";
-import { catchError, Observable, retry, throwError } from "rxjs";
-import { AppointmentResponse } from "../../models/AppointmentResponse";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
+import { AppointmentRequest } from '../../models/AppointmentRequest';
+import { catchError, Observable, retry, throwError } from 'rxjs';
+import { AppointmentResponse } from '../../models/AppointmentResponse';
+import { Exercise } from '../../models/Exercicio';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppointmentService {
-
   url = `${environment.URL_API}${environment.API_APPOINTMENT}`;
 
   constructor(private httpClient: HttpClient) {}
@@ -18,13 +22,19 @@ export class AppointmentService {
     headers: new HttpHeaders(environment.HEADER),
   };
 
-  saveAppointment(appointment: AppointmentRequest): Observable<AppointmentRequest> {
+  saveAppointment(
+    appointment: AppointmentRequest
+  ): Observable<AppointmentRequest> {
     return this.httpClient
-      .post<AppointmentRequest>(`${this.url}/cadastrar`, JSON.stringify(appointment), this.httpOptions)
+      .post<AppointmentRequest>(
+        `${this.url}`,
+        JSON.stringify(appointment),
+        this.httpOptions
+      )
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getAllConsult(): Observable<AppointmentRequest[]> {
+  getAllAppointments(): Observable<AppointmentRequest[]> {
     return this.httpClient
       .get<AppointmentRequest[]>(this.url, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
@@ -36,24 +46,31 @@ export class AppointmentService {
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  getExamByPatientId(id: Number): Observable<AppointmentRequest[]> {
+  getAppointmentByPatientName(nome: string): Observable<AppointmentResponse[]> {
+    const nomeEncoded = encodeURIComponent(nome);
     return this.httpClient
-      .get<AppointmentRequest[]>(
-        `${this.url}/?idPatient=${id}&_sort=dtaConsulta&_order=desc`
-      )
+      .get<AppointmentResponse[]>(`${this.url}?nomePaciente=${nomeEncoded}`)
       .pipe(retry(2), catchError(this.handleError));
   }
-  updateAppointment(appointment: AppointmentRequest): Observable<AppointmentRequest> {
+
+  getAppointmentByPatientId(id: Number): Observable<AppointmentRequest[]> {
+    return this.httpClient
+      .get<AppointmentRequest[]>(`${this.url}/paciente/${id}`)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+  updateAppointment(
+    appointment: AppointmentRequest
+  ): Observable<AppointmentRequest> {
     return this.httpClient
       .put<AppointmentRequest>(
-        `${this.url}/atualizar/${appointment.id}`,
+        `${this.url}/${appointment.id}`,
         JSON.stringify(appointment),
         this.httpOptions
       )
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  deleteConsult(id: Number): Observable<AppointmentRequest[]> {
+  deleteAppointment(id: Number): Observable<AppointmentRequest[]> {
     return this.httpClient.delete<AppointmentRequest[]>(`${this.url}/${id}`);
   }
 

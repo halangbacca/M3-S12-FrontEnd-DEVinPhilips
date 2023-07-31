@@ -1,22 +1,35 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center center">
   <mat-card>
     <mat-card-content>
-      <mat-card-title> Cadastro/Edição de Empresa </mat-card-title>
-      <div fxLayout="row">
-        <form [formGroup]="formCompany" (ngSubmit)="onSubmit()">
-
-          <mat-form-field appearance="fill"  class="full-width">
+      <mat-card-title> Cadastro de Empresa </mat-card-title>
+      <div fxLayout="column">
+        <form [formGroup]="formExistingCompany">
+          <mat-form-field
+            *ngIf="companies.length > 0"
+            class="full-width"
+            appearance="outline"
+          >
             <mat-label>Selecione uma Empresa</mat-label>
-            <mat-select (focus)="onFocus()" formControlName="empresa">
-              <mat-option *ngFor="let company of companies" [value]="company.nome">
-                {{company.nome}}
+            <mat-select (focus)="onFocus()" formControlName="nomeEmpresa">
+              <mat-option
+                *ngFor="let company of companies"
+                [value]="company.nome"
+              >
+                {{ company.nome }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </form>
 
-          <mat-form-field appearance="fill" class="full-width">
+        <form [formGroup]="formCompany" (ngSubmit)="onSubmit()">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>Nome da Empresa</mat-label>
-            <input (focus)="onFocus()" matInput placeholder="Nome" formControlName="nome" />
+            <input
+              (focus)="onFocus()"
+              matInput
+              placeholder="Nome"
+              formControlName="nome"
+            />
 
             <mat-error id="requiredNomeError">
               O nome da sua empresa é
@@ -24,12 +37,12 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>Slogan da Empresa</mat-label>
             <input matInput placeholder="Slogan" formControlName="slogan" />
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>Palheta de Cores</mat-label>
             <mat-select formControlName="palhetaDeCores">
               <mat-option value="deeppurple-amber"
@@ -45,9 +58,9 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="full-width">
+          <mat-form-field class="full-width" appearance="outline">
             <mat-label>URL do Logotipo</mat-label>
-            <input matInput placeholder="Logotipo" formControlName="imagemDoLogotipo" />
+            <input matInput placeholder="Logotipo" formControlName="logotipo" />
 
             <mat-error id="invalidLogoError">
               Você deve inserir a URL do logotipo da sua empresa
@@ -59,15 +72,35 @@
               mat-raised-button
               color="primary"
               id="cadastrar"
+              [disabled]="isEditing"
               type="submit"
             >
-              Cadastrar
+              CADASTRAR
             </button>
-            <button mat-raised-button color="warn" id="editar" [disabled]="isDisabled" (click)="editCompany()">
-              Editar
+            <button
+              mat-raised-button
+              color="warn"
+              id="editar"
+              [disabled]="isDisabled"
+              (click)="editCompany()"
+            >
+              EDITAR
             </button>
-            <button mat-raised-button color="accent" mat-dialog-close>
-              Sair
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              color="accent"
+              (click)="deleteCompany()"
+            >
+              DELETAR
+            </button>
+            <button
+              mat-raised-button
+              [disabled]="isDisabled"
+              color="link"
+              (click)="logs()"
+            >
+              LOGS
             </button>
           </div>
         </form>
